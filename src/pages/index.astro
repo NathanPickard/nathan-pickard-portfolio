@@ -1,8 +1,10 @@
 ---
+import { Image } from 'astro:assets';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import ProfileImage from '../assets/nathan-pickard-profile.jpg';
 ---
 
 <!doctype html>
@@ -14,6 +16,13 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
     <Header />
     <main>
       <h3>Hello, I'm Nathan Pickard!</h3>
+      <Image
+        src={ProfileImage}
+        alt="Nathan Pickard profile"
+        class="profile"
+        width={175}
+        densities={[1, 2, 3]}
+        />
     </main>
     <Footer />
   </body>
