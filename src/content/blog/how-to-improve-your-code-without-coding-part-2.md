@@ -2,6 +2,7 @@
 title: 'How to improve your code without coding, Part 2!'
 description: 'How to improve your code without coding, Part 2!'
 pubDate: 2018-06-27
+heroImage: 'images/man-coffee-cup-pen.jpg'
 archived: true
 ---
 

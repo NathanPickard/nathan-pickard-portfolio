@@ -15,15 +15,33 @@ import ProfileImage from '../assets/nathan-pickard-profile.jpg';
   <body>
     <Header />
     <main>
-      <h3>Hello, I'm Nathan Pickard!</h3>
-      <Image
-        src={ProfileImage}
-        alt="Nathan Pickard profile"
-        class="profile"
-        width={175}
-        densities={[1, 2, 3]}
+      <h3 class="greeting">Hello, I'm Nathan Pickard!</h3>
+      <div class="intro">
+        <Image
+          src={ProfileImage}
+          alt="Nathan Pickard profile"
+          class="profile"
+          width={200}
+          densities={[1, 2, 3]}
         />
+        <h5>A software engineer based in Portland, OR</h5>
+      </div>
     </main>
     <Footer />
   </body>
 </html>
+
+<style>
+  .greeting {
+    margin-bottom: 3rem;
+  }
+  .intro {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  main {
+    width: 820px;
+    max-width: calc(100% - 2em);
+  }
+</style>

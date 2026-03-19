@@ -1,24 +1,185 @@
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
+import AboutHeroImage from '../assets/nathan-pickard-profile.jpg';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 import Layout from '../layouts/BlogPost.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { Image } from 'astro:assets';
+import ProfileImage from '../assets/nathan-pickard-profile.jpg';
 ---
 
-<Layout
+<!-- <Layout
   title="About Me"
   description="A brief introduction to Nathan Pickard - who he is, what he builds,
 	and the experience that shapes his work"
   pubDate={new Date('March 08 2026')}
   heroImage={AboutHeroImage}
->
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua. Vitae ultricies leo
-    integer malesuada nunc vel risus commodo viverra. Adipiscing enim eu turpis
-    egestas pretium. Euismod elementum nisi quis eleifend quam adipiscing. In
-    hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat.
-    Netus et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu
-    non diam phasellus vestibulum lorem. Varius sit amet mattis vulputate enim.
-    Habitasse platea dictumst quisque sagittis. Integer quis auctor elit sed
-    vulputate mi. Dictumst quisque sagittis purus sit amet.
-  </p>
-</Layout>
+/> -->
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <style>
+      main {
+        width: calc(100% - 2em);
+        max-width: 100%;
+        margin: 0;
+      }
+      p {
+        margin-bottom: 1em;
+      }
+      .hero-image {
+        width: 100%;
+      }
+      .hero-image img {
+        display: block;
+        margin: 0 auto;
+        border-radius: 12px;
+        box-shadow: var(--box-shadow);
+      }
+      .prose {
+        width: 720px;
+        max-width: calc(100% - 2em);
+        margin: auto;
+        padding: 1em;
+        color: rgb(var(--gray-dark));
+      }
+      .title {
+        margin-bottom: 1em;
+        padding: 1em 0;
+        text-align: center;
+        line-height: 1;
+      }
+      .title h1 {
+        margin: 0 0 0.5em 0;
+      }
+
+      ul {
+        list-style-type: square;
+        margin: 0;
+        padding-left: 1em;
+        margin-bottom: 1em;
+      }
+
+      table td,
+      table th {
+        border-bottom: 1px solid rgb(var(--gray-light));
+        padding: 1rem 0;
+      }
+
+      table th:first-child,
+      table td:first-child {
+        min-width: 170px;
+        white-space: nowrap;
+        font-weight: bold;
+      }
+
+      table tr:last-child td,
+      table tr:last-child th {
+        border-bottom: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <Header />
+    <main>
+      <article>
+        <div class="hero-image">
+          {
+            ProfileImage && (
+              <Image
+                width={350}
+                src={ProfileImage}
+                densities={[1, 2, 3]}
+                alt="Nathan Pickard profile"
+              />
+            )
+          }
+        </div>
+        <div class="prose">
+          <div class="title">
+            <h1>About Me</h1>
+            <hr />
+          </div>
+          <slot />
+          <p>Hi there!</p>
+          <p>I'm Nathan Pickard, a software engineer based in Portland, OR!</p>
+          <p>
+            With 6+ years of experience, I focus on building feature-rich
+            cutting-edge web and software solutions that bridge the gap between
+            complex architecture and seamless user experiences.
+          </p>
+          <h3>Career Highlights</h3>
+          <ul>
+            <li>
+              <p>
+                <strong>Fintech Innovation:</strong> As a Senior Software Engineer,
+                I architeched solutions for Best Egg that led to a 23% month-over-month
+                increase in customer conversion rates.
+              </p>
+            </li>
+            <li>
+              <p>
+                <strong>Industry Recognition:</strong> My work contributed to products
+                that earned top rankings in J.D. Power's 2025 US Consumer Lending
+                Satisfaction study for "Experience Obtaining Loan" and "Meeting Borrowing
+                Needs".
+              </p>
+            </li>
+            <li>
+              <p>
+                <strong>Driving Growth for Portland, OR startups:</strong> I've delivered
+                impactful results for local Portland-based startups, including modernizing
+                the Lazarus Naturals e-commerce platform and spearhearding their first
+                native app to drive 24% increase in sales, while also implementing
+                cloud-native features for Mental Health Match that boosted therapist
+                and customer conversion rates by 35%.
+              </p>
+            </li>
+          </ul>
+
+          <h3>My Technical Toolkit</h3>
+          <p>
+            I specialize in the JavaScript and TypeScript ecosystem. I enjoy
+            working across the full stack to build responsive, accessible, and
+            high-performance applicaitons
+          </p>
+          <table>
+            <thead>
+              <tr>
+                <th><h5>Category</h5></th>
+                <th><h5>Technologies</h5></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Languages</td>
+                <td>JavaScript, TypeScript, Python</td>
+              </tr>
+              <tr>
+                <td>Frontend</td>
+                <td
+                  >Angular, React, Vue, NgRx, HTML5/CSS/SCSS, Angular Material,
+                  Bootstrap</td
+                >
+              </tr>
+              <tr>
+                <td>Backend</td>
+                <td>Node.js, Django, MongoDB, MySQL, Firebase</td>
+              </tr>
+              <tr>
+                <td>Clouds & Tools</td>
+                <td
+                  >AWS (Lambda, API Gateway, S3) Git, Docker, Datadog,
+                  FullStory, Nginx, Github Copilot Pro</td
+                >
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </main>
+    <Footer />
+  </body>
+</html>
