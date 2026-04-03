@@ -6,6 +6,7 @@ import Footer from '../components/Footer.astro';
 import Layout from '../layouts/BlogPost.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
 import ProfileImage from '../assets/nathan-pickard-profile.jpg';
 ---
 
@@ -38,15 +39,15 @@ import ProfileImage from '../assets/nathan-pickard-profile.jpg';
         box-shadow: var(--box-shadow);
       }
       .prose {
-        width: 720px;
+        width: 800px;
         max-width: calc(100% - 2em);
         margin: auto;
         padding: 1em;
         color: rgb(var(--gray-dark));
       }
       .title {
-        margin-bottom: 1em;
-        padding: 1em 0;
+        /* margin-bottom: 1em;
+        padding: 1em 0; */
         text-align: center;
         line-height: 1;
       }
@@ -61,22 +62,38 @@ import ProfileImage from '../assets/nathan-pickard-profile.jpg';
         margin-bottom: 1em;
       }
 
-      table td,
-      table th {
-        border-bottom: 1px solid rgb(var(--gray-light));
-        padding: 1rem 0;
+      .about-section {
+        padding: 2rem 0;
       }
 
-      table th:first-child,
-      table td:first-child {
-        min-width: 170px;
-        white-space: nowrap;
-        font-weight: bold;
+      .about-section > p:last-child,
+      .about-section ul li:last-child p:last-child {
+        margin-bottom: 0;
       }
 
-      table tr:last-child td,
-      table tr:last-child th {
-        border-bottom: none;
+      .about-section ul {
+        margin-bottom: 0;
+      }
+
+      .icon-grid {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 2rem;
+        align-items: flex-start;
+      }
+
+      .icon-grid-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.35rem;
+      }
+
+      .icon-grid-item span {
+        font-size: 1rem;
+        text-align: center;
+        line-height: 1.2;
       }
     </style>
   </head>
@@ -89,7 +106,7 @@ import ProfileImage from '../assets/nathan-pickard-profile.jpg';
           {
             ProfileImage && (
               <Image
-                width={350}
+                width={300}
                 src={ProfileImage}
                 densities={[1, 2, 3]}
                 alt="Nathan Pickard profile"
@@ -102,84 +119,172 @@ import ProfileImage from '../assets/nathan-pickard-profile.jpg';
             <h1>About Me</h1>
             <hr />
           </div>
-          <slot />
-          <p>Hi there!</p>
-          <p>I'm Nathan Pickard, a software engineer based in Portland, OR!</p>
-          <p>
-            With 6+ years of experience, I focus on building feature-rich
-            cutting-edge web and software solutions that bridge the gap between
-            complex architecture and seamless user experiences.
-          </p>
-          <h3>Career Highlights</h3>
-          <ul>
-            <li>
-              <p>
-                <strong>Fintech Innovation:</strong> As a Senior Software Engineer,
-                I architeched solutions for Best Egg that led to a 23% month-over-month
-                increase in customer conversion rates.
-              </p>
-            </li>
-            <li>
-              <p>
-                <strong>Industry Recognition:</strong> My work contributed to products
-                that earned top rankings in J.D. Power's 2025 US Consumer Lending
-                Satisfaction study for "Experience Obtaining Loan" and "Meeting Borrowing
-                Needs".
-              </p>
-            </li>
-            <li>
-              <p>
-                <strong>Driving Growth for Portland, OR startups:</strong> I've delivered
-                impactful results for local Portland-based startups, including modernizing
-                the Lazarus Naturals e-commerce platform and spearhearding their first
-                native app to drive 24% increase in sales, while also implementing
-                cloud-native features for Mental Health Match that boosted therapist
-                and customer conversion rates by 35%.
-              </p>
-            </li>
-          </ul>
+          <div class="about-section">
+            <p>Hi there!</p>
+            <p>
+              I'm Nathan Pickard, a software engineer based in Portland, OR!
+            </p>
+            <p>
+              With 6+ years of experience, I focus on building feature-rich,
+              cutting-edge web and software solutions that bridge the gap
+              between complex architecture and seamless user experiences.
+            </p>
+          </div>
+          <hr />
+          <div class="about-section">
+            <h3>Career Highlights</h3>
+            <ul>
+              <li>
+                <p>
+                  <strong>Fintech at scale:</strong> I spent several years deep in
+                  the fintech world, building the kinds of interfaces that real people
+                  use to manage their finances. The work was technically sophistcated,
+                  where I used Angular, React, and Vue across a 2M+ user platform.
+                  My impact resulted in: 23% higher conversion rates, 18% better retention,
+                  and a company milestone of $200M in originations.
+                </p>
+              </li>
+              <li>
+                <p>
+                  <strong>Shipping features that moved the needle:</strong> One of
+                  the most satisfying parts of my time with Kellton was owning offer
+                  and refinancing flows end-to-end, building the kind of features
+                  that sit right at the heart of a lending product. Getting those
+                  right, across a multi-framework codebase at production scale, required
+                  both technical precision and a clear understanding of what customers
+                  actually needed.
+                </p>
+              </li>
+              <li>
+                <p>
+                  <strong>Recognized for quality, not just output:</strong> The products
+                  I helped ship earned top marks in J.D. Power's 2025 and 2024 US
+                  Consumer Lending Satisfaction study. That kind of recognition matters
+                  to me and makes my engineering work that much more meaningful. It
+                  means the work held up not just technically, but in the hands of
+                  actual customers.
+                </p>
+              </li>
+              <li>
+                <p>
+                  <strong>Built for the Portland startup scene:</strong> Before fintech,
+                  I cut my teeth on scrappier teams. At Lazarus Naturals I helped
+                  modernize their e-commerce experience and launched their first native
+                  app, which moved sales up 24%. At Mental Health Match, I worked
+                  closely with the founding team to rebuild a platform serving people
+                  in real need by improving load times by 28% and helping grow therapist
+                  onboarding by 31% in the first three months after relaunch.
+                </p>
+              </li>
+            </ul>
+          </div>
 
-          <h3>My Technical Toolkit</h3>
-          <p>
-            I specialize in the JavaScript and TypeScript ecosystem. I enjoy
-            working across the full stack to build responsive, accessible, and
-            high-performance applicaitons
-          </p>
-          <table>
-            <thead>
-              <tr>
-                <th><h5>Category</h5></th>
-                <th><h5>Technologies</h5></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Languages</td>
-                <td>JavaScript, TypeScript, Python</td>
-              </tr>
-              <tr>
-                <td>Frontend</td>
-                <td
-                  >Angular, React, Vue, NgRx, HTML5/CSS/SCSS, Angular Material,
-                  Bootstrap</td
-                >
-              </tr>
-              <tr>
-                <td>Backend</td>
-                <td>Node.js, Django, MongoDB, MySQL, Firebase</td>
-              </tr>
-              <tr>
-                <td>Clouds & Tools</td>
-                <td
-                  >AWS (Lambda, API Gateway, S3) Git, Docker, Datadog,
-                  FullStory, Nginx, Github Copilot Pro</td
-                >
-              </tr>
-            </tbody>
-          </table>
+          <hr />
+          <div class="about-section">
+            <h3>My Technical Toolkit</h3>
+            <p>
+              I specialize in the JavaScript and TypeScript ecosystem. I enjoy
+              working across the full stack to build responsive, accessible, and
+              high-performance applications.
+            </p>
+
+            <div class="icon-grid">
+              <div class="icon-grid-item">
+                <Icon name="devicon:javascript" size={36} />
+                <span>JavaScript</span>
+              </div>
+              <div class="icon-grid-item">
+                <Icon name="devicon:typescript" size={36} />
+                <span>TypeScript</span>
+              </div>
+              <div class="icon-grid-item">
+                <Icon name="devicon:python" size={36} />
+                <span>Python</span>
+              </div>
+              <div class="icon-grid-item">
+                <Icon name="devicon:angular" size={36} />
+                <span>Angular</span>
+              </div>
+              <div class="icon-grid-item">
+                <Icon name="devicon:react" size={36} />
+                <span>React</span>
+              </div>
+              <div class="icon-grid-item">
+                <Icon name="devicon:vuejs" size={36} />
+                <span>Vue</span>
+              </div>
+              <div class="icon-grid-item">
+                <Icon name="devicon:ngrx" size={36} />
+                <span>NgRx</span>
+              </div>
+              <div class="icon-grid-item">
+                <Icon name="devicon:redux" size={36} />
+                <span>Redux</span>
+              </div>
+              <div class="icon-grid-item">
+                <Icon name="devicon:tailwindcss" size={36} />
+                <span>Tailwind</span>
+              </div>
+              <div class="icon-grid-item">
+                <Icon name="devicon:angularmaterial" size={36} />
+                <span>Angular Material</span>
+              </div>
+              <div class="icon-grid-item">
+                <Icon name="devicon:bootstrap" size={36} />
+                <span>Bootstrap</span>
+              </div>
+              <div class="icon-grid-item">
+                <Icon name="devicon:nodejs" size={36} />
+                <span>Node.js</span>
+              </div>
+              <div class="icon-grid-item">
+                <Icon name="devicon:mongodb" size={36} />
+                <span>MongoDB</span>
+              </div>
+              <div class="icon-grid-item">
+                <Icon name="devicon:mysql" size={36} />
+                <span>MySQL</span>
+              </div>
+              <div class="icon-grid-item">
+                <Icon name="devicon:amazonwebservices" size={36} />
+                <span>AWS</span>
+              </div>
+              <div class="icon-grid-item">
+                <Icon name="devicon:docker" size={36} />
+                <span>Docker</span>
+              </div>
+              <div class="icon-grid-item">
+                <Icon name="devicon:firebase" size={36} />
+                <span>Firebase</span>
+              </div>
+              <div class="icon-grid-item">
+                <Icon name="devicon:datadog" size={36} />
+                <span>Datadog</span>
+              </div>
+              <div class="icon-grid-item">
+                <Icon name="devicon:nginx" size={36} />
+                <span>Nginx</span>
+              </div>
+              <div class="icon-grid-item">
+                <Icon name="devicon:githubcopilot" size={36} />
+                <span>GitHub Copilot</span>
+              </div>
+            </div>
+          </div>
+
+          <hr />
+
+          <div class="about-section">
+            <h3>Community</h3>
+            <p>
+              I'm an active participant in Portland-area tech conferences,
+              software engineering meetups, and hackathons focused on AI and
+              modern web technologies.
+            </p>
+          </div>
         </div>
       </article>
+      <Footer />
     </main>
-    <Footer />
   </body>
 </html>
