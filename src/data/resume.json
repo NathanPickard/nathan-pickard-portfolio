@@ -1,0 +1,63 @@
+{
+  "basics": {
+    "name": "Nathan Pickard",
+    "label": "Senior Full-Stack Engineer",
+    "email": "nathan.pickard87@gmail.com",
+    "location": "Portland, OR",
+    "website": "https://nathanpickard.github.io",
+    "summary": "Pragmatic software engineer with 6+ years of experience in building feature-rich and cutting-edge web and software solutions.  Architected best-in-class products at a leading fintech company that have earned recognition in J.D. Power's 2025 US Consumer Lending Satisfaction study. Proven track record of creating impactful growth and engineering innovative results for clients and small to large startups in emerging industries.",
+    "profiles": [
+      { "network": "GitHub", "username": "nathanpickard", "url": "https://github.com/nathanpickard" }
+    ]
+  },
+  "work": [
+    {
+      "company": "Kellton",
+      "position": "Senior Software Engineer",
+      "startDate": "2020",
+      "endDate": "2025",
+      "highlights": [
+        "Led the development and implementation of high-performance, front-end solutions for Best Egg, a best-in-class fintech company, resulting in a 23% month-over-month increase in customer conversion rates. Increased customer retention by 18% and engineered innovative user interfaces for 2M+ users",
+        "Architected solutions and transformed UIs using Angular/React/Vue/TypeScript to develop offer and refinancing features for customers which led to the client reaching $200M in originations for the first time in company history",
+        "Engineered inventive product offerings leading to the client ranking first in “Experience Obtaining Loan” and “Meeting Borrowing Needs” in J.D. Power's prestigious US Consumer Lending Satisfaction study"
+      ]
+    },
+    {
+      "company": "Lazarus Naturals",
+      "position": "Frontend Developer",
+      "startDate": "2020",
+      "endDate": "2020",
+      "highlights": [
+        "Engineered and modernized the Lazarus Naturals e-commerce site in a rapidly expanding startup in an increasingly popular wellness industry",
+        "Collaborated with cross-functional product and design teams to deliver innovative marketing landing pages and spearheaded the development of a company-first, native app which drove an increase in sales by 24%",
+        "Successfully launched three new product categories to the e-commerce platform, driving an increase in site traffic and customer engagement by 32% month over month"
+      ]
+    },
+    {
+      "company": "Mental Health Match",
+      "position": "Angular Developer",
+      "startDate": "2019",
+      "endDate": "2019",
+      "highlights": [
+        "Worked alongside the CTO and CEO to implement new and refreshed application features and prototype current AWS technologies to increase therapist and customer conversion rates by 35% and improved user experience for an emerging mental health sector",
+        "Enhanced the customized therapist platform to increase therapist onboarding by 31% for the first 3 months after product re-launch",
+        "Optimized front-end performance by implementing lazy loading and state management patterns, reducing initial page load time by 28% and enhancing responsiveness for users seeking urgent mental health resources"
+      ]
+    },
+    {
+      "company": "Freelance Web Developer",
+      "position": "Web Developer",
+      "startDate": "2017",
+      "endDate": "2019",
+      "highlights": [
+        "Core technologies include JavaScript/Typescript, Angular, Node.js, HTML/CSS/SCSS, AWS technologies (Lambda, API Gateway, S3), Git, Firebase and various databases and backend services"
+      ]
+    }
+  ],
+  "skills": [
+    { "name": "Languages", "keywords": ["TypeScript", "JavaScript", "Python", "HTML5", "CSS", "SCSS"] },
+    { "name": "Frameworks", "keywords": ["React", "Angular", "Vue", "Node.js", "Django", "NgRx", "Redux", "Astro"] },
+    { "name": "Tools/Infrastructure", "keywords": ["AWS (Lambda, S3, API Gateway)", "MongoDB", "MySQL", "Docker", "Datadog", "FullStory"] },
+    { "name": "Specializations", "keywords": ["Software architecture", "Fintech", "Accessibility/WCAG", "AI implementation", "UI/UX optimization"] }
+  ]
+}

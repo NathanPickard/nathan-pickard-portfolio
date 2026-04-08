@@ -1,0 +1,90 @@
+---
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import BaseHead from '../components/BaseHead.astro';
+import resume from '../data/resume.json';
+import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
+---
+
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <style>
+      .prose {
+        width: 800px;
+        max-width: calc(100% - 2em);
+        margin: auto;
+        padding: 1em;
+        color: rgb(var(--gray-dark));
+      }
+
+      .title {
+        text-align: center;
+        line-height: 1;
+      }
+      .resume-section {
+        padding: 2rem 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <Header />
+    <main class="max-w-3xl mx-auto px-4 py-12">
+      <div class="title">
+        <h1>Resume</h1>
+        <hr />
+        <div class="resume-section">
+        </div>
+      </div>
+
+      <div class="flex justify-between items-start">
+        <div>
+          <h1 class="text-3xl font-bold">{resume.basics.name}</h1>
+          <p class="text-gray-500">{resume.basics.label}</p>
+          <p class="text-gray-500">{resume.basics.email}</p>
+          <p class="text-gray-500">{resume.basics.location}</p>
+          <p class="text-gray-500">{resume.basics.summary}</p>
+        </div>
+        <a
+          href="/resume.pdf"
+          class="px-4 py-2 bg-black text-white rounded text-sm"
+        >
+          Download PDF
+        </a>
+      </div>
+      <section class="mt-8">
+        <h2 class="text-xl font-semibold border-b pb-1 mb-4">Experience</h2>
+        {
+          resume.work.map((job) => (
+            <div class="mb-6">
+              <div class="flex justify-between">
+                <strong>{job.position}</strong>
+                <span class="text-gray-500 text-sm">
+                  {job.startDate} – {job.endDate}
+                </span>
+              </div>
+              <div class="text-gray-600">{job.company}</div>
+              <ul class="mt-2 list-disc list-inside text-sm space-y-1">
+                {job.highlights.map((h) => (
+                  <li>{h}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </section>
+      <section class="mt-8">
+        <h2 class="text-xl font-semibold border-b pb-1 mb-4">Skills</h2>
+        {
+          resume.skills.map((skill) => (
+            <div class="mb-2">
+              <strong>{skill.name}:</strong> {skill.keywords.join(', ')}
+            </div>
+          ))
+        }
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>
