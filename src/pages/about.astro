@@ -31,6 +31,7 @@ import ProfileImage from '../assets/nathan-pickard-profile.jpg';
       }
       .hero-image {
         width: 100%;
+        min-height: 300px;
       }
       .hero-image img {
         display: block;
@@ -108,6 +109,8 @@ import ProfileImage from '../assets/nathan-pickard-profile.jpg';
                 src={ProfileImage}
                 densities={[1, 2, 3]}
                 alt="Nathan Pickard profile"
+                loading="eager"
+                fetchpriority="high"
               />
             )
           }

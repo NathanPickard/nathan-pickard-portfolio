@@ -8,19 +8,17 @@ import icon from 'astro-icon';
 
 import tailwindcss from '@tailwindcss/vite';
 
+import react from '@astrojs/react';
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://example.com',
 
-  integrations: [
-      mdx(),
-      sitemap(),
-      icon({
-          include: {
-              local: ['src/icons'],
-          },
-      }),
-  ],
+  integrations: [mdx(), sitemap(), icon({
+      include: {
+          local: ['src/icons'],
+      },
+  }), react()],
 
   vite: {
     plugins: [tailwindcss()],

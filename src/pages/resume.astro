@@ -4,6 +4,7 @@ import Footer from '@/components/Footer.astro';
 import BaseHead from '../components/BaseHead.astro';
 import resume from '../data/resume.json';
 import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
+import { Icon } from 'astro-icon/components';
 ---
 
 <html lang="en">
@@ -25,6 +26,14 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
       .resume-section {
         padding: 2rem 0;
       }
+      .download-btn {
+        background-color: var(--accent);
+        color: white;
+      }
+      .download-btn:hover {
+        background-color: var(--accent-dark);
+        color: white;
+      }
     </style>
   </head>
 
@@ -35,6 +44,13 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
         <h1>Resume</h1>
         <hr />
         <div class="resume-section">
+          <a
+            href="/resume.pdf"
+            class="download-btn inline-flex items-center gap-1.5 px-4 py-2 rounded text-sm no-underline whitespace-nowrap shrink-0"
+          >
+            <Icon name="mdi:download" size={16} />
+            Download PDF
+          </a>
         </div>
       </div>
 
@@ -46,12 +62,6 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
           <p class="text-gray-500">{resume.basics.location}</p>
           <p class="text-gray-500">{resume.basics.summary}</p>
         </div>
-        <a
-          href="/resume.pdf"
-          class="px-4 py-2 bg-black text-white rounded text-sm"
-        >
-          Download PDF
-        </a>
       </div>
       <section class="mt-8">
         <h2 class="text-xl font-semibold border-b pb-1 mb-4">Experience</h2>
