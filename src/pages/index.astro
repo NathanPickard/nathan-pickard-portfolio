@@ -6,6 +6,7 @@ import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import ProfileImage from '../assets/nathan-pickard-profile.jpg';
 import BlueskyFeed from '@/components/BlueskyFeed.astro';
+import GitHubFeed from '@/components/GitHubFeed.astro';
 ---
 
 <!doctype html>
@@ -30,7 +31,10 @@ import BlueskyFeed from '@/components/BlueskyFeed.astro';
         <h5>A software engineer based in Portland, OR</h5>
       </div>
 
-      <BlueskyFeed />
+      <div class="feeds">
+        <BlueskyFeed />
+        <GitHubFeed />
+      </div>
     </main>
     <Footer />
   </body>
@@ -47,7 +51,20 @@ import BlueskyFeed from '@/components/BlueskyFeed.astro';
     min-height: 200px;
   }
   main {
-    width: 820px;
+    width: 875px;
     max-width: calc(100% - 2em);
+  }
+
+  .feeds {
+    display: flex;
+    gap: 2rem;
+    margin-top: 3rem;
+    align-items: flex-start;
+  }
+
+  @media (max-width: 720px) {
+    .feeds {
+      flex-direction: column;
+    }
   }
 </style>

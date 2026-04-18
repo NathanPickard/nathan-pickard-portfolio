@@ -1,0 +1,250 @@
+---
+import { GITHUB_TOKEN } from 'astro:env/server';
+import { Icon } from 'astro-icon/components';
+
+const GITHUB_USER = 'nathanpickard';
+const REPO_COUNT = 5;
+
+const query = `
+  query {
+    user(login: "${GITHUB_USER}") {
+      repositories(
+        first: ${REPO_COUNT}
+        orderBy: { field: PUSHED_AT, direction: DESC }
+        ownerAffiliations: [OWNER]
+        privacy: PUBLIC
+        isFork: false
+      ) {
+        nodes {
+          name
+          description
+          url
+          stargazerCount
+          primaryLanguage {
+            name
+            color
+          }
+          pushedAt
+          isArchived
+        }
+        }
+      }
+    }
+`;
+
+interface Repo {
+  name: string;
+  description: string | null;
+  url: string;
+  stargazerCount: number;
+  primaryLanguage: { name: string; color: string } | null;
+  pushedAt: string;
+  isArchived: boolean;
+}
+
+let repos: Repo[] = [];
+let fetchError = false;
+
+try {
+  const res = await fetch('https://api.github.com/graphql', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${GITHUB_TOKEN}`,
+    },
+    body: JSON.stringify({ query }),
+  });
+
+  if (res.ok) {
+    const json = await res.json();
+    repos = (json.data.user.repositories.nodes as Repo[]).filter(
+      (r) => !r.isArchived,
+    );
+  } else {
+    fetchError = true;
+  }
+} catch {
+  fetchError = true;
+}
+
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+---
+
+<section class="github-feed">
+  <h5 class="feed-heading">
+    <Icon name="devicon:github" size={24} aria-hidden="true" />
+    Recent GitHub Activity
+  </h5>
+
+  {
+    fetchError && (
+      <p class="feed-error">Could not load repositories right now.</p>
+    )
+  }
+  {
+    !fetchError && repos.length === 0 && (
+      <p class="feed-error">No repositores found.</p>
+    )
+  }
+
+  <ul class="repo-grid">
+    {
+      repos.map((repo) => (
+        <li class="repo-card">
+          <a
+            href={repo.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="repo-link"
+          >
+            <p class="repo-name">{repo.name}</p>
+            {repo.description && (
+              <p class="repo-description">{repo.description}</p>
+            )}
+            <div class="repo-meta">
+              {repo.primaryLanguage && (
+                <span class="repo-lang">
+                  <span
+                    class="lang-dot"
+                    style={`background-color: ${repo.primaryLanguage.color}`}
+                    aria-hidden="true"
+                  />
+                  {repo.primaryLanguage.name}
+                </span>
+              )}
+              <span class="repo-stats">
+                {repo.stargazerCount > 0 && (
+                  <span title="Stars">* {repo.stargazerCount}</span>
+                )}
+                <time datetime={repo.pushedAt}>
+                  {formatDate(repo.pushedAt)}
+                </time>
+              </span>
+            </div>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <a
+    class="view-all"
+    href={`https://github.com/${GITHUB_USER}`}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    View all on GitHub →</a
+  >
+</section>
+
+<style>
+  .github-feed {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .feed-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .feed-error {
+    color: rgb(var(--gray));
+    font-size: 0.9em;
+  }
+
+  .repo-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .repo-card {
+    border: 1px solid rgb(var(--gray-light));
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(var(--gray), 15%);
+    transition:
+      box-shadow 0.15s ease,
+      transform 0.1s ease;
+  }
+
+  .repo-card:hover {
+    box-shadow: var(--box-shadow);
+    transform: translateY(-1px);
+  }
+
+  .repo-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1rem 1.25rem;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  .repo-name {
+    margin: 0;
+    font-size: 0.95em;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .repo-description {
+    margin: 0;
+    font-size: 0.85em;
+    color: rgb(var(--gray-dark));
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1;
+  }
+
+  .repo-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.8em;
+    color: rgb(var(--gray));
+    margin-top: auto;
+    padding-top: 0.5rem;
+  }
+
+  .repo-lang {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .lang-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .repo-stats {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .view-all {
+    display: inline-block;
+    margin-top: 1.25rem;
+    font-size: 0.9em;
+  }
+</style>

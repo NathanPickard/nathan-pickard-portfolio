@@ -2,7 +2,7 @@
 
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 
 import icon from 'astro-icon';
 
@@ -12,13 +12,23 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
+  env: {
+    schema: {
+      GITHUB_TOKEN: envField.string({ context: 'server', access: 'secret' }),
+    },
+  },
   site: 'https://example.com',
 
-  integrations: [mdx(), sitemap(), icon({
+  integrations: [
+    mdx(),
+    sitemap(),
+    icon({
       include: {
-          local: ['src/icons'],
+        local: ['src/icons'],
       },
-  }), react()],
+    }),
+    react(),
+  ],
 
   vite: {
     plugins: [tailwindcss()],
