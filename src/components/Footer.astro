@@ -3,13 +3,82 @@ const today = new Date();
 ---
 
 <footer>
-  &copy; {today.getFullYear()} Nathan Pickard
+  <div class="footer-inner">
+    <div class="footer-left">
+      <span class="footer-name">Nathan Pickard</span>
+      <span class="footer-tagline">Building thoughtful web experiences.</span>
+      <span class="footer-copy">&copy; {today.getFullYear()} &middot; Portland, OR</span>
+    </div>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="/">Home</a>
+      <a href="/blog">Blog</a>
+      <a href="/about">About</a>
+      <a href="/resume">Resume</a>
+    </nav>
+  </div>
 </footer>
+
 <style>
   footer {
-    padding: 2em 1em 6em 1em;
-    background: linear-gradient(var(--gray-gradient)) no-repeat;
-    color: rgb(var(--gray));
-    text-align: center;
+    background: #1c2a22;
+    padding: 3rem 1.5rem;
+    margin-top: 4rem;
+  }
+  .footer-inner {
+    max-width: 875px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+  .footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .footer-name {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #e8f5ec;
+  }
+  .footer-tagline {
+    font-family: 'Lora', Georgia, serif;
+    font-style: italic;
+    font-size: 0.875rem;
+    color: #86a892;
+  }
+  .footer-copy {
+    font-size: 0.75rem;
+    color: #4a6655;
+    margin-top: 0.25rem;
+  }
+  .footer-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.4rem;
+  }
+  .footer-nav a {
+    font-size: 0.875rem;
+    color: #86a892;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-nav a:hover {
+    color: #e8f5ec;
+  }
+  @media (max-width: 720px) {
+    .footer-inner {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .footer-nav {
+      align-items: flex-start;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.25rem;
+    }
   }
 </style>

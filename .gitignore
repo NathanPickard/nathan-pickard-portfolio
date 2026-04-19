@@ -23,4 +23,10 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
+# git worktrees
+.worktrees/
+
+# Visual brainstorming session files
+.superpowers/
+
 CLAUDE.md
