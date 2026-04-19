@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import SectionHeader from '../components/SectionHeader.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import ProfileImage from '../assets/nathan-pickard-profile.jpg';
 import BlueskyFeed from '@/components/BlueskyFeed.astro';
@@ -17,23 +18,35 @@ import GitHubFeed from '@/components/GitHubFeed.astro';
   <body>
     <Header />
     <main>
-      <h3 class="greeting">Hello, I'm Nathan Pickard!</h3>
-      <div class="intro">
-        <Image
-          src={ProfileImage}
-          alt="Nathan Pickard profile"
-          class="profile"
-          width={200}
-          loading="eager"
-          fetchpriority="high"
-          densities={[1, 2, 3]}
-        />
-        <h5>A software engineer based in Portland, OR</h5>
+      <div class="hero">
+        <div class="hero-text">
+          <p class="eyebrow">Software Engineer &middot; Portland, OR</p>
+          <h1 class="hero-name">Nathan Pickard</h1>
+          <p class="hero-tagline">Building thoughtful web experiences at the intersection of craft and scale.</p>
+          <div class="hero-ctas">
+            <a href="/resume" class="btn-primary">View Resume</a>
+            <a href="/blog" class="btn-secondary">Read Blog</a>
+          </div>
+        </div>
+        <div class="hero-photo-wrap">
+          <Image
+            src={ProfileImage}
+            alt="Nathan Pickard profile"
+            class="profile"
+            width={200}
+            loading="eager"
+            fetchpriority="high"
+            densities={[1, 2, 3]}
+          />
+        </div>
       </div>
 
-      <div class="feeds">
-        <BlueskyFeed />
-        <GitHubFeed />
+      <div class="feeds-section">
+        <SectionHeader title="Recent Activity" />
+        <div class="feeds">
+          <BlueskyFeed />
+          <GitHubFeed />
+        </div>
       </div>
     </main>
     <Footer />
@@ -41,41 +54,138 @@ import GitHubFeed from '@/components/GitHubFeed.astro';
 </html>
 
 <style>
-  .greeting {
-    margin-bottom: 3rem;
-  }
-  .intro {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 200px;
-  }
-  .profile {
-    margin-right: 2rem;
-  }
   main {
     width: 875px;
     max-width: calc(100% - 2em);
   }
 
+  /* ── Hero ── */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: center;
+    padding: 3rem 0 2.5rem;
+    border-bottom: 1px solid #dde8d8;
+    margin-bottom: 3rem;
+  }
+
+  .eyebrow {
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #2a7d4f;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-name {
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-tagline {
+    font-family: 'Lora', Georgia, serif;
+    font-style: italic;
+    color: rgb(var(--gray));
+    margin-bottom: 1.5rem;
+    max-width: 520px;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    display: inline-block;
+    padding: 0.55rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+
+  .btn-primary {
+    background: #2a7d4f;
+    color: #fff;
+    border: 2px solid #2a7d4f;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: #2a7d4f;
+    border: 2px solid #2a7d4f;
+  }
+
+  .btn-primary:hover,
+  .btn-secondary:hover {
+    opacity: 0.85;
+    color: inherit;
+  }
+
+  /* Photo */
+  .hero-photo-wrap {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .hero-photo-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 8px -8px -8px 8px;
+    border: 2px solid #2a7d4f;
+    border-radius: 10px;
+    opacity: 0.3;
+    z-index: 0;
+  }
+
+  .profile {
+    border: 3px solid #fff;
+    border-radius: 8px;
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Feeds ── */
+  .feeds-section {
+    margin-top: 0;
+  }
+
   .feeds {
     display: flex;
     gap: 2rem;
-    margin-top: 3rem;
     align-items: flex-start;
   }
 
   @media (max-width: 720px) {
-    .greeting {
-      font-size: 24px;
-    }
-    .intro {
-      flex-direction: column;
-      align-items: center;
-      min-height: unset;
-      gap: 1rem;
+    .hero {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto;
       text-align: center;
+      padding: 2rem 0 2rem;
     }
+
+    .hero-photo-wrap {
+      order: -1;
+      margin: 0 auto;
+    }
+
+    .hero-photo-wrap::after {
+      display: none;
+    }
+
+    .hero-ctas {
+      justify-content: center;
+    }
+
+    .hero-tagline {
+      max-width: 100%;
+    }
+
     .feeds {
       flex-direction: column;
     }
