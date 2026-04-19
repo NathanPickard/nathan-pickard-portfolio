@@ -2,6 +2,8 @@
 
 This repository powers my personal portfolio website, built using [Astro](https://astro.build).
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/04e5e1d9-22fb-4159-bd2e-9a195e300b2f/deploy-status)](https://app.netlify.com/projects/nathanpickard/deploys)
+
 ## 🧩 What's in this project
 
 - **Framework:** Astro with TypeScript
