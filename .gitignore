@@ -26,4 +26,7 @@ pnpm-debug.log*
 # git worktrees
 .worktrees/
 
+# Visual brainstorming session files
+.superpowers/
+
 CLAUDE.md
