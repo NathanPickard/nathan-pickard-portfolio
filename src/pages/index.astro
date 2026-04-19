@@ -19,15 +19,6 @@ import GitHubFeed from '@/components/GitHubFeed.astro';
     <Header />
     <main>
       <div class="hero">
-        <div class="hero-text">
-          <p class="eyebrow">Software Engineer &middot; Portland, OR</p>
-          <h1 class="hero-name">Nathan Pickard</h1>
-          <p class="hero-tagline">Building thoughtful web experiences at the intersection of craft and scale.</p>
-          <div class="hero-ctas">
-            <a href="/resume" class="btn-primary">View Resume</a>
-            <a href="/blog" class="btn-secondary">Read Blog</a>
-          </div>
-        </div>
         <div class="hero-photo-wrap">
           <Image
             src={ProfileImage}
@@ -38,6 +29,15 @@ import GitHubFeed from '@/components/GitHubFeed.astro';
             fetchpriority="high"
             densities={[1, 2, 3]}
           />
+        </div>
+        <div class="hero-text">
+          <p class="eyebrow">Software Engineer &middot; Portland, OR</p>
+          <h1 class="hero-name">Nathan Pickard</h1>
+          <p class="hero-tagline">Building thoughtful web experiences at the intersection of craft and scale.</p>
+          <div class="hero-ctas">
+            <a href="/resume" class="btn-primary">View Resume</a>
+            <a href="/blog" class="btn-secondary">Read Blog</a>
+          </div>
         </div>
       </div>
 
@@ -62,7 +62,7 @@ import GitHubFeed from '@/components/GitHubFeed.astro';
   /* ── Hero ── */
   .hero {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: auto 1fr;
     gap: 2rem;
     align-items: center;
     padding: 3rem 0 2.5rem;
