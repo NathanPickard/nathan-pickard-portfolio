@@ -50,6 +50,9 @@ import GitHubFeed from '@/components/GitHubFeed.astro';
     justify-content: space-between;
     min-height: 200px;
   }
+  .profile {
+    margin-right: 2rem;
+  }
   main {
     width: 875px;
     max-width: calc(100% - 2em);
@@ -63,6 +66,16 @@ import GitHubFeed from '@/components/GitHubFeed.astro';
   }
 
   @media (max-width: 720px) {
+    .greeting {
+      font-size: 24px;
+    }
+    .intro {
+      flex-direction: column;
+      align-items: center;
+      min-height: unset;
+      gap: 1rem;
+      text-align: center;
+    }
     .feeds {
       flex-direction: column;
     }

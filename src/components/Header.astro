@@ -7,38 +7,56 @@ import { Icon } from 'astro-icon/components';
 <header>
   <nav>
     <h2><a href="/">{SITE_TITLE}</a></h2>
-    <div class="internal-links">
-      <HeaderLink href="/">Home</HeaderLink>
-      <HeaderLink href="/blog">Blog</HeaderLink>
-      <HeaderLink href="/about">About</HeaderLink>
-      <HeaderLink href="/resume">Resume</HeaderLink>
-    </div>
-    <div class="social-links">
-      <a href="https://www.linkedin.com/in/nathanpickard/" target="_blank">
-        <span class="sr-only">Connect with Nathan Pickard on LinkedIn</span>
-        <Icon name="devicon:linkedin" size={24} />
-      </a>
-      <a href="https://github.com/nathanpickard" target="_blank">
-        <span class="sr-only">Go to Nathan's GitHub</span>
-        <Icon name="devicon:github" size={24} />
-      </a>
-      <a href="https://x.com/NathanPickard" target="_blank">
-        <span class="sr-only">Follow Nathan Pickard on Bluesky</span>
-        <Icon name="bluesky" size={24} />
-      </a>
-      <a href="https://x.com/NathanPickard" target="_blank">
-        <span class="sr-only">Follow Nathan Pickard on X</span>
-        <Icon name="devicon:twitter" size={24} />
-      </a>
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+      <Icon name="mdi:menu" size={26} class="icon-open" aria-hidden="true" />
+      <Icon name="mdi:close" size={26} class="icon-close" aria-hidden="true" />
+    </button>
+    <div class="nav-menu">
+      <div class="internal-links">
+        <HeaderLink href="/">Home</HeaderLink>
+        <HeaderLink href="/blog">Blog</HeaderLink>
+        <HeaderLink href="/about">About</HeaderLink>
+        <HeaderLink href="/resume">Resume</HeaderLink>
+      </div>
+      <div class="social-links">
+        <a href="https://www.linkedin.com/in/nathanpickard/" target="_blank">
+          <span class="sr-only">Connect with Nathan Pickard on LinkedIn</span>
+          <Icon name="devicon:linkedin" size={24} />
+        </a>
+        <a href="https://github.com/nathanpickard" target="_blank">
+          <span class="sr-only">Go to Nathan's GitHub</span>
+          <Icon name="devicon:github" size={24} />
+        </a>
+        <a href="https://x.com/NathanPickard" target="_blank">
+          <span class="sr-only">Follow Nathan Pickard on Bluesky</span>
+          <Icon name="bluesky" size={24} />
+        </a>
+        <a href="https://x.com/NathanPickard" target="_blank">
+          <span class="sr-only">Follow Nathan Pickard on X</span>
+          <Icon name="devicon:twitter" size={24} />
+        </a>
+      </div>
     </div>
   </nav>
 </header>
+
+<script>
+  const btn = document.querySelector('.hamburger') as HTMLButtonElement;
+  const menu = document.querySelector('.nav-menu') as HTMLDivElement;
+
+  btn.addEventListener('click', () => {
+    const isOpen = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(isOpen));
+  });
+</script>
+
 <style>
   header {
     margin: 0;
     padding: 0 1em;
     background: white;
     box-shadow: 0 2px 8px rgba(var(--black), 5%);
+    position: relative;
   }
   :global(.social-links svg) {
     filter: grayscale(100%) opacity(60%);
@@ -51,7 +69,6 @@ import { Icon } from 'astro-icon/components';
     margin: 0;
     font-size: 1em;
   }
-
   h2 a,
   h2 a.active {
     text-decoration: none;
@@ -71,13 +88,92 @@ import { Icon } from 'astro-icon/components';
     text-decoration: none;
     border-bottom-color: var(--accent);
   }
+  .internal-links a:hover {
+    border-bottom-color: var(--accent);
+  }
+  .nav-menu {
+    display: contents;
+  }
   .social-links,
   .social-links a {
     display: flex;
   }
+  .hamburger {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5em;
+    color: rgb(var(--black));
+  }
+  .icon-close {
+    display: none;
+  }
+  .hamburger[aria-expanded='true'] .icon-open {
+    display: none;
+  }
+  .hamburger[aria-expanded='true'] .icon-close {
+    display: flex;
+  }
+
   @media (max-width: 720px) {
+    .hamburger {
+      display: flex;
+    }
+    .nav-menu {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      box-shadow: 0 4px 12px rgba(var(--black), 10%);
+      visibility: hidden;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s;
+      z-index: 100;
+    }
+    .nav-menu.open {
+      visibility: visible;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .internal-links {
+      display: flex;
+      flex-direction: column;
+      padding: 0.5rem 0;
+    }
+    .internal-links a {
+      padding: 0.85rem 1.5rem;
+      font-size: 1.05em;
+      border-bottom: 1px solid rgb(var(--gray-light));
+      border-left: 3px solid transparent;
+      transition: border-left-color 0.15s ease, background-color 0.15s ease;
+    }
+    .internal-links a:hover {
+      background-color: rgb(var(--gray-light), 40%);
+      border-left-color: var(--accent);
+      border-bottom-color: rgb(var(--gray-light));
+    }
+    .internal-links a:last-child {
+      border-bottom: none;
+    }
     .social-links {
-      display: none;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 0;
+      border-top: 1px solid rgb(var(--gray-light));
+    }
+    .social-links a {
+      padding: 0.4em 0.6em;
+      border-bottom: none;
     }
   }
 </style>
