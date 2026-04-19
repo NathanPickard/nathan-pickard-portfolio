@@ -23,4 +23,7 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
+# git worktrees
+.worktrees/
+
 CLAUDE.md
