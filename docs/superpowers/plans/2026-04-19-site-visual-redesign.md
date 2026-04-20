@@ -2,11 +2,11 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Apply a warm editorial visual redesign across the full site — new accent color, Lora serif headings, editorial homepage hero, improved About/Blog/Footer layouts.
+**Goal:** Apply a warm editorial visual redesign across the full site: new accent color, Lora serif headings, editorial homepage hero, improved About/Blog/Footer layouts.
 
 **Architecture:** CSS variable changes in `global.css` propagate the new green accent and warm background site-wide. Lora font is added once in `BaseHead.astro` and applied to `h1`/`h2`/`h3` globally. A new `SectionHeader` component provides the reusable title + ruled-line pattern used on three pages. All other changes are scoped to their individual page or component files.
 
-**Tech Stack:** Astro, TypeScript, Tailwind CSS v4 (via Vite plugin), `astro-icon`, Google Fonts (Lora). No test runner — verification is `npm run build` (must exit 0) plus visual inspection at `npm run dev`.
+**Tech Stack:** Astro, TypeScript, Tailwind CSS v4 (via Vite plugin), `astro-icon`, Google Fonts (Lora). No test runner. Verification is `npm run build` (must exit 0) plus visual inspection at `npm run dev`.
 
 **Spec:** `docs/superpowers/specs/2026-04-19-site-visual-redesign-design.md`
 
@@ -290,7 +290,7 @@ git commit -m "feat: update header to warm off-white background"
 **Files:**
 - Modify: `src/components/Footer.astro`
 
-Replace the single copyright line with a dark two-column footer. Social icons stay in the header — the footer has nav links only.
+Replace the single copyright line with a dark two-column footer. Social icons stay in the header; the footer has nav links only.
 
 - [ ] **Step 1: Rewrite Footer.astro**
 
@@ -464,7 +464,7 @@ git commit -m "feat: update feed card borders to warm editorial style"
 **Files:**
 - Modify: `src/pages/index.astro`
 
-Replace the `<h3>` greeting + flex intro with an editorial hero grid. Add a `SectionHeader` before the feeds. Note: `a[href='/blog']` and `a[href='/resume']` in `global.css` add `display: inline-flex` — the CTA buttons override this with explicit display rules.
+Replace the `<h3>` greeting + flex intro with an editorial hero grid. Add a `SectionHeader` before the feeds. Note: `a[href='/blog']` and `a[href='/resume']` in `global.css` add `display: inline-flex`; the CTA buttons override this with explicit display rules.
 
 - [ ] **Step 1: Rewrite index.astro**
 
@@ -900,7 +900,7 @@ import ProfileImage from '../assets/nathan-pickard-profile.jpg';
               <div class="highlight-card">
                 <p class="highlight-card-title">Recognized for Quality</p>
                 <p class="highlight-card-body">
-                  The products I helped ship earned top marks in J.D. Power's 2025 and 2024 US Consumer Lending Satisfaction study —
+                  The products I helped ship earned top marks in J.D. Power's 2025 and 2024 US Consumer Lending Satisfaction study,
                   recognition that the work held up not just technically, but in the hands of actual customers.
                 </p>
               </div>
