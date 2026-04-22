@@ -156,6 +156,9 @@ import { Icon } from 'astro-icon/components';
       border-bottom: 1px solid rgb(var(--gray-light));
       border-left: 3px solid transparent;
       transition: border-left-color 0.15s ease, background-color 0.15s ease;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
     }
     .internal-links a:hover {
       background-color: rgba(var(--gray-light), 0.4);
@@ -174,6 +177,11 @@ import { Icon } from 'astro-icon/components';
     .social-links a {
       padding: 0.4em 0.6em;
       border-bottom: none;
+      min-height: 44px;
+      min-width: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 </style>

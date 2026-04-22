@@ -34,6 +34,28 @@ import { Icon } from 'astro-icon/components';
         background-color: var(--accent-dark);
         color: white;
       }
+
+      @media (max-width: 720px) {
+        .prose {
+          padding: 1rem;
+          max-width: 100%;
+        }
+
+        .job-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.25rem;
+        }
+
+        .download-btn {
+          display: flex;
+          justify-content: center;
+          min-height: 44px;
+          min-width: 44px;
+          align-items: center;
+          margin: 0 auto;
+        }
+      }
     </style>
   </head>
 
@@ -58,24 +80,54 @@ import { Icon } from 'astro-icon/components';
         <div>
           <h1 class="text-3xl font-bold">{resume.basics.name}</h1>
           <p class="text-gray-500">{resume.basics.label}</p>
-          <p class="text-gray-500">{resume.basics.email}</p>
-          <p class="text-gray-500">{resume.basics.location}</p>
-          <p class="text-gray-500">{resume.basics.summary}</p>
+          <p class="text-gray-500 text-sm">{resume.basics.location} · {resume.basics.phone} · {resume.basics.email}</p>
         </div>
       </div>
+
+      <section class="mt-6">
+        <h4 class="font-semibold border-b pb-1 mb-3">Career Summary</h4>
+        <p class="text-sm leading-relaxed">{resume.basics.summary}</p>
+      </section>
+
       <section class="mt-8">
-        <h2 class="text-xl font-semibold border-b pb-1 mb-4">Experience</h2>
+        <h4 class="font-semibold border-b pb-1 mb-4">Skills</h4>
+        {
+          resume.skills.map((skill) => (
+            <div class="mb-2 text-sm">
+              <strong>{skill.name}:</strong> {skill.keywords.join(', ')}
+            </div>
+          ))
+        }
+      </section>
+
+      {resume.education && (
+        <section class="mt-8">
+          <h4 class="font-semibold border-b pb-1 mb-4">Education</h4>
+          {resume.education.map((edu) => (
+            <div class="text-sm">
+              <strong>{edu.institution}</strong> – {edu.studyType} {edu.area}{edu.status ? `, ${edu.status}` : ''}
+            </div>
+          ))}
+        </section>
+      )}
+
+      <section class="mt-8">
+        <h4 class="font-semibold border-b pb-1 mb-4">Experience</h4>
         {
           resume.work.map((job) => (
             <div class="mb-6">
-              <div class="flex justify-between">
-                <strong>{job.position}</strong>
-                <span class="text-gray-500 text-sm">
+              <div class="flex justify-between job-header">
+                <div>
+                  <strong>{job.company}</strong> | <span>{job.position}</span>
+                </div>
+                <span class="text-gray-500 text-sm shrink-0">
                   {job.startDate} – {job.endDate}
                 </span>
               </div>
-              <div class="text-gray-600">{job.company}</div>
-              <ul class="mt-2 list-disc list-inside text-sm space-y-1">
+              {job.description && (
+                <div class="text-gray-500 text-sm italic">{job.description}</div>
+              )}
+              <ul class="mt-2 list-disc list-outside text-sm space-y-1 pl-5">
                 {job.highlights.map((h) => (
                   <li>{h}</li>
                 ))}
@@ -84,16 +136,17 @@ import { Icon } from 'astro-icon/components';
           ))
         }
       </section>
-      <section class="mt-8">
-        <h2 class="text-xl font-semibold border-b pb-1 mb-4">Skills</h2>
-        {
-          resume.skills.map((skill) => (
-            <div class="mb-2">
-              <strong>{skill.name}:</strong> {skill.keywords.join(', ')}
-            </div>
-          ))
-        }
-      </section>
+
+      {resume.activities && (
+        <section class="mt-8">
+          <h4 class="font-semibold border-b pb-1 mb-4">Activities & Community</h4>
+          <ul class="list-disc list-outside text-sm space-y-1 pl-5">
+            {resume.activities.map((activity) => (
+              <li>{activity}</li>
+            ))}
+          </ul>
+        </section>
+      )}
     </main>
     <Footer />
   </body>

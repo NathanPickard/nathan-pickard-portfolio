@@ -12,7 +12,7 @@ export const GET: APIRoute = async () => {
   return new Response(new Uint8Array(buffer), {
     headers: {
       'Content-Type': 'application/pdf',
-      'Content-Disposition': 'attachment; filename="nathan-pickard-resume.pdf"',
+      'Content-Disposition': 'attachment; filename="Nathan Pickard Resume.pdf"',
     },
   });
 };

@@ -48,12 +48,17 @@ body {
   color: rgb(var(--black));
   font-size: 20px;
   line-height: 1.7;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 main {
   width: 720px;
   max-width: calc(100% - 2em);
   margin: auto;
   padding: 3em 1em;
+  flex: 1;
 }
 h1,
 h2,
@@ -124,6 +129,7 @@ code {
 pre {
   padding: 1.5em;
   border-radius: 8px;
+  overflow-x: auto;
 }
 pre > code {
   all: unset;

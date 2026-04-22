@@ -77,17 +77,21 @@ const posts = all
       }
       @media (max-width: 720px) {
         ul {
-          gap: 0.5em;
+          gap: 1rem;
         }
-        ul li {
-          width: 100%;
-          text-align: center;
-        }
+        ul li,
         ul li:first-child {
+          width: 100%;
+          text-align: left;
           margin-bottom: 0;
         }
         ul li:first-child .title {
           font-size: 1.563em;
+        }
+        ul li img {
+          width: 100%;
+          height: auto;
+          border-radius: 8px;
         }
       }
     </style>

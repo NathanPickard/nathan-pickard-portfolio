@@ -36,6 +36,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
         margin: auto;
         padding: 1em;
         color: rgb(var(--gray-dark));
+        text-align: left;
       }
       .title {
         margin-bottom: 1em;
@@ -52,6 +53,21 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
       }
       .last-updated-on {
         font-style: italic;
+      }
+      @media (max-width: 720px) {
+        main {
+          width: 100%;
+          margin: auto;
+        }
+        .prose {
+          padding: 1rem;
+          max-width: 100%;
+          box-sizing: border-box;
+        }
+        .hero-image img {
+          border-radius: 0;
+          width: 100%;
+        }
       }
     </style>
   </head>

@@ -1,63 +1,118 @@
 {
   "basics": {
     "name": "Nathan Pickard",
-    "label": "Senior Full-Stack Engineer",
+    "label": "Senior Software Engineer",
     "email": "nathan.pickard87@gmail.com",
+    "phone": "(615) 663-5561",
     "location": "Portland, OR",
     "website": "https://nathanpickard.github.io",
-    "summary": "Pragmatic software engineer with 6+ years of experience in building feature-rich and cutting-edge web and software solutions.  Architected best-in-class products at a leading fintech company that have earned recognition in J.D. Power's 2025 US Consumer Lending Satisfaction study. Proven track record of creating impactful growth and engineering innovative results for clients and small to large startups in emerging industries.",
+    "summary": "Pragmatic senior software engineer with 6+ years of experience architecting and delivering feature-rich web applications for high-growth fintech and startup environments. At Kellton, architected foundational features for the full loan origination funnel, agent desk platform, and financial health products for the financial tech client, Best Egg. The customer facing loan funnel product serves more than 2 million users and earned first-place rankings in J.D. Power's 2025 US Consumer Lending Satisfaction study for both \"Experience Obtaining Loan\" and \"Meeting Borrowing Needs.\" Currently, a founding engineer at Harbor ATS, building an AI-powered recruiting platform from the ground up. Proven track record of delivering measurable business outcomes in conversion rate optimization, real-time analytics integration, and scalable front-end architecture.",
     "profiles": [
-      { "network": "GitHub", "username": "nathanpickard", "url": "https://github.com/nathanpickard" }
+      { "network": "GitHub", "username": "NathanPickard", "url": "https://github.com/NathanPickard" },
+      { "network": "LinkedIn", "username": "nathanpickard", "url": "https://linkedin.com/in/nathanpickard" }
     ]
   },
   "work": [
     {
+      "company": "Harbor ATS",
+      "position": "Founding Senior Full-Stack Engineer",
+      "description": "HR startup – AI-powered applicant tracking system",
+      "startDate": "Mar 2026",
+      "endDate": "present",
+      "highlights": [
+        "Architecting an AI-powered ATS from the ground up, featuring human-in-the-loop matching and automated candidate re-engagement",
+        "Engineering a scalable full-stack recruiting CRM using modern full-stack frameworks with automated interview scheduling and real-time analytics to support the platform's initial commercial production launch",
+        "Engineering a comprehensive analytics and reporting engine that provides real-time visibility into hiring funnel health, source-quality signals, and recruiter performance to drive data-informed talent acquisition"
+      ]
+    },
+    {
       "company": "Kellton",
       "position": "Senior Software Engineer",
-      "startDate": "2020",
-      "endDate": "2025",
+      "description": "Consultant for Best Egg – Financial tech company",
+      "startDate": "Dec 2020",
+      "endDate": "Jun 2025",
       "highlights": [
-        "Led the development and implementation of high-performance, front-end solutions for Best Egg, a best-in-class fintech company, resulting in a 23% month-over-month increase in customer conversion rates. Increased customer retention by 18% and engineered innovative user interfaces for 2M+ users",
-        "Architected solutions and transformed UIs using Angular/React/Vue/TypeScript to develop offer and refinancing features for customers which led to the client reaching $200M in originations for the first time in company history",
-        "Engineered inventive product offerings leading to the client ranking first in “Experience Obtaining Loan” and “Meeting Borrowing Needs” in J.D. Power's prestigious US Consumer Lending Satisfaction study"
+        "Led front-end engineering for Best Egg's consumer loan origination funnel in Angular as part of a 24-person engineering team, achieving a 23% month-over-month lift in conversion rates and 18% increase in customer retention across a 2M+ user base",
+        "Architected v2 of the offers experience, the highest-impact step of the loan funnel, including A/B test-driven display variants, secured/unsecured offer handling, cover-the-fee product types, and a decision rebuild strategy for vehicle equity loan amount range selection",
+        "Built the back of house facing Phone Apply Website, enabling agent-assisted loan applications with a purpose-built Angular UI layered over the same Django REST API backend powering the customer funnel",
+        "Built the end-to-end refinancing feature, including a post-offers interstitial presenting side-by-side comparisons of existing vs. refinanced loan terms, supporting single and dual prior loan payoffs, cash payout eligibility, and two product tracks (standard refinance and vehicle equity cash-out refinance)",
+        "Delivered offer and refinancing features that contributed to Best Egg reaching $200M in originations for the first time, and earning first-place rankings in J.D. Power's 2025 US Consumer Lending Satisfaction study",
+        "Built and published a shared Angular library providing reusable components, services, and directives consumed by all consumer facing Best Egg frontend applications",
+        "Engineered features for AgentDesk v2, a role-based agent dashboard built in React, Redux, and Tailwind featuring dedicated components for funding queue management, verification queue processing, credit decision review, and opportunity inspection. Reduced back of house loan application verification time by 23% after launch.",
+        "Developed UI components for the Best Egg Financial Health platform in Vue and Tailwind increasing customer conversion rates by 18% and 15% increase in refinance conversion",
+        "Instrumented FullStory and Datadog real user monitoring (RUM) across the full funnel for real-time session replay, funnel drop-off analysis, and production error alerting, reducing time to remediation on UI regressions",
+        "Maintained test coverage across a multi-stack platform using Karma/Jasmine/Jest/Vitest for the frontend stack and pytest for the Django layer"
       ]
     },
     {
       "company": "Lazarus Naturals",
       "position": "Frontend Developer",
-      "startDate": "2020",
-      "endDate": "2020",
+      "description": "Large CBD wellness startup",
+      "startDate": "Jan 2020",
+      "endDate": "Apr 2020",
       "highlights": [
-        "Engineered and modernized the Lazarus Naturals e-commerce site in a rapidly expanding startup in an increasingly popular wellness industry",
-        "Collaborated with cross-functional product and design teams to deliver innovative marketing landing pages and spearheaded the development of a company-first, native app which drove an increase in sales by 24%",
-        "Successfully launched three new product categories to the e-commerce platform, driving an increase in site traffic and customer engagement by 32% month over month"
+        "Collaborated with cross-functional product and design teams to deliver innovative marketing landing pages and spearheaded the development of a company-first, native app in React which drove an increase in sales by 24%",
+        "Developed high-conversion store-front pages in React, collaborating with design and marketing teams to deliver visually polished campaign pages that drove 21% increases in site traffic and customer engagement",
+        "Modernized and engineered product templating features for the Lazarus Naturals e-commerce WordPress site in a rapidly expanding startup environment",
+        "Successfully launched three new product categories to the WordPress e-commerce platform, driving an increase in site traffic and customer engagement by 32% month over month"
       ]
     },
     {
       "company": "Mental Health Match",
       "position": "Angular Developer",
-      "startDate": "2019",
-      "endDate": "2019",
+      "description": "Mental Health startup",
+      "startDate": "May 2019",
+      "endDate": "Aug 2019",
       "highlights": [
-        "Worked alongside the CTO and CEO to implement new and refreshed application features and prototype current AWS technologies to increase therapist and customer conversion rates by 35% and improved user experience for an emerging mental health sector",
-        "Enhanced the customized therapist platform to increase therapist onboarding by 31% for the first 3 months after product re-launch",
-        "Optimized front-end performance by implementing lazy loading and state management patterns, reducing initial page load time by 28% and enhancing responsiveness for users seeking urgent mental health resources"
+        "Worked alongside the CTO and CEO to implement new and refreshed application features and prototype AWS technologies such as API Gateway, S3, and Lambda to increase therapist and customer conversion rates by 35% and improved user experience for an emerging mental health sector",
+        "Enhanced the customized therapist platform using multi-step onboarding and UX enhancements using Angular best practices to increase therapist onboarding by 31% for the first 3 months after product re-launch",
+        "Optimized front-end performance by implementing lazy loading and state management patterns, reducing initial page load time by 28% and enhancing responsiveness for users seeking urgent mental health resources",
+        "Improved site discoverability by implementing Google Analytics tracking, enabling data-driven insights into user acquisition, page performance, and funnel drop-off across the therapist and customer-facing platform"
       ]
     },
     {
       "company": "Freelance Web Developer",
       "position": "Web Developer",
-      "startDate": "2017",
-      "endDate": "2019",
+      "description": "Self-employed",
+      "startDate": "Sep 2017",
+      "endDate": "Apr 2019",
       "highlights": [
-        "Core technologies include JavaScript/Typescript, Angular, Node.js, HTML/CSS/SCSS, AWS technologies (Lambda, API Gateway, S3), Git, Firebase and various databases and backend services"
+        "Developed a course scheduling web application built in React for Salisbury State University. Used Node.js and MongoDB for data retrieval and storage. Deployed and hosted on AWS.",
+        "Built a live music event tracking app in Angular for an event coordinator in Portland, OR. Utilized Node.js to call REST APIs for real-time data retrieval. Firebase used for event storage, deployment and hosting."
       ]
     }
   ],
   "skills": [
-    { "name": "Languages", "keywords": ["TypeScript", "JavaScript", "Python", "HTML5", "CSS", "SCSS"] },
-    { "name": "Frameworks", "keywords": ["React", "Angular", "Vue", "Node.js", "Django", "NgRx", "Redux", "Astro"] },
-    { "name": "Tools/Infrastructure", "keywords": ["AWS (Lambda, S3, API Gateway)", "MongoDB", "MySQL", "Docker", "Datadog", "FullStory"] },
-    { "name": "Specializations", "keywords": ["Software architecture", "Fintech", "Accessibility/WCAG", "AI implementation", "UI/UX optimization"] }
+    {
+      "name": "Languages/Frameworks",
+      "keywords": ["JavaScript", "TypeScript", "Angular", "React", "Vue", "Node.js", "Python", "Django", "NgRx", "Tailwind", "Angular Material", "HTML5", "CSS", "SCSS", "Less", "Bootstrap"]
+    },
+    {
+      "name": "Tools/Infrastructure",
+      "keywords": ["AWS (Lambda, S3, API Gateway)", "Docker", "MongoDB", "MySQL", "Datadog", "FullStory", "Nginx", "GitHub Actions CI/CD", "Ansible"]
+    },
+    {
+      "name": "Testing & Quality",
+      "keywords": ["Karma", "Jasmine", "Jest", "Vitest", "pytest", "Mocha", "Chai"]
+    },
+    {
+      "name": "AI Models & Tools",
+      "keywords": ["Claude Code (Anthropic API)", "GitHub Copilot", "Gemini", "OpenAI API", "Cursor", "Kiro"]
+    },
+    {
+      "name": "Specializations",
+      "keywords": ["Software architecture", "Fintech", "Accessibility/WCAG", "AI implementation", "UI/UX optimization", "A/B tests"]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Middle Tennessee State University / Portland Community College",
+      "area": "Computer Science",
+      "studyType": "B.S.",
+      "status": "in progress"
+    }
+  ],
+  "activities": [
+    "Active participant of Portland-area tech conferences, software engineering meetups, and hackathons focused on AI and modern web technologies"
   ]
 }
