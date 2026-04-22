@@ -17,7 +17,7 @@ export default defineConfig({
       GITHUB_TOKEN: envField.string({ context: 'server', access: 'secret' }),
     },
   },
-  site: 'https://example.com',
+  site: 'https://nathanpickard.com/',
 
   integrations: [
     mdx(),

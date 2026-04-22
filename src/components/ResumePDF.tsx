@@ -7,10 +7,8 @@ import {
   Font,
 } from '@react-pdf/renderer';
 import { resolve } from 'path';
-import { fileURLToPath } from 'url';
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url));
-const fontsDir = resolve(__dirname, '../../public/fonts');
+const fontsDir = resolve(process.cwd(), 'public/fonts');
 
 Font.register({
   family: 'Carlito',
