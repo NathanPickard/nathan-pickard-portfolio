@@ -4,25 +4,11 @@ import DarkLayout from '../layouts/DarkLayout.astro';
 import DarkNav from '../components/DarkNav.astro';
 import Footer from '../components/Footer.astro';
 
-const skills = [
-  'TypeScript',
-  'JavaScript',
-  'React',
-  'Angular',
-  'Vue',
-  'Node.js',
-  'Python',
-  'AWS',
-  'Docker',
-  'MongoDB',
-  'Tailwind',
-  'Astro',
-];
 ---
 
 <DarkLayout
   title="About — Nathan Pickard"
-  description="Senior Full-Stack Engineer based in Portland, OR. Six years building at the intersection of craft and scale."
+  description="Senior Full-Stack Engineer based in Portland, OR. 6+ years building at the intersection of craft and scale."
 >
   <DarkNav />
 
@@ -62,10 +48,10 @@ const skills = [
           <div class="pnw-title">Life outside the IDE</div>
           {
             [
-              ['mdi:coffee',    'Coffee obsessed'],
-              ['mdi:hiking',    'Hiking in the great outdoors'],
+              ['mdi:coffee',    'Coffee aficionado'],
+              ['mdi:hiking',    'Hiking/Exploring'],
               ['mdi:pot-steam', 'Home cook, BBQ enthusiast'],
-              ['mdi:pine-tree', 'Portland local, PNW based'],
+              ['mdi:pine-tree', 'Portland local, PNW-based'],
             ].map(([icon, text]) => (
               <div class="pnw-item">
                 <Icon name={icon} size={16} aria-hidden="true" class="pnw-icon" />
@@ -73,15 +59,6 @@ const skills = [
               </div>
             ))
           }
-        </div>
-      </div>
-
-      <!-- Skills -->
-      <div class="skills-section">
-        <span class="section-label">Stack</span>
-        <h2 class="skills-h2">The tools I reach for</h2>
-        <div class="skills-wrap">
-          {skills.map((s) => <span class="skill-tag">{s}</span>)}
         </div>
       </div>
 
@@ -130,9 +107,6 @@ const skills = [
     grid-template-columns: 1fr 260px;
     gap: 60px;
     align-items: start;
-    padding-bottom: 80px;
-    margin-bottom: 80px;
-    border-bottom: 1px solid rgba(137, 174, 151, 0.2);
   }
   .about-body {
     min-width: 0;
@@ -203,33 +177,6 @@ const skills = [
     color: #8aae97;
     flex-shrink: 0;
   }
-
-  /* Skills */
-  .skills-h2 {
-    font-family: 'Fraunces', serif;
-    font-weight: 400;
-    font-variation-settings: 'opsz' 72;
-    font-size: clamp(24px, 3vw, 40px);
-    line-height: 1.05;
-    letter-spacing: -0.025em;
-    margin: 0 0 28px;
-    color: #ede8d8;
-  }
-  .skills-wrap {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .skill-tag {
-    padding: 8px 16px;
-    border: 1px solid rgba(137, 174, 151, 0.2);
-    border-radius: 4px;
-    font: 500 13px 'Geist Mono', monospace;
-    color: #e2ede6;
-    transition: border-color 0.2s;
-    cursor: default;
-  }
-  .skill-tag:hover { border-color: #e2ede6; }
 
   @media (max-width: 900px) {
     .about-main { padding: 60px 24px; }

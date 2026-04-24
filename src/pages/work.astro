@@ -2,40 +2,85 @@
 import DarkLayout from '../layouts/DarkLayout.astro';
 import DarkNav from '../components/DarkNav.astro';
 import Footer from '../components/Footer.astro';
+import resumeData from '../data/resume.json';
+const skills = resumeData.skills;
+const activities = resumeData.activities;
 
 const work = [
   {
-    co: "Kellton", client: "Best Egg (fintech)", role: "Senior Software Engineer",
-    period: "2020 – 2025",
-    blurb: "Owned offer and refinancing flows across Angular, React, and Vue for a 2M+ user consumer lending platform. The UI work contributed to J.D. Power #1 rankings in 2024 and 2025.",
-    stack: ["Angular", "React", "Vue", "TypeScript", "NgRx"],
-    wins: ["+23% conversion", "$200M originations", "J.D. Power #1"],
+    co: 'Harbor ATS',
+    client: 'HR / AI startup',
+    role: 'Founding Senior Full-Stack Engineer',
+    period: 'Mar 2026 – present',
+    blurb:
+      'Architecting an AI-powered applicant tracking system from the ground up — human-in-the-loop matching, automated candidate re-engagement, and a real-time analytics engine for hiring funnel health.',
+    stack: [],
+    wins: [],
   },
   {
-    co: "Lazarus Naturals", client: "Wellness DTC", role: "Frontend Developer",
-    period: "2020",
-    blurb: "Shipped the company's first native app, launched three new product categories, and modernized the e-commerce storefront during a period of fast expansion.",
-    stack: ["React", "Node.js", "Shopify"],
-    wins: ["+24% native-app sales", "+32% MoM traffic"],
+    co: 'Kellton',
+    client: 'Best Egg (fintech)',
+    role: 'Senior Software Engineer',
+    period: '2020 – 2025',
+    blurb:
+      'Owned offer and refinancing flows across Angular, React, and Vue for a 2M+ user consumer lending platform. The UI work contributed to J.D. Power #1 rankings in 2024 and 2025.',
+    stack: [
+      'Angular',
+      'React',
+      'Vue',
+      'TypeScript',
+      'Node.js',
+      'Python',
+      'NgRx',
+      'Redux',
+      'Django',
+      'MongoDB',
+      'Tailwind',
+      'Angular Material',
+      'Ansible',
+      'Karma',
+      'Jasmine',
+      'Jest',
+    ],
+    wins: ['+23% conversion', '$200M originations', 'J.D. Power #1'],
   },
   {
-    co: "Mental Health Match", client: "Healthtech", role: "Angular Developer",
-    period: "2019",
-    blurb: "Worked with the CTO and CEO to rebuild therapist-matching onboarding. Reduced load time 28%, grew therapist signups 31% in three months.",
-    stack: ["Angular", "AWS", "Firebase"],
-    wins: ["+35% conversion", "+31% therapist onboarding", "−28% load time"],
+    co: 'Lazarus Naturals',
+    client: 'Wellness DTC',
+    role: 'Frontend Developer',
+    period: '2020',
+    blurb:
+      "Shipped the company's first native app, launched three new product categories, and modernized the e-commerce storefront during a period of fast expansion.",
+    stack: ['React', 'Node.js', 'Wordpress'],
+    wins: ['+24% native-app sales', '+32% month-over-month traffic'],
   },
   {
-    co: "Freelance", client: "", role: "Web Developer",
-    period: "2017 – 2019",
-    blurb: "Early-stage product work, small-business sites, and internal tools across the JS/TS stack.",
-    stack: ["JavaScript", "Angular", "Node.js", "AWS"],
+    co: 'Mental Health Match',
+    client: 'Healthtech',
+    role: 'Angular Developer',
+    period: '2019',
+    blurb:
+      'Worked with the CTO and CEO to rebuild therapist-matching onboarding. Reduced load time 28%, grew therapist signups 31% in three months.',
+    stack: ['Angular', 'AWS', 'Firebase'],
+    wins: ['+35% conversion', '+31% therapist onboarding', '−28% load time'],
+  },
+  {
+    co: 'Freelance',
+    client: '',
+    role: 'Web Developer',
+    period: '2017 – 2019',
+    blurb:
+      'Early-stage product work, small-business sites, and internal tools across the JS/TS stack.',
+    stack: ['JavaScript', 'Angular', 'Node.js', 'AWS'],
     wins: [],
   },
 ];
 ---
 
-<DarkLayout title="Work — Nathan Pickard" description="Six years shipping consumer-facing software in fintech, wellness, and healthtech.">
+<DarkLayout
+  title="Work — Nathan Pickard"
+  description="Six years shipping consumer-facing software in fintech, wellness, and healthtech."
+>
   <DarkNav />
 
   <main class="work-main">
@@ -49,44 +94,87 @@ const work = [
       <div class="work-grid" id="work-grid">
         <!-- Tabs -->
         <div class="work-tabs" role="tablist" aria-label="Work history">
-          {work.map((w, i) => (
-            <button
-              class={`work-tab${i === 0 ? ' active' : ''}`}
-              role="tab"
-              aria-selected={i === 0 ? 'true' : 'false'}
-              aria-controls={`panel-${i}`}
-              id={`tab-${i}`}
-              data-index={i}
-            >
-              <div class="tab-co">{w.co}</div>
-              <div class="tab-period">{w.period}</div>
-            </button>
-          ))}
+          {
+            work.map((w, i) => (
+              <button
+                class={`work-tab${i === 0 ? ' active' : ''}`}
+                role="tab"
+                aria-selected={i === 0 ? 'true' : 'false'}
+                aria-controls={`panel-${i}`}
+                id={`tab-${i}`}
+                data-index={i}
+              >
+                <div class="tab-co">{w.co}</div>
+                <div class="tab-period">{w.period}</div>
+              </button>
+            ))
+          }
         </div>
 
         <!-- Panels -->
         <div class="work-panels">
-          {work.map((w, i) => (
-            <div
-              class={`work-panel${i === 0 ? ' active' : ''}`}
-              role="tabpanel"
-              id={`panel-${i}`}
-              aria-labelledby={`tab-${i}`}
-            >
-              <div class="detail-role">{w.role}</div>
-              {w.client && <div class="detail-client">{w.client}</div>}
-              <p class="detail-blurb">{w.blurb}</p>
-              {w.wins.length > 0 && (
-                <div class="detail-wins">
-                  {w.wins.map(win => <span class="win">{win}</span>)}
+          {
+            work.map((w, i) => (
+              <div
+                class={`work-panel${i === 0 ? ' active' : ''}`}
+                role="tabpanel"
+                id={`panel-${i}`}
+                aria-labelledby={`tab-${i}`}
+              >
+                <div class="detail-role">{w.role}</div>
+                {w.client && <div class="detail-client">{w.client}</div>}
+                <p class="detail-blurb">{w.blurb}</p>
+                {w.wins.length > 0 && (
+                  <div class="detail-wins">
+                    {w.wins.map((win) => (
+                      <span class="win">{win}</span>
+                    ))}
+                  </div>
+                )}
+                <div class="detail-stack">
+                  {w.stack.map((s) => (
+                    <span class="pill">{s}</span>
+                  ))}
                 </div>
-              )}
-              <div class="detail-stack">
-                {w.stack.map(s => <span class="pill">{s}</span>)}
               </div>
-            </div>
-          ))}
+            ))
+          }
         </div>
+      </div>
+
+      <section class="skills-section" aria-labelledby="skills-heading">
+        <span class="section-label">Technical Skills</span>
+        <h2 class="skills-h2" id="skills-heading">The tools I reach for</h2>
+        <div class="skills-categories">
+          {
+            skills.map((cat) => (
+              <div class="skill-category">
+                <h3 class="skill-cat-name">{cat.name}</h3>
+                <div class="skill-pills">
+                  {cat.keywords.map((kw) => (
+                    <span class="pill">{kw}</span>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="community-section" aria-labelledby="community-heading">
+        <span class="section-label">Community</span>
+        <h2 class="community-h2" id="community-heading">In the community</h2>
+        <div class="community-body">
+          {
+            activities.map((activity) => (
+              <p class="community-text">{activity}</p>
+            ))
+          }
+        </div>
+      </section>
+
+      <div class="work-cta-row">
+        <a href="/resume" class="btn-primary">View Full Resume →</a>
       </div>
     </div>
   </main>
@@ -126,88 +214,100 @@ const work = [
     font-size: 11px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #8AAE97;
+    color: #8aae97;
     display: block;
     margin-bottom: 16px;
   }
   .work-h1 {
     font-family: 'Fraunces', serif;
     font-weight: 400;
-    font-variation-settings: "opsz" 72;
+    font-variation-settings: 'opsz' 72;
     font-size: clamp(36px, 5vw, 64px);
-    line-height: 1.0;
+    line-height: 1;
     letter-spacing: -0.03em;
     margin: 0 0 12px;
-    color: #E2EDE6;
+    color: #e2ede6;
   }
   .work-sub {
     font-size: 16px;
-    color: #E2EDE6;
+    color: #e2ede6;
     margin: 0;
   }
 
   .work-grid {
     display: grid;
     grid-template-columns: 240px 1fr;
-    border: 1px solid rgba(137,174,151,0.2);
+    border: 1px solid rgba(137, 174, 151, 0.2);
     border-radius: 10px;
     overflow: hidden;
+    max-width: fit-content;
   }
   .work-tabs {
-    border-right: 1px solid rgba(137,174,151,0.2);
+    border-right: 1px solid rgba(137, 174, 151, 0.2);
   }
   .work-tab {
     width: 100%;
     background: transparent;
     border: 0;
-    border-bottom: 1px solid rgba(137,174,151,0.2);
+    border-bottom: 1px solid rgba(137, 174, 151, 0.2);
     padding: 20px 24px;
     text-align: left;
     cursor: pointer;
-    transition: background .15s;
-    color: #EDE8D8;
+    transition: background 0.15s;
+    color: #ede8d8;
   }
-  .work-tab:last-child { border-bottom: 0; }
-  .work-tab:hover { background: rgba(255,255,255,.04); }
+  .work-tab:last-child {
+    border-bottom: 0;
+  }
+  .work-tab:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
   .work-tab.active {
-    background: #162B1B;
-    border-left: 3px solid #D4AF37;
+    background: #162b1b;
+    border-left: 3px solid #d4af37;
   }
   .tab-co {
     font-family: 'Fraunces', serif;
     font-weight: 500;
-    font-variation-settings: "opsz" 72;
+    font-variation-settings: 'opsz' 72;
     font-size: 18px;
     letter-spacing: -0.01em;
-    color: #EDE8D8;
+    color: #ede8d8;
   }
   .tab-period {
     font-size: 11px;
     font-family: 'Geist Mono', monospace;
-    color: #A8C8B4;
+    color: #a8c8b4;
     margin-top: 4px;
   }
 
-  .work-panels { background: #162B1B; }
-  .work-panel { display: none; padding: 36px; }
-  .work-panel.active { display: block; }
+  .work-panels {
+    background: #162b1b;
+  }
+  .work-panel {
+    display: none;
+    padding: 36px;
+  }
+  .work-panel.active {
+    display: block;
+  }
 
   .detail-role {
     font-weight: 600;
     font-size: 16px;
     margin-bottom: 4px;
-    color: #EDE8D8;
+    color: #ede8d8;
   }
   .detail-client {
     font-size: 12px;
     font-family: 'Geist Mono', monospace;
-    color: #A8C8B4;
+    color: #a8c8b4;
     margin-bottom: 20px;
   }
   .detail-blurb {
     font-size: 15px;
     line-height: 1.7;
-    color: #E2EDE6;
+    color: #e2ede6;
     margin: 0 0 24px;
     max-width: 560px;
   }
@@ -218,39 +318,143 @@ const work = [
     margin-bottom: 24px;
   }
   .win {
-    background: rgba(212,175,55,.15);
-    color: #D4AF37;
+    background: rgba(212, 175, 55, 0.15);
+    color: #d4af37;
     padding: 5px 14px;
     border-radius: 999px;
-    font: 500 12px 'Geist Mono', monospace;
+    font:
+      500 12px 'Geist Mono',
+      monospace;
   }
-  .detail-stack { display: flex; gap: 8px; flex-wrap: wrap; }
+  .detail-stack {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
   .pill {
     display: inline-block;
     padding: 4px 12px;
-    border: 1px solid rgba(137,174,151,0.2);
+    border: 1px solid rgba(137, 174, 151, 0.2);
     border-radius: 999px;
-    font: 500 12px 'Geist Mono', monospace;
-    color: #D9D0BC;
+    font:
+      500 12px 'Geist Mono',
+      monospace;
+    color: #d9d0bc;
   }
 
   @media (max-width: 900px) {
-    .work-main { padding: 60px 24px; }
-    .work-grid { grid-template-columns: 1fr; }
+    .work-main {
+      padding: 60px 24px;
+    }
+    .work-grid {
+      grid-template-columns: 1fr;
+    }
     .work-tabs {
       display: flex;
       overflow-x: auto;
       border-right: 0;
-      border-bottom: 1px solid rgba(137,174,151,0.2);
+      border-bottom: 1px solid rgba(137, 174, 151, 0.2);
     }
     .work-tab {
       min-width: 160px;
       border-bottom: 0;
-      border-right: 1px solid rgba(137,174,151,0.2);
+      border-right: 1px solid rgba(137, 174, 151, 0.2);
     }
     .work-tab.active {
       border-left: 0;
-      border-bottom: 3px solid #D4AF37;
+      border-bottom: 3px solid #d4af37;
     }
+  }
+
+  /* Skills section */
+  .skills-section {
+    margin-top: 64px;
+    padding-top: 64px;
+    border-top: 1px solid rgba(137, 174, 151, 0.2);
+  }
+  .skills-h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-variation-settings: 'opsz' 72;
+    font-size: clamp(28px, 3.5vw, 44px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0 0 40px;
+    color: #e2ede6;
+  }
+  .skills-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .skill-category {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .skill-cat-name {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #8aae97;
+    margin: 0;
+    font-weight: 500;
+  }
+  .skill-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  /* Community section */
+  .community-section {
+    margin-top: 64px;
+    padding-top: 64px;
+    border-top: 1px solid rgba(137, 174, 151, 0.2);
+  }
+  .community-h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-variation-settings: 'opsz' 72;
+    font-size: clamp(28px, 3.5vw, 44px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0 0 24px;
+    color: #e2ede6;
+  }
+  .community-text {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #e2ede6;
+    max-width: 750px;
+    margin: 0 0 16px;
+  }
+  .community-text:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Resume CTA */
+  .work-cta-row {
+    margin-top: 64px;
+    padding-top: 64px;
+    border-top: 1px solid rgba(137, 174, 151, 0.2);
+    display: flex;
+    gap: 14px;
+  }
+  .btn-primary {
+    display: inline-block;
+    padding: 13px 26px;
+    background: #d4af37;
+    color: #0d1c10;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: opacity 0.2s;
+  }
+  .btn-primary:hover {
+    opacity: 0.85;
   }
 </style>
