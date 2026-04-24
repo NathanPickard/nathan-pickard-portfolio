@@ -1,202 +1,318 @@
 ---
 import { Image } from 'astro:assets';
-import BaseHead from '../components/BaseHead.astro';
+import DarkLayout from '../layouts/DarkLayout.astro';
+import DarkNav from '../components/DarkNav.astro';
 import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import SectionHeader from '../components/SectionHeader.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
-import ProfileImage from '../assets/nathan-pickard-profile.jpg';
-import BlueskyFeed from '@/components/BlueskyFeed.astro';
-import GitHubFeed from '@/components/GitHubFeed.astro';
+import BlueskyFeed from '../components/BlueskyFeed.astro';
+import GitHubFeed from '../components/GitHubFeed.astro';
+import profilePhoto from '../assets/nathan-pickard-profile.jpg';
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-  </head>
-  <body>
-    <Header />
-    <main>
-      <div class="hero">
-        <div class="hero-photo-wrap">
-          <Image
-            src={ProfileImage}
-            alt="Nathan Pickard profile"
-            class="profile"
-            width={200}
-            loading="eager"
-            fetchpriority="high"
-            densities={[1, 2, 3]}
-          />
-        </div>
-        <div class="hero-text">
-          <p class="eyebrow">Software Engineer &middot; Portland, OR</p>
-          <h1 class="hero-name">Nathan Pickard</h1>
-          <p class="hero-tagline">Building thoughtful web experiences at the intersection of craft and scale.</p>
-          <div class="hero-ctas">
-            <a href="/resume" class="btn-primary">View Resume</a>
-            <a href="/blog" class="btn-secondary">Read Blog</a>
-          </div>
-        </div>
-      </div>
+<DarkLayout title="Nathan Pickard — Software Engineer">
+  <DarkNav />
 
-      <div class="feeds-section">
-        <SectionHeader title="Recent Activity" />
-        <div class="feeds">
-          <BlueskyFeed />
-          <GitHubFeed />
+  <!-- Hero -->
+  <header class="hero">
+    <svg
+      class="topo"
+      aria-hidden="true"
+      viewBox="0 0 1240 600"
+      preserveAspectRatio="xMidYMid slice"
+    >
+      <path
+        d="M-60,180 Q80,120 200,160 Q320,200 440,140 Q560,80 680,130 Q800,180 920,120 Q1040,60 1160,110 Q1280,160 1400,100"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1"
+        opacity="0.08"></path>
+      <path
+        d="M-60,240 Q80,180 200,220 Q320,260 440,200 Q560,140 680,190 Q800,240 920,180 Q1040,120 1160,170 Q1280,220 1400,160"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1"
+        opacity="0.08"></path>
+      <path
+        d="M-60,300 Q80,240 200,280 Q320,320 440,260 Q560,200 680,250 Q800,300 920,240 Q1040,180 1160,230 Q1280,280 1400,220"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1"
+        opacity="0.08"></path>
+      <path
+        d="M-60,360 Q80,300 200,340 Q320,380 440,320 Q560,260 680,310 Q800,360 920,300 Q1040,240 1160,290 Q1280,340 1400,280"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1"
+        opacity="0.08"></path>
+      <path
+        d="M-60,420 Q80,360 200,400 Q320,440 440,380 Q560,320 680,370 Q800,420 920,360 Q1040,300 1160,350 Q1280,400 1400,340"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1"
+        opacity="0.08"></path>
+      <path
+        d="M-60,120 Q80,60 200,100 Q320,140 440,80 Q560,20 680,70 Q800,120 920,60 Q1040,0 1160,50 Q1280,100 1400,40"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1"
+        opacity="0.08"></path>
+    </svg>
+    <div class="hero-inner">
+      <Image
+        src={profilePhoto}
+        alt="Nathan Pickard"
+        class="portrait"
+        loading="eager"
+        fetchpriority="high"
+        widths={[280, 560]}
+        sizes="280px"
+      />
+      <div class="hero-text">
+        <div class="eyebrow">Software Engineer</div>
+        <h1 class="display">Nathan Pickard</h1>
+        <p class="hero-sub">
+          I build web experiences that connect great ideas to the people who
+          need it
+        </p>
+        <div class="ctas">
+          <a href="/resume" class="btn-primary">View Resume →</a>
+          <a href="/blog" class="btn-ghost">Read Blog</a>
         </div>
       </div>
-    </main>
-    <Footer />
-  </body>
-</html>
+    </div>
+  </header>
+
+  <!-- Activity Feeds -->
+  <section class="feeds-section">
+    <div class="feeds-inner">
+      <div class="feeds-header">
+        <span class="section-label">Activity</span>
+        <h2 class="feeds-h2">What I've been up to</h2>
+      </div>
+      <div class="feeds-grid">
+        <BlueskyFeed />
+        <GitHubFeed />
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</DarkLayout>
 
 <style>
-  main {
-    width: 875px;
-    max-width: calc(100% - 2em);
-  }
-
   /* ── Hero ── */
   .hero {
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(137, 174, 151, 0.2);
+    padding: 100px 60px 80px;
+  }
+  .topo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    color: #ede8d8;
+  }
+  .hero-inner {
     display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 2rem;
+    grid-template-columns: 280px 1fr;
+    gap: 60px;
     align-items: center;
-    padding: 3rem 0 2.5rem;
-    margin-bottom: 3rem;
+    max-width: 1240px;
+    margin: 0 auto;
+    position: relative;
   }
-
   .eyebrow {
-    font-size: 0.875rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #2a7d4f;
-    margin-bottom: 0.5rem;
+    color: #E2EDE6;
+    margin-bottom: 28px;
   }
-
-  .hero-name {
-    margin-bottom: 0.75rem;
+  .display {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-variation-settings: 'opsz' 144;
+    font-size: clamp(48px, 7vw, 120px);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    margin: 0 0 32px;
+    color: #ffffff;
+    white-space: nowrap;
   }
-
-  .hero-tagline {
-    font-family: 'Lora', Georgia, serif;
-    font-style: italic;
-    color: rgb(var(--gray));
-    margin-bottom: 1.5rem;
-    max-width: 520px;
+  .hero-sub {
+    font-size: 17px;
+    line-height: 1.6;
+    color: #E2EDE6;
+    max-width: 480px;
+    margin: 0 0 36px;
   }
-
-  .hero-ctas {
+  .ctas {
     display: flex;
-    gap: 0.75rem;
+    gap: 14px;
     flex-wrap: wrap;
   }
-
-  .btn-primary,
-  .btn-secondary {
-    display: inline-block;
-    padding: 0.55rem 1.25rem;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: opacity 0.15s;
-  }
-
   .btn-primary {
-    background: #2a7d4f;
-    color: #fff;
-    border: 2px solid #2a7d4f;
+    display: inline-block;
+    padding: 13px 26px;
+    background: #d4af37;
+    color: #0d1c10;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: opacity 0.2s;
   }
-
-  .btn-secondary {
-    background: transparent;
-    color: #2a7d4f;
-    border: 2px solid #2a7d4f;
-  }
-
-  .btn-primary:hover,
-  .btn-secondary:hover {
+  .btn-primary:hover {
     opacity: 0.85;
-    color: inherit;
   }
-
-  /* Photo */
-  .hero-photo-wrap {
-    position: relative;
-    flex-shrink: 0;
+  .btn-ghost {
+    display: inline-block;
+    padding: 13px 26px;
+    border: 1px solid rgba(137, 174, 151, 0.2);
+    color: #ede8d8;
+    border-radius: 4px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: border-color 0.2s;
   }
-
-  .hero-photo-wrap::after {
-    content: '';
-    position: absolute;
-    inset: 8px -8px -8px 8px;
-    border: 2px solid #2a7d4f;
-    border-radius: 10px;
-    opacity: 0.3;
-    z-index: 0;
+  .btn-ghost:hover {
+    border-color: #8aae97;
   }
-
-  .profile {
-    border: 3px solid #fff;
-    border-radius: 8px;
-    display: block;
-    position: relative;
-    z-index: 1;
+  .portrait {
+    width: 100%;
+    max-width: 280px;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 6px;
+    border: 1px solid rgba(137, 174, 151, 0.2);
   }
 
   /* ── Feeds ── */
   .feeds-section {
-    margin-top: 0;
+    padding: 80px 60px;
+  }
+  .feeds-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .feeds-header {
+    margin-bottom: 25px;
+  }
+  .section-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #8aae97;
+    display: block;
+    margin-bottom: 12px;
+  }
+  .feeds-h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-variation-settings: 'opsz' 72;
+    font-size: clamp(28px, 3.5vw, 44px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0;
+    color: #ede8d8;
+  }
+  .feeds-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: stretch;
   }
 
-  .feeds {
+  :global(.bluesky-feed),
+  :global(.github-feed) {
     display: flex;
-    gap: 2rem;
-    align-items: flex-start;
+    flex-direction: column;
+  }
+  :global(.github-feed .repo-grid) {
+    height: 640px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(137,174,151,0.3) transparent;
+  }
+  :global(.bluesky-feed .feed-heading),
+  :global(.github-feed .feed-heading) {
+    color: #ffffff;
+  }
+  :global(.github-feed .feed-heading svg) {
+    filter: invert(1);
+  }
+  :global(.bluesky-feed .post),
+  :global(.github-feed .repo-card) {
+    background: #162b1b !important;
+    border-color: rgba(137, 174, 151, 0.2) !important;
+    box-shadow: none !important;
+  }
+  :global(.bluesky-feed .post:hover),
+  :global(.github-feed .repo-card:hover) {
+    border-color: #d4af37 !important;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.1) !important;
+    transform: translateY(-1px);
+  }
+  :global(.bluesky-feed .post-link),
+  :global(.github-feed .repo-link) {
+    color: #ffffff !important;
+  }
+  :global(.bluesky-feed .post-text) {
+    color: #ede8d8 !important;
+  }
+  :global(.bluesky-feed .post-meta),
+  :global(.github-feed .repo-meta) {
+    color: #a8c8b4 !important;
+  }
+  :global(.bluesky-feed .post-date) {
+    color: #a8c8b4 !important;
+  }
+  :global(.github-feed .repo-name) {
+    color: #d4af37 !important;
+  }
+  :global(.github-feed .repo-description) {
+    color: #E2EDE6 !important;
+  }
+  :global(.bluesky-feed .view-all),
+  :global(.github-feed .view-all) {
+    color: #d4af37 !important;
+  }
+  :global(.bluesky-feed .feed-scroll) {
+    scrollbar-color: rgba(137, 174, 151, 0.3) transparent !important;
+  }
+  :global(.bluesky-feed .stat-reply),
+  :global(.bluesky-feed .stat-repost),
+  :global(.bluesky-feed .stat-like) {
+    color: #a8c8b4 !important;
   }
 
-  @media (max-width: 720px) {
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
     .hero {
+      padding: 60px 24px;
+    }
+    .hero-inner {
       grid-template-columns: 1fr;
-      grid-template-rows: auto auto;
-      text-align: center;
-      padding: 2rem 0 2rem;
+      gap: 40px;
     }
-
-
-    .hero-photo-wrap {
-      order: -1;
-      margin: 0 auto;
+    .portrait {
+      max-width: 220px;
     }
-
-    .hero-photo-wrap::after {
-      display: none;
+    .feeds-section {
+      padding: 60px 24px;
     }
-
-    .hero-name {
-      font-size: 2.2rem;
+    .feeds-grid {
+      grid-template-columns: 1fr;
+      gap: 48px;
     }
-
-    .hero-ctas {
-      justify-content: center;
-    }
-
-    .hero-tagline {
-      max-width: 100%;
-    }
-
-    .profile {
-      max-width: 160px;
-      width: 100%;
-    }
-
-    .feeds {
-      flex-direction: column;
+    .display {
+      white-space: normal;
     }
   }
 </style>

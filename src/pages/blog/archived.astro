@@ -1,11 +1,10 @@
 ---
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
-import BaseHead from '../../components/BaseHead.astro';
+import DarkLayout from '../../layouts/DarkLayout.astro';
+import DarkNav from '../../components/DarkNav.astro';
 import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
-import Header from '../../components/Header.astro';
-import { Icon } from 'astro-icon/components';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 
 const all = await getCollection('blog');
@@ -14,122 +13,150 @@ const posts = all
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead
-      title={`${SITE_TITLE} - Archived Posts`}
-      description={SITE_DESCRIPTION}
-    />
-    <style>
-      main {
-        width: 960px;
-      }
-      /* reuse same styles as index page */
-      ul {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-      }
-      ul li {
-        width: calc(50% - 1rem);
-      }
-      ul li * {
-        text-decoration: none;
-        transition: 0.2s ease;
-      }
-      ul li:first-child {
-        width: 100%;
-        margin-bottom: 1rem;
-        text-align: center;
-      }
-      ul li:first-child img {
-        width: 100%;
-      }
-      ul li:first-child .title {
-        font-size: 2.369rem;
-      }
-      ul li img {
-        margin-bottom: 0.5rem;
-        border-radius: 12px;
-      }
-      ul li a {
-        display: block;
-      }
-      .title {
-        margin: 0;
-        color: rgb(var(--black));
-        line-height: 1;
-      }
-      .date {
-        margin: 0;
-        color: rgb(var(--gray));
-      }
-      ul li a:hover h4,
-      ul li a:hover .date {
-        color: rgb(var(--accent));
-      }
-      ul a:hover img {
-        box-shadow: var(--box-shadow);
-      }
-      @media (max-width: 720px) {
-        ul {
-          gap: 1rem;
-        }
-        ul li,
-        ul li:first-child {
-          width: 100%;
-          text-align: left;
-          margin-bottom: 0;
-        }
-        ul li:first-child .title {
-          font-size: 1.563em;
-        }
-        ul li img {
-          width: 100%;
-          height: auto;
-          border-radius: 8px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <Header />
-    <main>
-      <section>
-        <h2>Archived posts</h2>
-        {
-          posts.length === 0 ? (
-            <p>No archived posts yet.</p>
-          ) : (
-            <ul>
-              {posts.map((post) => (
-                <li>
-                  <a href={`/blog/${post.id}/`}>
-                    {post.data.heroImage && (
-                      <Image
-                        width={720}
-                        height={360}
-                        src={post.data.heroImage}
-                        alt=""
-                      />
-                    )}
-                    <h4 class="title">{post.data.title}</h4>
-                    <p class="date">
-                      <FormattedDate date={post.data.pubDate} />
-                    </p>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          )
-        }
-        <a href="/blog"><Icon name="mdi:keyboard-arrow-left" />Back</a>
-      </section>
-    </main>
-    <Footer />
-  </body>
-</html>
+<DarkLayout title={`${SITE_TITLE} — Archived Posts`} description={SITE_DESCRIPTION}>
+  <DarkNav />
+
+  <main class="archived-main">
+    <div class="archived-inner">
+      <div class="archived-header">
+        <span class="section-label">Blog</span>
+        <h1 class="archived-h1">Archived posts</h1>
+      </div>
+
+      {posts.length === 0 ? (
+        <p class="empty">No archived posts yet.</p>
+      ) : (
+        <div class="post-list">
+          {posts.map((post) => (
+            <a href={`/blog/${post.id}/`} class="post-row">
+              {post.data.heroImage && (
+                <Image
+                  width={120}
+                  height={80}
+                  src={post.data.heroImage}
+                  alt=""
+                  class="post-thumb"
+                />
+              )}
+              <div class="post-info">
+                <div class="post-date"><FormattedDate date={post.data.pubDate} /></div>
+                <div class="post-title">{post.data.title}</div>
+              </div>
+              <span class="post-arrow">→</span>
+            </a>
+          ))}
+        </div>
+      )}
+
+      <a href="/blog" class="back-link">← Back to Blog</a>
+    </div>
+  </main>
+
+  <Footer />
+</DarkLayout>
+
+<style>
+  .archived-main {
+    padding: 80px 60px;
+  }
+  .archived-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+  .archived-header {
+    margin-bottom: 48px;
+  }
+  .section-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #E2EDE6;
+    display: block;
+    margin-bottom: 16px;
+  }
+  .archived-h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-variation-settings: "opsz" 72;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin: 0;
+    color: #E2EDE6;
+  }
+  .empty {
+    color: #8AAE97;
+    font-size: 16px;
+  }
+  .post-list {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+  }
+  .post-row {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    gap: 24px;
+    align-items: center;
+    padding: 20px 0;
+    border-top: 1px solid rgba(137,174,151,0.2);
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.2s;
+  }
+  .post-row:last-child {
+    border-bottom: 1px solid rgba(137,174,151,0.2);
+  }
+  .post-row:hover { opacity: 0.75; }
+  .post-thumb {
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    display: block;
+    border: 1px solid rgba(137,174,151,0.2);
+  }
+  .post-date {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #E2EDE6;
+    margin-bottom: 6px;
+  }
+  .post-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-variation-settings: "opsz" 72;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    color: #EDE8D8;
+  }
+  .post-arrow {
+    color: #D4AF37;
+    font-size: 18px;
+    transition: transform 0.2s;
+  }
+  .post-row:hover .post-arrow { transform: translateX(4px); }
+
+  .back-link {
+    display: inline-block;
+    font-size: 14px;
+    color: #D4AF37;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .back-link:hover { opacity: 0.8; }
+
+  @media (max-width: 900px) {
+    .archived-main { padding: 60px 24px; }
+    .post-row { grid-template-columns: 80px 1fr auto; gap: 16px; }
+    .post-thumb { width: 80px; height: 56px; }
+  }
+  @media (max-width: 600px) {
+    .post-row { grid-template-columns: 1fr auto; }
+    .post-thumb { display: none; }
+  }
+</style>

@@ -1,92 +1,146 @@
 ---
-const today = new Date();
+import { Icon } from 'astro-icon/components';
+
+const year = new Date().getFullYear();
+const socials = [
+  {
+    label: 'GitHub',
+    href: 'https://github.com/nathanpickard',
+    icon: 'devicon:github',
+    invert: true,
+  },
+  {
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/in/nathanpickard/',
+    icon: 'devicon:linkedin',
+    invert: false,
+  },
+  {
+    label: 'Bluesky',
+    href: 'https://bsky.app/profile/nathanpickard.bsky.social',
+    icon: 'bluesky',
+    invert: false,
+  },
+  {
+    label: 'X / Twitter',
+    href: 'https://x.com/NathanPickard',
+    icon: 'devicon:twitter',
+    invert: true,
+  },
+  {
+    label: 'Email',
+    href: 'mailto:nathan.pickard87@gmail.com',
+    icon: 'mdi:email-outline',
+    invert: false,
+  },
+];
 ---
 
-<footer>
-  <div class="footer-inner">
-    <div class="footer-left">
-      <span class="footer-name">Nathan Pickard</span>
-      <span class="footer-tagline">Building thoughtful web experiences.</span>
-      <span class="footer-copy">&copy; {today.getFullYear()} &middot; Portland, OR</span>
+<footer class="dark-footer">
+  <div class="dark-footer-grid">
+    <div>
+      <div class="dark-footer-name">Nathan Pickard</div>
+      <div class="dark-footer-sub">Software Engineer · Portland, OR</div>
     </div>
-    <nav class="footer-nav" aria-label="Footer navigation">
-      <a href="/">Home</a>
-      <a href="/blog">Blog</a>
-      <a href="/about">About</a>
-      <a href="/resume">Resume</a>
-    </nav>
+    <div class="dark-footer-links">
+      {
+        socials.map((s) => (
+          <a
+            href={s.href}
+            target={s.href.startsWith('http') ? '_blank' : undefined}
+            rel={s.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+            aria-label={s.label}
+            class="social-link"
+            data-invert={s.invert ? 'true' : undefined}
+          >
+            <Icon name={s.icon} size={24} aria-hidden="true" />
+          </a>
+        ))
+      }
+    </div>
+    <div class="dark-footer-copy">© {year}</div>
   </div>
 </footer>
 
 <style>
-  footer {
-    background: #1c2a22;
-    padding: 3rem 1.5rem;
-    margin-top: 4rem;
+  .dark-footer {
+    background: #162b1b;
+    border-top: 1px solid rgba(137, 174, 151, 0.2);
+    padding: 48px 60px;
+    margin-top: 80px;
   }
-  .footer-inner {
-    max-width: 875px;
+  .dark-footer-grid {
+    max-width: 1240px;
     margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+  }
+  .dark-footer-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-variation-settings: 'opsz' 72;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    color: #ede8d8;
+  }
+  .dark-footer-sub {
+    font-size: 12px;
+    color: #a8c8b4;
+    margin-top: 4px;
+  }
+  .dark-footer-links {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 2rem;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
   }
-  .footer-left {
+  .social-link {
     display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-  .footer-name {
-    font-family: 'Lora', Georgia, serif;
-    font-size: 1rem;
-    font-weight: 700;
-    color: #e8f5ec;
-  }
-  .footer-tagline {
-    font-family: 'Lora', Georgia, serif;
-    font-style: italic;
-    font-size: 0.875rem;
-    color: #86a892;
-  }
-  .footer-copy {
-    font-size: 0.75rem;
-    color: #4a6655;
-    margin-top: 0.25rem;
-  }
-  .footer-nav {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.4rem;
-  }
-  .footer-nav a {
-    font-size: 0.875rem;
-    color: #86a892;
+    align-items: center;
+    justify-content: center;
+    padding: 7px;
+    border-radius: 6px;
+    color: #e2ede6;
     text-decoration: none;
-    transition: color 0.2s;
+    transition:
+      background 0.2s,
+      color 0.2s;
   }
-  .footer-nav a:hover {
-    color: #e8f5ec;
+  .social-link:hover {
+    background: rgba(212, 175, 55, 0.15);
+    color: #ede8d8;
   }
-  @media (max-width: 720px) {
-    footer {
-      margin-top: 2rem;
+  .social-link :global(svg) {
+    transition: transform 0.2s;
+  }
+  .social-link:hover :global(svg) {
+    transform: translateY(-1px);
+  }
+  .social-link[data-invert='true'] :global(svg) {
+    filter: invert(1);
+  }
+  .dark-footer-copy {
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px;
+    color: #a8c8b4;
+    text-align: right;
+  }
+
+  @media (max-width: 900px) {
+    .dark-footer {
+      padding: 32px 24px;
+      margin-top: 48px;
     }
-    .footer-inner {
-      flex-direction: column;
-      gap: 1.5rem;
+    .dark-footer-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
     }
-    .footer-nav {
-      align-items: flex-start;
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 0.5rem 1.25rem;
+    .dark-footer-copy {
+      text-align: left;
     }
-    .footer-nav a {
-      min-height: 44px;
-      display: flex;
-      align-items: center;
+    .dark-footer-links {
+      justify-content: flex-start;
     }
   }
 </style>

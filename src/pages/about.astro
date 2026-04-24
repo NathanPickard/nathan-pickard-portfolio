@@ -1,347 +1,245 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import SectionHeader from '../components/SectionHeader.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
-import { Image } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
-import ProfileImage from '../assets/nathan-pickard-profile.jpg';
+import DarkLayout from '../layouts/DarkLayout.astro';
+import DarkNav from '../components/DarkNav.astro';
+import Footer from '../components/Footer.astro';
+
+const skills = [
+  'TypeScript',
+  'JavaScript',
+  'React',
+  'Angular',
+  'Vue',
+  'Node.js',
+  'Python',
+  'AWS',
+  'Docker',
+  'MongoDB',
+  'Tailwind',
+  'Astro',
+];
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-    <style>
-      main {
-        width: calc(100% - 2em);
-        max-width: 100%;
-        margin: 0;
-        padding: 0;
-      }
+<DarkLayout
+  title="About — Nathan Pickard"
+  description="Senior Full-Stack Engineer based in Portland, OR. Six years building at the intersection of craft and scale."
+>
+  <DarkNav />
 
-      /* ── Hero ── */
-      .about-hero {
-        background: linear-gradient(rgba(216, 234, 220, 0.35), #fafaf8);
-        padding: 3rem 2rem;
-        display: grid;
-        grid-template-columns: auto auto;
-        gap: 2rem;
-        align-items: center;
-        justify-content: center;
-        border-bottom: 1px solid #dde8d8;
-      }
+  <main class="about-main">
+    <div class="about-inner">
 
-      .about-photo {
-        width: 180px;
-        height: auto;
-        border-radius: 12px;
-        border: 3px solid #fff;
-        box-shadow: 0 4px 20px rgba(42, 125, 79, 0.15);
-        display: block;
-      }
+      <!-- Header: full width -->
+      <div class="about-header">
+        <span class="section-label">About</span>
+        <h1 class="about-h1">
+          Craft, curiosity, and coffee<br />- A bit about me
+        </h1>
+      </div>
 
-      .about-hero-text .eyebrow {
-        font-size: 0.875rem;
-        font-weight: 700;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: #2a7d4f;
-        margin-bottom: 0.5rem;
-      }
-
-      .about-hero-text h1 {
-        margin-bottom: 0.5rem;
-      }
-
-      .hero-sub {
-        font-family: 'Lora', Georgia, serif;
-        font-style: italic;
-        color: rgb(var(--gray));
-        margin-bottom: 0;
-      }
-
-      /* ── Prose ── */
-      .prose {
-        width: 800px;
-        max-width: calc(100% - 2em);
-        margin: 0 auto;
-        padding: 3rem 1em;
-        color: rgb(var(--gray-dark));
-      }
-
-      p {
-        margin-bottom: 1em;
-      }
-
-      .about-section {
-        padding: 2rem 0;
-      }
-
-      .about-section > p:last-child {
-        margin-bottom: 0;
-      }
-
-      /* ── Highlight cards ── */
-      .highlight-cards {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-      }
-
-      .highlight-card {
-        background: #fff;
-        border: 1px solid #e8e6e0;
-        border-left: 3px solid #2a7d4f;
-        border-radius: 0 8px 8px 0;
-        padding: 1rem 1.25rem;
-        box-shadow: 0 1px 4px rgba(42, 125, 79, 0.05);
-      }
-
-      .highlight-card-title {
-        font-weight: 700;
-        color: rgb(var(--black));
-        margin-bottom: 0.35rem;
-        font-size: 1rem;
-      }
-
-      .highlight-card-body {
-        font-size: 0.9rem;
-        color: rgb(var(--gray-dark));
-        line-height: 1.6;
-        margin-bottom: 0;
-      }
-
-      /* ── Icon grid ── */
-      .icon-grid {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 2rem;
-        align-items: flex-start;
-      }
-
-      .icon-grid-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.35rem;
-      }
-
-      .icon-grid-item span {
-        font-size: 1rem;
-        text-align: center;
-        line-height: 1.2;
-      }
-
-      @media (max-width: 720px) {
-        .about-hero {
-          grid-template-columns: 1fr;
-          text-align: center;
-          padding: 2rem 1rem;
-        }
-
-        .about-photo {
-          width: 130px;
-          margin: 0 auto;
-        }
-
-        .about-hero-text {
-          text-align: center;
-        }
-
-        .icon-grid {
-          gap: 1rem;
-        }
-
-        .icon-grid-item {
-          flex: 0 0 calc(25% - 0.75rem);
-          max-width: calc(25% - 0.75rem);
-        }
-
-        .icon-grid-item span {
-          font-size: 0.8rem;
-        }
-      }
-    </style>
-  </head>
-
-  <body>
-    <Header />
-    <main>
-      <article>
-        <div class="about-hero">
-          <Image
-            src={ProfileImage}
-            alt="Nathan Pickard profile"
-            class="about-photo"
-            width={180}
-            loading="eager"
-            fetchpriority="high"
-            densities={[1, 2, 3]}
-          />
-          <div class="about-hero-text">
-            <p class="eyebrow">Software Engineer &middot; Portland, OR</p>
-            <h1>Nathan Pickard</h1>
-            <p class="hero-sub">6+ years building at the intersection of craft and scale.</p>
+      <!-- Body: bio left, card right -->
+      <div class="about-body-row">
+        <div class="about-body">
+          <p class="bio">
+            Six years shipping consumer-facing software at the intersection of
+            craft and scale. Most of that time in fintech, where good product
+            decisions help folks take control of their financial health with
+            confidence. Currently in Portland, chasing good trails and better
+            coffee.
+          </p>
+          <p class="bio">
+            I care about the craft. Not just shipping features but understanding
+            why they matter. I read engineering blogs in the morning and usually
+            over a very good cup of pour-over.
+          </p>
+          <div class="about-ctas">
+            <a href="/resume" class="btn-primary">View Resume →</a>
+            <a href="/work" class="btn-ghost">See my work</a>
           </div>
         </div>
 
-        <div class="prose">
-          <div class="about-section">
-            <p>Hi there!</p>
-            <p>
-              I'm Nathan Pickard, a software engineer based in Portland, OR.
-              With 6+ years of experience, I focus on building feature-rich,
-              cutting-edge web and software solutions that bridge the gap
-              between complex architecture and seamless user experiences.
-            </p>
-            <a href="/resume">View Resume<Icon name="mdi:keyboard-arrow-right" /></a>
-          </div>
-
-          <hr />
-
-          <div class="about-section">
-            <SectionHeader title="Career Highlights" />
-            <div class="highlight-cards">
-              <div class="highlight-card">
-                <p class="highlight-card-title">Fintech at Scale</p>
-                <p class="highlight-card-body">
-                  I spent several years deep in the fintech world using Angular, React, and Vue across a 2M+ user platform.
-                  My impact resulted in 23% higher conversion rates, 18% better retention, and a company milestone of $200M in originations.
-                </p>
+        <div class="pnw-card">
+          <div class="pnw-title">Life outside the IDE</div>
+          {
+            [
+              ['mdi:coffee',    'Coffee obsessed'],
+              ['mdi:hiking',    'Hiking in the great outdoors'],
+              ['mdi:pot-steam', 'Home cook, BBQ enthusiast'],
+              ['mdi:pine-tree', 'Portland local, PNW based'],
+            ].map(([icon, text]) => (
+              <div class="pnw-item">
+                <Icon name={icon} size={16} aria-hidden="true" class="pnw-icon" />
+                <span>{text}</span>
               </div>
-              <div class="highlight-card">
-                <p class="highlight-card-title">Shipping Features That Moved the Needle</p>
-                <p class="highlight-card-body">
-                  At Kellton I owned offer and refinancing flows end-to-end across a multi-framework codebase at production scale,
-                  requiring both technical precision and a clear understanding of what customers actually needed.
-                </p>
-              </div>
-              <div class="highlight-card">
-                <p class="highlight-card-title">Recognized for Quality</p>
-                <p class="highlight-card-body">
-                  The products I helped ship earned top marks in J.D. Power's 2025 and 2024 US Consumer Lending Satisfaction study,
-                  recognition that the work held up not just technically, but in the hands of actual customers.
-                </p>
-              </div>
-              <div class="highlight-card">
-                <p class="highlight-card-title">Built for the Portland Startup Scene</p>
-                <p class="highlight-card-body">
-                  At Lazarus Naturals I helped modernize their e-commerce experience and launched their first native app (+24% sales).
-                  At Mental Health Match I improved load times by 28% and grew therapist onboarding by 31% in the first three months after relaunch.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <hr />
-
-          <div class="about-section">
-            <SectionHeader title="My Technical Toolkit" />
-            <p>
-              I specialize in the JavaScript and TypeScript ecosystem. I enjoy
-              working across the full stack to build responsive, accessible, and
-              high-performance applications.
-            </p>
-            <div class="icon-grid">
-              <div class="icon-grid-item">
-                <Icon name="devicon:javascript" size={36} />
-                <span>JavaScript</span>
-              </div>
-              <div class="icon-grid-item">
-                <Icon name="devicon:typescript" size={36} />
-                <span>TypeScript</span>
-              </div>
-              <div class="icon-grid-item">
-                <Icon name="devicon:python" size={36} />
-                <span>Python</span>
-              </div>
-              <div class="icon-grid-item">
-                <Icon name="devicon:angular" size={36} />
-                <span>Angular</span>
-              </div>
-              <div class="icon-grid-item">
-                <Icon name="devicon:react" size={36} />
-                <span>React</span>
-              </div>
-              <div class="icon-grid-item">
-                <Icon name="devicon:vuejs" size={36} />
-                <span>Vue</span>
-              </div>
-              <div class="icon-grid-item">
-                <Icon name="devicon:ngrx" size={36} />
-                <span>NgRx</span>
-              </div>
-              <div class="icon-grid-item">
-                <Icon name="devicon:redux" size={36} />
-                <span>Redux</span>
-              </div>
-              <div class="icon-grid-item">
-                <Icon name="devicon:tailwindcss" size={36} />
-                <span>Tailwind</span>
-              </div>
-              <div class="icon-grid-item">
-                <Icon name="devicon:angularmaterial" size={36} />
-                <span>Angular Material</span>
-              </div>
-              <div class="icon-grid-item">
-                <Icon name="devicon:bootstrap" size={36} />
-                <span>Bootstrap</span>
-              </div>
-              <div class="icon-grid-item">
-                <Icon name="devicon:nodejs" size={36} />
-                <span>Node.js</span>
-              </div>
-              <div class="icon-grid-item">
-                <Icon name="devicon:mongodb" size={36} />
-                <span>MongoDB</span>
-              </div>
-              <div class="icon-grid-item">
-                <Icon name="devicon:mysql" size={36} />
-                <span>MySQL</span>
-              </div>
-              <div class="icon-grid-item">
-                <Icon name="devicon:amazonwebservices" size={36} />
-                <span>AWS</span>
-              </div>
-              <div class="icon-grid-item">
-                <Icon name="devicon:docker" size={36} />
-                <span>Docker</span>
-              </div>
-              <div class="icon-grid-item">
-                <Icon name="devicon:firebase" size={36} />
-                <span>Firebase</span>
-              </div>
-              <div class="icon-grid-item">
-                <Icon name="devicon:datadog" size={36} />
-                <span>Datadog</span>
-              </div>
-              <div class="icon-grid-item">
-                <Icon name="devicon:nginx" size={36} />
-                <span>Nginx</span>
-              </div>
-              <div class="icon-grid-item">
-                <Icon name="devicon:githubcopilot" size={36} />
-                <span>GitHub Copilot</span>
-              </div>
-            </div>
-          </div>
-
-          <hr />
-
-          <div class="about-section">
-            <SectionHeader title="Community" />
-            <p>
-              I'm an active participant in Portland-area tech conferences,
-              software engineering meetups, and hackathons focused on AI and
-              modern web technologies.
-            </p>
-          </div>
+            ))
+          }
         </div>
-      </article>
-    </main>
-    <Footer />
-  </body>
-</html>
+      </div>
+
+      <!-- Skills -->
+      <div class="skills-section">
+        <span class="section-label">Stack</span>
+        <h2 class="skills-h2">The tools I reach for</h2>
+        <div class="skills-wrap">
+          {skills.map((s) => <span class="skill-tag">{s}</span>)}
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <Footer />
+</DarkLayout>
+
+<style>
+  .about-main {
+    padding: 80px 60px;
+  }
+  .about-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #8aae97;
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  /* Full-width header */
+  .about-header {
+    margin-bottom: 40px;
+  }
+  .about-h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-variation-settings: 'opsz' 72;
+    font-size: clamp(32px, 4vw, 52px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0;
+    color: #ede8d8;
+  }
+
+  /* Bio + card side by side */
+  .about-body-row {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 60px;
+    align-items: start;
+    padding-bottom: 80px;
+    margin-bottom: 80px;
+    border-bottom: 1px solid rgba(137, 174, 151, 0.2);
+  }
+  .about-body {
+    min-width: 0;
+  }
+  .bio {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #ede8d8;
+    margin: 0 0 18px;
+  }
+  .about-ctas {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+  .btn-primary {
+    display: inline-block;
+    padding: 13px 26px;
+    background: #d4af37;
+    color: #0d1c10;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-ghost {
+    display: inline-block;
+    padding: 13px 26px;
+    border: 1px solid rgba(137, 174, 151, 0.2);
+    color: #ede8d8;
+    border-radius: 4px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: border-color 0.2s;
+  }
+  .btn-ghost:hover { border-color: #8aae97; }
+
+  /* PNW card */
+  .pnw-card {
+    background: #162b1b;
+    border: 1px solid rgba(137, 174, 151, 0.2);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .pnw-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #e2ede6;
+    font-family: 'Geist Mono', monospace;
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .pnw-item {
+    display: flex;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(137, 174, 151, 0.2);
+    font-size: 13px;
+    color: #e2ede6;
+    align-items: center;
+  }
+  .pnw-item:last-child { border-bottom: 0; }
+  .pnw-icon {
+    color: #8aae97;
+    flex-shrink: 0;
+  }
+
+  /* Skills */
+  .skills-h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-variation-settings: 'opsz' 72;
+    font-size: clamp(24px, 3vw, 40px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0 0 28px;
+    color: #ede8d8;
+  }
+  .skills-wrap {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .skill-tag {
+    padding: 8px 16px;
+    border: 1px solid rgba(137, 174, 151, 0.2);
+    border-radius: 4px;
+    font: 500 13px 'Geist Mono', monospace;
+    color: #e2ede6;
+    transition: border-color 0.2s;
+    cursor: default;
+  }
+  .skill-tag:hover { border-color: #e2ede6; }
+
+  @media (max-width: 900px) {
+    .about-main { padding: 60px 24px; }
+    .about-body-row {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .pnw-card {
+      width: fit-content;
+      min-width: 280px;
+    }
+  }
+</style>

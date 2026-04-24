@@ -1,6 +1,6 @@
 ---
-import { Icon } from 'astro-icon/components';
-const BLUESKY_HANDLE = 'nathanpickard.bsky.social';
+import { Icon } from "astro-icon/components";
+const BLUESKY_HANDLE = "nathanpickard.bsky.social";
 const FEED_LIMIT = 10;
 
 interface EmbedImage {
@@ -43,7 +43,7 @@ interface BlueskyPost {
 
 let feed: BlueskyPost[] = [];
 let fetchError = false;
-let initialCursor = '';
+let initialCursor = "";
 
 try {
   const res = await fetch(
@@ -54,7 +54,7 @@ try {
     feed = (data.feed as BlueskyPost[]).filter(
       (item) => !item.reason, // exclude reposts
     );
-    initialCursor = data.cursor ?? '';
+    initialCursor = data.cursor ?? "";
   } else {
     fetchError = true;
   }
@@ -63,24 +63,24 @@ try {
 }
 
 function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
+  return new Date(dateStr).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
   });
 }
 
 function postUrl(uri: string) {
-  const rkey = uri.split('/').pop();
+  const rkey = uri.split("/").pop();
   return `https://bsky.app/profile/${BLUESKY_HANDLE}/post/${rkey}`;
 }
 ---
 
 <section class="bluesky-feed">
-  <h5 class="feed-heading">
+  <h4 class="feed-heading">
     <Icon name="bluesky" size={24} aria-hidden="true" />
-    Latest from Bluesky
-  </h5>
+    Bluesky
+  </h4>
 
   {fetchError && <p class="feed-error">Could not load posts right now.</p>}
 
@@ -102,11 +102,11 @@ function postUrl(uri: string) {
         feed.map((item) => {
           const embed = item.post.embed;
           const images =
-            embed?.$type === 'app.bsky.embed.images#view'
+            embed?.$type === "app.bsky.embed.images#view"
               ? (embed.images ?? [])
               : [];
           const externalThumb =
-            embed?.$type === 'app.bsky.embed.external#view' &&
+            embed?.$type === "app.bsky.embed.external#view" &&
             embed.external?.thumb
               ? embed.external.thumb
               : null;
@@ -119,6 +119,11 @@ function postUrl(uri: string) {
                 rel="noopener noreferrer"
                 class="post-link"
               >
+                <p class="post-date">
+                  <time datetime={item.post.record.createdAt}>
+                    {formatDate(item.post.record.createdAt)}
+                  </time>
+                </p>
                 <p class="post-text">{item.post.record.text}</p>
 
                 {images.length > 0 && (
@@ -140,7 +145,7 @@ function postUrl(uri: string) {
                   <div class="post-external-thumb">
                     <img
                       src={externalThumb}
-                      alt={embed?.external?.title ?? ''}
+                      alt={embed?.external?.title ?? ""}
                       class="post-img"
                       loading="lazy"
                     />
@@ -148,13 +153,14 @@ function postUrl(uri: string) {
                 )}
 
                 <div class="post-meta">
-                  <time datetime={item.post.record.createdAt}>
-                    {formatDate(item.post.record.createdAt)}
-                  </time>
                   <span class="post-stats">
                     {item.post.replyCount !== undefined && (
                       <span title="Replies" class="stat stat-reply">
-                        <Icon name="mdi:message-outline" size={14} aria-hidden="true" />
+                        <Icon
+                          name="mdi:message-outline"
+                          size={14}
+                          aria-hidden="true"
+                        />
                         {item.post.replyCount}
                       </span>
                     )}
@@ -166,7 +172,11 @@ function postUrl(uri: string) {
                     )}
                     {item.post.likeCount !== undefined && (
                       <span title="Likes" class="stat stat-like">
-                        <Icon name="mdi:heart-outline" size={14} aria-hidden="true" />
+                        <Icon
+                          name="mdi:heart-outline"
+                          size={14}
+                          aria-hidden="true"
+                        />
                         {item.post.likeCount}
                       </span>
                     )}
@@ -195,29 +205,29 @@ function postUrl(uri: string) {
 </section>
 
 <script>
-  const scrollEl = document.getElementById('feed-scroll') as HTMLDivElement;
-  const list = document.getElementById('bluesky-posts') as HTMLUListElement;
-  const sentinel = document.getElementById('feed-sentinel')!;
+  const scrollEl = document.getElementById("feed-scroll") as HTMLDivElement;
+  const list = document.getElementById("bluesky-posts") as HTMLUListElement;
+  const sentinel = document.getElementById("feed-sentinel")!;
   const loadingEl = document.getElementById(
-    'feed-loading',
+    "feed-loading",
   ) as HTMLParagraphElement;
-  const endEl = document.getElementById('feed-end') as HTMLParagraphElement;
+  const endEl = document.getElementById("feed-end") as HTMLParagraphElement;
 
   const HANDLE = list.dataset.handle!;
   const LIMIT = list.dataset.limit!;
-  let cursor = list.dataset.cursor ?? '';
+  let cursor = list.dataset.cursor ?? "";
   let loading = false;
 
   function formatDate(dateStr: string) {
-    return new Date(dateStr).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
+    return new Date(dateStr).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
     });
   }
 
   function postUrl(uri: string) {
-    const rkey = uri.split('/').pop();
+    const rkey = uri.split("/").pop();
     return `https://bsky.app/profile/${HANDLE}/post/${rkey}`;
   }
 
@@ -227,60 +237,66 @@ function postUrl(uri: string) {
       .slice(0, 4)
       .map(
         (img) =>
-          `<img src="${img.thumb}" alt="${img.alt.replace(/"/g, '&quot;')}" class="post-img" loading="lazy" />`,
+          `<img src="${img.thumb}" alt="${img.alt.replace(/"/g, "&quot;")}" class="post-img" loading="lazy" />`,
       )
-      .join('');
+      .join("");
     return `<div class="post-images count-${count}">${imgs}</div>`;
   }
 
   function iconSvg(path: string) {
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true" class="stat-icon">${path}</svg>`;
   }
-  const ICON_REPLY = iconSvg('<path d="M9 22a1 1 0 0 1-1-1v-3H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6.1l-3.7 3.71c-.2.18-.45.29-.7.29H9m1-6v3.08L13.08 16H20V4H4v12h6z"/>');
-  const ICON_REPOST = iconSvg('<path d="M6 5.75L10.25 10H7v6h6.5l2 2H7a2 2 0 0 1-2-2v-6H1.75L6 5.75M18 18.25L13.75 14H17V8h-6.5l-2-2H17a2 2 0 0 1 2 2v6h3.25L18 18.25z"/>');
-  const ICON_LIKE = iconSvg('<path d="M12.1 18.55l-.1.1-.11-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04 1 3.57 2.36h1.86C13.46 6 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05M16.5 3c-1.74 0-3.41.81-4.5 2.08C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.41 2 8.5c0 3.77 3.4 6.86 8.55 11.53L12 21.35l1.45-1.32C18.6 15.36 22 12.27 22 8.5 22 5.41 19.58 3 16.5 3z"/>');
+  const ICON_REPLY = iconSvg(
+    '<path d="M9 22a1 1 0 0 1-1-1v-3H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6.1l-3.7 3.71c-.2.18-.45.29-.7.29H9m1-6v3.08L13.08 16H20V4H4v12h6z"/>',
+  );
+  const ICON_REPOST = iconSvg(
+    '<path d="M6 5.75L10.25 10H7v6h6.5l2 2H7a2 2 0 0 1-2-2v-6H1.75L6 5.75M18 18.25L13.75 14H17V8h-6.5l-2-2H17a2 2 0 0 1 2 2v6h3.25L18 18.25z"/>',
+  );
+  const ICON_LIKE = iconSvg(
+    '<path d="M12.1 18.55l-.1.1-.11-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04 1 3.57 2.36h1.86C13.46 6 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05M16.5 3c-1.74 0-3.41.81-4.5 2.08C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.41 2 8.5c0 3.77 3.4 6.86 8.55 11.53L12 21.35l1.45-1.32C18.6 15.36 22 12.27 22 8.5 22 5.41 19.58 3 16.5 3z"/>',
+  );
 
   function buildPostHtml(item: any) {
     const embed = item.post.embed;
     const images =
-      embed?.$type === 'app.bsky.embed.images#view' ? (embed.images ?? []) : [];
+      embed?.$type === "app.bsky.embed.images#view" ? (embed.images ?? []) : [];
     const externalThumb =
-      embed?.$type === 'app.bsky.embed.external#view' && embed.external?.thumb
+      embed?.$type === "app.bsky.embed.external#view" && embed.external?.thumb
         ? embed.external.thumb
         : null;
 
     const text = item.post.record.text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
 
-    const imagesHtml = images.length > 0 ? buildImagesHtml(images) : '';
+    const imagesHtml = images.length > 0 ? buildImagesHtml(images) : "";
     const externalHtml =
       externalThumb && images.length === 0
-        ? `<div class="post-external-thumb"><img src="${externalThumb}" alt="${(embed?.external?.title ?? '').replace(/"/g, '&quot;')}" class="post-img" loading="lazy" /></div>`
-        : '';
+        ? `<div class="post-external-thumb"><img src="${externalThumb}" alt="${(embed?.external?.title ?? "").replace(/"/g, "&quot;")}" class="post-img" loading="lazy" /></div>`
+        : "";
 
     const replies =
       item.post.replyCount != null
         ? `<span title="Replies" class="stat stat-reply">${ICON_REPLY} ${item.post.replyCount}</span>`
-        : '';
+        : "";
     const reposts =
       item.post.repostCount != null
         ? `<span title="Reposts" class="stat stat-repost">${ICON_REPOST} ${item.post.repostCount}</span>`
-        : '';
+        : "";
     const likes =
       item.post.likeCount != null
         ? `<span title="Likes" class="stat stat-like">${ICON_LIKE} ${item.post.likeCount}</span>`
-        : '';
+        : "";
 
     return `
       <li class="post">
         <a href="${postUrl(item.post.uri)}" target="_blank" rel="noopener noreferrer" class="post-link">
+          <p class="post-date"><time datetime="${item.post.record.createdAt}">${formatDate(item.post.record.createdAt)}</time></p>
           <p class="post-text">${text}</p>
           ${imagesHtml}
           ${externalHtml}
           <div class="post-meta">
-            <time datetime="${item.post.record.createdAt}">${formatDate(item.post.record.createdAt)}</time>
             <span class="post-stats">${replies}${reposts}${likes}</span>
           </div>
         </a>
@@ -296,16 +312,16 @@ function postUrl(uri: string) {
     try {
       const url = `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=${HANDLE}&limit=${LIMIT}&filter=posts_no_replies&cursor=${encodeURIComponent(cursor)}`;
       const res = await fetch(url);
-      if (!res.ok) throw new Error('fetch failed');
+      if (!res.ok) throw new Error("fetch failed");
 
       const data = await res.json();
       const posts = (data.feed as any[]).filter((item) => !item.reason);
 
       posts.forEach((item) => {
-        list.insertAdjacentHTML('beforeend', buildPostHtml(item));
+        list.insertAdjacentHTML("beforeend", buildPostHtml(item));
       });
 
-      cursor = data.cursor ?? '';
+      cursor = data.cursor ?? "";
       if (!cursor) {
         endEl.hidden = false;
         observer?.disconnect();
@@ -325,7 +341,7 @@ function postUrl(uri: string) {
       (entries) => {
         if (entries[0].isIntersecting) loadMore();
       },
-      { root: scrollEl, rootMargin: '200px' },
+      { root: scrollEl, rootMargin: "200px" },
     );
     observer.observe(sentinel);
   } else {
@@ -374,7 +390,7 @@ function postUrl(uri: string) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.85rem;
   }
 
   :global(.post) {
@@ -464,8 +480,13 @@ function postUrl(uri: string) {
   :global(.post-meta) {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     font-size: 0.8em;
+    color: rgb(var(--gray));
+  }
+
+  :global(.post-date) {
+    margin: 0 0 0.4rem 0;
+    font-size: 0.78em;
     color: rgb(var(--gray));
   }
 
@@ -486,9 +507,15 @@ function postUrl(uri: string) {
     flex-shrink: 0;
   }
 
-  :global(.stat-reply) { color: #0085ff; }
-  :global(.stat-repost) { color: #22c55e; }
-  :global(.stat-like) { color: #f43f5e; }
+  :global(.stat-reply) {
+    color: #8aae97;
+  }
+  :global(.stat-repost) {
+    color: #8aae97;
+  }
+  :global(.stat-like) {
+    color: #8aae97;
+  }
 
   .view-all {
     display: inline-block;

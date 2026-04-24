@@ -1,0 +1,308 @@
+---
+import { Icon } from "astro-icon/components";
+
+const currentPath = Astro.url.pathname;
+const links = [
+  { href: "/work", label: "Work" },
+  { href: "/blog", label: "Blog" },
+  { href: "/about", label: "About" },
+  { href: "/resume", label: "Resume" },
+];
+
+const socials = [
+  {
+    href: "https://github.com/nathanpickard",
+    label: "GitHub",
+    icon: "devicon:github",
+    invert: true,
+  },
+  {
+    href: "https://www.linkedin.com/in/nathanpickard/",
+    label: "LinkedIn",
+    icon: "devicon:linkedin",
+    invert: false,
+  },
+  {
+    href: "https://bsky.app/profile/nathanpickard.bsky.social",
+    label: "Bluesky",
+    icon: "bluesky",
+    invert: false,
+  },
+  {
+    href: "https://x.com/NathanPickard",
+    label: "X / Twitter",
+    icon: "devicon:twitter",
+    invert: true,
+  },
+];
+---
+
+<div class="dark-header-main-border">
+  <div class="dark-header-main">
+    <a href="/" class="dark-wordmark">Nathan Pickard</a>
+
+    <!-- Desktop nav -->
+    <nav class="dark-nav" aria-label="Main navigation">
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            class={currentPath.startsWith(l.href) ? "active" : ""}
+          >
+            {l.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <!-- Desktop social links -->
+    <div class="dark-social-links">
+      {
+        socials.map((s) => (
+          <a
+            href={s.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={s.label}
+            class="social-link"
+            data-invert={s.invert ? "true" : undefined}
+          >
+            <Icon name={s.icon} size={24} aria-hidden="true" />
+          </a>
+        ))
+      }
+    </div>
+
+    <!-- Hamburger button (mobile only) -->
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+      <Icon name="mdi:menu" size={24} class="icon-open" aria-hidden="true" />
+      <Icon name="mdi:close" size={24} class="icon-close" aria-hidden="true" />
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <nav class="mobile-nav" aria-label="Mobile navigation">
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            class={currentPath.startsWith(l.href) ? "active" : ""}
+          >
+            {l.label}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="mobile-socials">
+      {
+        socials.map((s) => (
+          <a
+            href={s.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={s.label}
+            class="social-link"
+            data-invert={s.invert ? "true" : undefined}
+          >
+            <Icon name={s.icon} size={22} aria-hidden="true" />
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<script>
+  const btn = document.querySelector(".hamburger") as HTMLButtonElement;
+  const menu = document.querySelector(".mobile-menu") as HTMLDivElement;
+
+  btn?.addEventListener("click", () => {
+    const isOpen = menu.classList.toggle("open");
+    btn.setAttribute("aria-expanded", String(isOpen));
+    menu.setAttribute("aria-hidden", String(!isOpen));
+  });
+
+  // Close menu when a link is clicked
+  menu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      menu.classList.remove("open");
+      btn?.setAttribute("aria-expanded", "false");
+      menu.setAttribute("aria-hidden", "true");
+    });
+  });
+</script>
+
+<style>
+  .dark-header-main-border {
+    border-bottom: 1px solid rgba(137, 174, 151, 0.2);
+    position: relative;
+  }
+  .dark-header-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 60px;
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+  .dark-wordmark {
+    font-family: "Fraunces", serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.04em;
+    color: #ede8d8;
+    text-decoration: none;
+    font-variation-settings: "opsz" 72;
+    white-space: nowrap;
+  }
+
+  /* Desktop nav */
+  .dark-nav {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+  .dark-nav a {
+    color: #E2EDE6;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.2s;
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+  }
+  .dark-nav a:hover,
+  .dark-nav a.active {
+    color: #ede8d8;
+    border-bottom-color: #d4af37;
+  }
+
+  /* Desktop social links */
+  .dark-social-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px;
+    border-radius: 6px;
+    border-bottom: none !important;
+    transition: background 0.2s;
+    text-decoration: none;
+    color: #E2EDE6;
+  }
+  .social-link:hover {
+    background: rgba(212, 175, 55, 0.15);
+  }
+  .social-link :global(svg) {
+    transition: transform 0.2s;
+  }
+  .social-link:hover :global(svg) {
+    transform: translateY(-1px);
+  }
+  .social-link[data-invert="true"] :global(svg) {
+    filter: invert(1);
+  }
+
+  /* Hamburger */
+  .hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    color: #ede8d8;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: background 0.2s;
+  }
+  .hamburger:hover {
+    background: rgba(137, 174, 151, 0.1);
+  }
+  .icon-close { display: none; }
+  .hamburger[aria-expanded="true"] .icon-open { display: none; }
+  .hamburger[aria-expanded="true"] .icon-close { display: flex; }
+
+  /* Mobile menu */
+  .mobile-menu {
+    display: none;
+    flex-direction: column;
+    background: #0d1c10;
+    border-top: 1px solid rgba(137, 174, 151, 0.2);
+    padding: 0;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.25s ease, padding 0.25s ease;
+  }
+  .mobile-menu.open {
+    max-height: 400px;
+    padding: 8px 0 16px;
+  }
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+  }
+  .mobile-nav a {
+    padding: 14px 24px;
+    font-size: 16px;
+    color: #E2EDE6;
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: border-color 0.15s, background 0.15s;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .mobile-nav a:hover,
+  .mobile-nav a.active {
+    border-left-color: #d4af37;
+    background: rgba(137, 174, 151, 0.06);
+  }
+  .mobile-socials {
+    display: flex;
+    gap: 4px;
+    padding: 12px 20px 4px;
+    border-top: 1px solid rgba(137, 174, 151, 0.15);
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  .mobile-socials .social-link {
+    gap: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #8aae97;
+    border-radius: 6px;
+  }
+  .mobile-socials .social-link span {
+    font-size: 13px;
+  }
+
+  @media (max-width: 900px) {
+    .dark-header-main {
+      padding: 16px 24px;
+    }
+    .dark-wordmark {
+      font-size: 17px;
+    }
+    .dark-nav {
+      gap: 16px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .dark-nav,
+    .dark-social-links {
+      display: none;
+    }
+    .hamburger {
+      display: flex;
+    }
+    .mobile-menu {
+      display: flex;
+    }
+  }
+</style>

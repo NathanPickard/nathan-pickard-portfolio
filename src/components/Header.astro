@@ -1,7 +1,7 @@
 ---
-import { SITE_TITLE } from '../consts';
-import HeaderLink from './HeaderLink.astro';
-import { Icon } from 'astro-icon/components';
+import { SITE_TITLE } from "../consts";
+import HeaderLink from "./HeaderLink.astro";
+import { Icon } from "astro-icon/components";
 ---
 
 <header>
@@ -27,7 +27,10 @@ import { Icon } from 'astro-icon/components';
           <span class="sr-only">Go to Nathan's GitHub</span>
           <Icon name="devicon:github" size={24} />
         </a>
-        <a href="https://bsky.app/profile/nathanpickard.bsky.social" target="_blank">
+        <a
+          href="https://bsky.app/profile/nathanpickard.bsky.social"
+          target="_blank"
+        >
           <span class="sr-only">Follow Nathan Pickard on Bluesky</span>
           <Icon name="bluesky" size={24} />
         </a>
@@ -41,12 +44,12 @@ import { Icon } from 'astro-icon/components';
 </header>
 
 <script>
-  const btn = document.querySelector('.hamburger') as HTMLButtonElement;
-  const menu = document.querySelector('.nav-menu') as HTMLDivElement;
+  const btn = document.querySelector(".hamburger") as HTMLButtonElement;
+  const menu = document.querySelector(".nav-menu") as HTMLDivElement;
 
-  btn.addEventListener('click', () => {
-    const isOpen = menu.classList.toggle('open');
-    btn.setAttribute('aria-expanded', String(isOpen));
+  btn.addEventListener("click", () => {
+    const isOpen = menu.classList.toggle("open");
+    btn.setAttribute("aria-expanded", String(isOpen));
   });
 </script>
 
@@ -111,10 +114,10 @@ import { Icon } from 'astro-icon/components';
   .icon-close {
     display: none;
   }
-  .hamburger[aria-expanded='true'] .icon-open {
+  .hamburger[aria-expanded="true"] .icon-open {
     display: none;
   }
-  .hamburger[aria-expanded='true'] .icon-close {
+  .hamburger[aria-expanded="true"] .icon-close {
     display: flex;
   }
 
@@ -155,7 +158,9 @@ import { Icon } from 'astro-icon/components';
       font-size: 1.05em;
       border-bottom: 1px solid rgb(var(--gray-light));
       border-left: 3px solid transparent;
-      transition: border-left-color 0.15s ease, background-color 0.15s ease;
+      transition:
+        border-left-color 0.15s ease,
+        background-color 0.15s ease;
       min-height: 44px;
       display: flex;
       align-items: center;

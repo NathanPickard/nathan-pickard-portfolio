@@ -1,0 +1,256 @@
+---
+import DarkLayout from '../layouts/DarkLayout.astro';
+import DarkNav from '../components/DarkNav.astro';
+import Footer from '../components/Footer.astro';
+
+const work = [
+  {
+    co: "Kellton", client: "Best Egg (fintech)", role: "Senior Software Engineer",
+    period: "2020 – 2025",
+    blurb: "Owned offer and refinancing flows across Angular, React, and Vue for a 2M+ user consumer lending platform. The UI work contributed to J.D. Power #1 rankings in 2024 and 2025.",
+    stack: ["Angular", "React", "Vue", "TypeScript", "NgRx"],
+    wins: ["+23% conversion", "$200M originations", "J.D. Power #1"],
+  },
+  {
+    co: "Lazarus Naturals", client: "Wellness DTC", role: "Frontend Developer",
+    period: "2020",
+    blurb: "Shipped the company's first native app, launched three new product categories, and modernized the e-commerce storefront during a period of fast expansion.",
+    stack: ["React", "Node.js", "Shopify"],
+    wins: ["+24% native-app sales", "+32% MoM traffic"],
+  },
+  {
+    co: "Mental Health Match", client: "Healthtech", role: "Angular Developer",
+    period: "2019",
+    blurb: "Worked with the CTO and CEO to rebuild therapist-matching onboarding. Reduced load time 28%, grew therapist signups 31% in three months.",
+    stack: ["Angular", "AWS", "Firebase"],
+    wins: ["+35% conversion", "+31% therapist onboarding", "−28% load time"],
+  },
+  {
+    co: "Freelance", client: "", role: "Web Developer",
+    period: "2017 – 2019",
+    blurb: "Early-stage product work, small-business sites, and internal tools across the JS/TS stack.",
+    stack: ["JavaScript", "Angular", "Node.js", "AWS"],
+    wins: [],
+  },
+];
+---
+
+<DarkLayout title="Work — Nathan Pickard" description="Six years shipping consumer-facing software in fintech, wellness, and healthtech.">
+  <DarkNav />
+
+  <main class="work-main">
+    <div class="work-inner">
+      <div class="work-header">
+        <span class="section-label">Work History</span>
+        <h1 class="work-h1">From idea to impact</h1>
+        <p class="work-sub">Work that ships and results that stick</p>
+      </div>
+
+      <div class="work-grid" id="work-grid">
+        <!-- Tabs -->
+        <div class="work-tabs" role="tablist" aria-label="Work history">
+          {work.map((w, i) => (
+            <button
+              class={`work-tab${i === 0 ? ' active' : ''}`}
+              role="tab"
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-controls={`panel-${i}`}
+              id={`tab-${i}`}
+              data-index={i}
+            >
+              <div class="tab-co">{w.co}</div>
+              <div class="tab-period">{w.period}</div>
+            </button>
+          ))}
+        </div>
+
+        <!-- Panels -->
+        <div class="work-panels">
+          {work.map((w, i) => (
+            <div
+              class={`work-panel${i === 0 ? ' active' : ''}`}
+              role="tabpanel"
+              id={`panel-${i}`}
+              aria-labelledby={`tab-${i}`}
+            >
+              <div class="detail-role">{w.role}</div>
+              {w.client && <div class="detail-client">{w.client}</div>}
+              <p class="detail-blurb">{w.blurb}</p>
+              {w.wins.length > 0 && (
+                <div class="detail-wins">
+                  {w.wins.map(win => <span class="win">{win}</span>)}
+                </div>
+              )}
+              <div class="detail-stack">
+                {w.stack.map(s => <span class="pill">{s}</span>)}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</DarkLayout>
+
+<script>
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.work-tab');
+  const panels = document.querySelectorAll<HTMLDivElement>('.work-panel');
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const idx = Number(tab.dataset.index);
+      tabs.forEach((t, i) => {
+        t.classList.toggle('active', i === idx);
+        t.setAttribute('aria-selected', String(i === idx));
+      });
+      panels.forEach((p, i) => p.classList.toggle('active', i === idx));
+    });
+  });
+</script>
+
+<style>
+  .work-main {
+    padding: 80px 60px;
+  }
+  .work-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+  .work-header {
+    margin-bottom: 48px;
+  }
+  .section-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #8AAE97;
+    display: block;
+    margin-bottom: 16px;
+  }
+  .work-h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-variation-settings: "opsz" 72;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin: 0 0 12px;
+    color: #E2EDE6;
+  }
+  .work-sub {
+    font-size: 16px;
+    color: #E2EDE6;
+    margin: 0;
+  }
+
+  .work-grid {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    border: 1px solid rgba(137,174,151,0.2);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .work-tabs {
+    border-right: 1px solid rgba(137,174,151,0.2);
+  }
+  .work-tab {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(137,174,151,0.2);
+    padding: 20px 24px;
+    text-align: left;
+    cursor: pointer;
+    transition: background .15s;
+    color: #EDE8D8;
+  }
+  .work-tab:last-child { border-bottom: 0; }
+  .work-tab:hover { background: rgba(255,255,255,.04); }
+  .work-tab.active {
+    background: #162B1B;
+    border-left: 3px solid #D4AF37;
+  }
+  .tab-co {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-variation-settings: "opsz" 72;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    color: #EDE8D8;
+  }
+  .tab-period {
+    font-size: 11px;
+    font-family: 'Geist Mono', monospace;
+    color: #A8C8B4;
+    margin-top: 4px;
+  }
+
+  .work-panels { background: #162B1B; }
+  .work-panel { display: none; padding: 36px; }
+  .work-panel.active { display: block; }
+
+  .detail-role {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 4px;
+    color: #EDE8D8;
+  }
+  .detail-client {
+    font-size: 12px;
+    font-family: 'Geist Mono', monospace;
+    color: #A8C8B4;
+    margin-bottom: 20px;
+  }
+  .detail-blurb {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #E2EDE6;
+    margin: 0 0 24px;
+    max-width: 560px;
+  }
+  .detail-wins {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .win {
+    background: rgba(212,175,55,.15);
+    color: #D4AF37;
+    padding: 5px 14px;
+    border-radius: 999px;
+    font: 500 12px 'Geist Mono', monospace;
+  }
+  .detail-stack { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border: 1px solid rgba(137,174,151,0.2);
+    border-radius: 999px;
+    font: 500 12px 'Geist Mono', monospace;
+    color: #D9D0BC;
+  }
+
+  @media (max-width: 900px) {
+    .work-main { padding: 60px 24px; }
+    .work-grid { grid-template-columns: 1fr; }
+    .work-tabs {
+      display: flex;
+      overflow-x: auto;
+      border-right: 0;
+      border-bottom: 1px solid rgba(137,174,151,0.2);
+    }
+    .work-tab {
+      min-width: 160px;
+      border-bottom: 0;
+      border-right: 1px solid rgba(137,174,151,0.2);
+    }
+    .work-tab.active {
+      border-left: 0;
+      border-bottom: 3px solid #D4AF37;
+    }
+  }
+</style>

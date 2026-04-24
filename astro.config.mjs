@@ -24,6 +24,20 @@ export default defineConfig({
     sitemap(),
     icon({
       include: {
+        mdi: [
+          'coffee',
+          'hiking',
+          'pot-steam',
+          'pine-tree',
+          'download',
+          'email-outline',
+          'message-outline',
+          'repeat',
+          'heart-outline',
+          'menu',
+          'close',
+        ],
+        devicon: ['*'],
         local: ['src/icons'],
       },
     }),
