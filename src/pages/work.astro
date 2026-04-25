@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components';
 import DarkLayout from '../layouts/DarkLayout.astro';
 import DarkNav from '../components/DarkNav.astro';
 import Footer from '../components/Footer.astro';
@@ -75,6 +76,66 @@ const work = [
     wins: [],
   },
 ];
+
+// Keywords to skip entirely in the icon grid (no tile rendered)
+const skipTiles = new Set(['Less', 'Wordpress']);
+
+// Display label overrides for the icon grid
+const labelOverrides: Record<string, string> = {
+  'AWS (Lambda, S3, API Gateway)': 'Amazon Web Services',
+  'AWS': 'AWS',
+};
+
+// Map skill keywords to devicon names
+const iconMap: Record<string, string | null> = {
+  'JavaScript':           'devicon:javascript',
+  'TypeScript':           'devicon:typescript',
+  'Angular':              'devicon:angular',
+  'React':                'devicon:react',
+  'Vue':                  'devicon:vuejs',
+  'Node.js':              'devicon:nodejs',
+  'Python':               'devicon:python-wordmark',
+  'Django':               'devicon:python',
+  'NgRx':                 'devicon:redux',
+  'Redux':                'devicon:redux',
+  'Tailwind':             'devicon:tailwindcss',
+  'Angular Material':     'devicon:angularmaterial',
+  'HTML5':                'devicon:html5',
+  'CSS':                  'devicon:css3',
+  'SCSS':                 'devicon:sass',
+  'Less':                 null,
+  'Bootstrap':            'devicon:bootstrap',
+  'AWS (Lambda, S3, API Gateway)': 'devicon:amazonwebservices',
+  'AWS':                  'devicon:amazonwebservices',
+  'Docker':               'devicon:docker',
+  'MongoDB':              'devicon:mongodb',
+  'MySQL':                'devicon:mysql',
+  'Datadog':              'devicon:datadog',
+  'FullStory':            null,
+  'Nginx':                'devicon:nginx',
+  'GitHub Actions CI/CD': 'devicon:github',
+  'Ansible':              'devicon:ansible',
+  'Karma':                'devicon:karma',
+  'Jasmine':              'devicon:jasmine',
+  'Jest':                 null,
+  'Vitest':               'devicon:vitest',
+  'pytest':               'devicon:pytest',
+  'Mocha':                'devicon:mocha',
+  'Chai':                 null,
+  'Firebase':             'devicon:firebase',
+  'GitHub Copilot':       'devicon:github',
+  'Claude Code (Anthropic API)': null,
+  'Gemini':               null,
+  'OpenAI API':           null,
+  'Cursor':               null,
+  'Kiro':                 null,
+  'Software architecture': null,
+  'Fintech':              null,
+  'Accessibility/WCAG':   null,
+  'AI implementation':    null,
+  'UI/UX optimization':   null,
+  'A/B tests':            null,
+};
 ---
 
 <DarkLayout
@@ -132,9 +193,19 @@ const work = [
                   </div>
                 )}
                 <div class="detail-stack">
-                  {w.stack.map((s) => (
-                    <span class="pill">{s}</span>
-                  ))}
+                  {w.stack.filter((s) => !skipTiles.has(s)).map((s) => {
+                    const icon = iconMap[s];
+                    return (
+                      <div class="skill-icon-tile">
+                        {icon ? (
+                          <Icon name={icon} size={28} aria-hidden="true" class="skill-icon" />
+                        ) : (
+                          <span class="skill-icon-fallback" aria-hidden="true">✦</span>
+                        )}
+                        <span class="skill-icon-label">{labelOverrides[s] ?? s}</span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             ))
@@ -150,11 +221,31 @@ const work = [
             skills.map((cat) => (
               <div class="skill-category">
                 <h3 class="skill-cat-name">{cat.name}</h3>
-                <div class="skill-pills">
-                  {cat.keywords.map((kw) => (
-                    <span class="pill">{kw}</span>
-                  ))}
-                </div>
+                {cat.name === 'Specializations' || cat.name === 'AI Models & Tools' ? (
+                  <div class="spec-pills">
+                    {cat.keywords.map((kw) => (
+                      <span class="spec-pill">{kw}</span>
+                    ))}
+                  </div>
+                ) : (
+                  <div class="skill-icons">
+                    {cat.keywords
+                      .filter((kw) => !skipTiles.has(kw))
+                      .map((kw) => {
+                        const icon = iconMap[kw];
+                        return (
+                          <div class="skill-icon-tile">
+                            {icon ? (
+                              <Icon name={icon} size={28} aria-hidden="true" class="skill-icon" />
+                            ) : (
+                              <span class="skill-icon-fallback" aria-hidden="true">✦</span>
+                            )}
+                            <span class="skill-icon-label">{labelOverrides[kw] ?? kw}</span>
+                          </div>
+                        );
+                      })}
+                  </div>
+                )}
               </div>
             ))
           }
@@ -405,6 +496,68 @@ const work = [
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
+  }
+  .skill-icons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .skill-icon-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 10px;
+    background: #f0ede4;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    min-width: 72px;
+    width: max-content;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: default;
+  }
+  .skill-icon-tile:hover {
+    border-color: rgba(0, 0, 0, 0.2);
+    background: #e8e4da;
+  }
+  .skill-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+  .skill-icon-fallback {
+    font-size: 18px;
+    color: #4a7a5a;
+    line-height: 28px;
+    display: block;
+    text-align: center;
+    width: 28px;
+    height: 28px;
+  }
+  .skill-icon-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px;
+    color: #1a2e1e;
+    text-align: center;
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+  /* Specializations / AI tools pills */
+  .spec-pills {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .spec-pill {
+    padding: 7px 16px;
+    border: 1px solid rgba(137, 174, 151, 0.3);
+    border-radius: 999px;
+    font: 500 13px 'Geist Mono', monospace;
+    color: #f0ece0;
+    transition: border-color 0.2s;
+  }
+  .spec-pill:hover {
+    border-color: rgba(137, 174, 151, 0.6);
   }
 
   /* Community section */
