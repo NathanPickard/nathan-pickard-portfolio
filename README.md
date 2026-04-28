@@ -19,6 +19,8 @@ npm install          # install dependencies
 npm run dev          # start development server
 npm run build        # produce static files in dist/
 npm run preview      # locally preview the production build
+npm test             # run Vitest unit/integration tests
+npm run test:e2e     # build + run Playwright smoke tests
 ```
 
 ## 🛠 Adding content or icons

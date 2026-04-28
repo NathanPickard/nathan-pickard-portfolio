@@ -19,7 +19,7 @@ const work = [
   },
   {
     co: 'Kellton',
-    client: 'Best Egg (fintech)',
+    client: 'Best Egg (Fintech)',
     role: 'Senior Software Engineer',
     period: '2020 – 2025',
     blurb:
@@ -714,6 +714,11 @@ const iconMap: Record<string, string | null> = {
     border: 1px solid rgba(137, 174, 151, 0.2);
     border-radius: 10px;
     overflow: hidden;
+  }
+  @media (min-width: 700px) {
+    .work-accordion {
+      display: none !important;
+    }
   }
   .accordion-item {
     border-bottom: 1px solid rgba(137, 174, 151, 0.2);
