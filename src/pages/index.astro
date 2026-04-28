@@ -116,10 +116,10 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
   }
   .hero-inner {
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 280px auto;
     gap: 60px;
     align-items: center;
-    max-width: 1240px;
+    max-width: 860px;
     margin: 0 auto;
     position: relative;
   }
@@ -135,9 +135,9 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     font-family: var(--font-fraunces);
     font-weight: 400;
     font-variation-settings: 'opsz' 144;
-    font-size: clamp(48px, 7vw, 120px);
+    font-size: var(--text-display);
     line-height: 1;
-    letter-spacing: -0.04em;
+    letter-spacing: var(--tracking-display);
     margin: 0 0 32px;
     color: #e2ede6;;
     white-space: nowrap;
@@ -216,9 +216,9 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     font-family: var(--font-fraunces);
     font-weight: 400;
     font-variation-settings: 'opsz' 72;
-    font-size: clamp(28px, 3.5vw, 44px);
+    font-size: var(--text-h2);
     line-height: 1.05;
-    letter-spacing: -0.025em;
+    letter-spacing: var(--tracking-sub);
     margin: 0;
     color: #ede8d8;
   }
@@ -236,7 +236,9 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
   }
   :global(.github-feed .repo-grid) {
     height: 640px;
+    overflow-x: visible;
     overflow-y: auto;
+    padding-top: 4px;
     scrollbar-width: thin;
     scrollbar-color: rgba(137,174,151,0.3) transparent;
   }

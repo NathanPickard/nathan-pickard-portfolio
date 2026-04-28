@@ -400,9 +400,9 @@ const panelConfig = [
     font-family: var(--font-fraunces);
     font-weight: 400;
     font-variation-settings: 'opsz' 72;
-    font-size: clamp(32px, 4vw, 52px);
+    font-size: var(--text-h1);
     line-height: 1;
-    letter-spacing: -0.03em;
+    letter-spacing: var(--tracking-heading);
     margin: 0 0 12px;
     color: #e2ede6;
   }
@@ -638,9 +638,9 @@ const panelConfig = [
     font-family: var(--font-fraunces);
     font-weight: 400;
     font-variation-settings: 'opsz' 72;
-    font-size: clamp(28px, 3.5vw, 44px);
+    font-size: var(--text-h2);
     line-height: 1.05;
-    letter-spacing: -0.025em;
+    letter-spacing: var(--tracking-sub);
     margin: 0 0 40px;
     color: #e2ede6;
   }
@@ -683,7 +683,7 @@ const panelConfig = [
   .bento-panel-heading {
     font-family: var(--font-geist-mono);
     font-size: 11px;
-    letter-spacing: 0.15em;
+    letter-spacing: var(--tracking-label);
     text-transform: uppercase;
     color: var(--accent);
     margin: 0 0 16px;

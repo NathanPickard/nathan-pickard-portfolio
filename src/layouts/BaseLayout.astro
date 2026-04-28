@@ -73,13 +73,38 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
 </html>
 
 <style is:global>
+  :root {
+    /* ── Type scale ── */
+    --text-display: clamp(40px, 5.5vw, 80px);
+    --text-h1: clamp(32px, 4.5vw, 56px);
+    --text-h2: clamp(24px, 3vw, 40px);
+    --text-h3: 22px;
+    /* ── Letter-spacing ── */
+    --tracking-display: -0.04em;
+    --tracking-heading: -0.03em;
+    --tracking-sub: -0.025em;
+    --tracking-label: 0.2em;
+    /* ── Colors ── */
+    --color-bg: #0D1C10;
+    --color-text: #EDE8D8;
+    --color-text-muted: #c8e0d0;
+    --color-text-heading: #E2EDE6;
+    --color-accent: #d4af37;
+    --color-border: rgba(137, 174, 151, 0.2);
+    --color-card: #162b1b;
+    --color-green: #8aae97;
+    /* ── Spacing ── */
+    --pad-v: 80px;
+    --pad-h: 60px;
+  }
+
   *, *::before, *::after { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; height: 100%; }
   body {
     font-family: var(--font-inter);
     -webkit-font-smoothing: antialiased;
-    background: #0D1C10;
-    color: #EDE8D8;
+    background: var(--color-bg);
+    color: var(--color-text);
     min-height: 100vh;
   }
   .page-wrapper {
