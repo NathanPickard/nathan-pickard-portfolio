@@ -1,7 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
-import DarkLayout from '../layouts/DarkLayout.astro';
-import DarkNav from '../components/DarkNav.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import resumeData from '../data/resume.json';
 const activities = resumeData.activities;
@@ -216,11 +216,11 @@ const iconMap: Record<string, string | null> = {
 };
 ---
 
-<DarkLayout
+<BaseLayout
   title="Work — Nathan Pickard"
   description="Six years shipping consumer-facing software in fintech, wellness, and healthtech."
 >
-  <DarkNav />
+  <Nav />
 
   <main class="work-main">
     <div class="work-inner">
@@ -460,7 +460,7 @@ const iconMap: Record<string, string | null> = {
   </main>
 
   <Footer />
-</DarkLayout>
+</BaseLayout>
 
 <script>
   const tabs = document.querySelectorAll<HTMLButtonElement>('.work-tab');

@@ -1,13 +1,13 @@
 ---
-import DarkLayout from '../layouts/DarkLayout.astro';
-import DarkNav from '../components/DarkNav.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import resume from '../data/resume.json';
 import { Icon } from 'astro-icon/components';
 ---
 
-<DarkLayout title="Resume — Nathan Pickard" description="Senior Software Engineer with 6+ years shipping consumer-facing software in fintech, wellness, and healthtech.">
-  <DarkNav />
+<BaseLayout title="Resume — Nathan Pickard" description="Senior Software Engineer with 6+ years shipping consumer-facing software in fintech, wellness, and healthtech.">
+  <Nav />
 
   <main class="resume-main">
     <div class="resume-inner">
@@ -104,7 +104,7 @@ import { Icon } from 'astro-icon/components';
   </main>
 
   <Footer />
-</DarkLayout>
+</BaseLayout>
 
 <style>
   .resume-main {

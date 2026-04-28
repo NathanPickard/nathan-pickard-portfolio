@@ -1,16 +1,16 @@
 ---
 import { Icon } from 'astro-icon/components';
-import DarkLayout from '../layouts/DarkLayout.astro';
-import DarkNav from '../components/DarkNav.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 
 ---
 
-<DarkLayout
+<BaseLayout
   title="About — Nathan Pickard"
   description="Senior Full-Stack Engineer based in Portland, OR. 6+ years building at the intersection of craft and scale."
 >
-  <DarkNav />
+  <Nav />
 
   <main class="about-main">
     <div class="about-inner">
@@ -66,7 +66,7 @@ import Footer from '../components/Footer.astro';
   </main>
 
   <Footer />
-</DarkLayout>
+</BaseLayout>
 
 <style>
   .about-main {
