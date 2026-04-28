@@ -3,7 +3,15 @@ import { Icon } from 'astro-icon/components';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import WorkCardContent from '../components/WorkCardContent.astro';
 import resumeData from '../data/resume.json';
+import {
+  iconMap,
+  labelOverrides,
+  skipTiles,
+  devopsKeywords,
+  movedToBackend,
+} from '../data/workIconMap';
 const activities = resumeData.activities;
 
 const work = [
@@ -76,28 +84,6 @@ const work = [
   },
 ];
 
-// Keywords to skip entirely in the icon grid (no tile rendered)
-const skipTiles = new Set(['Less', 'Wordpress']);
-
-// Display label overrides for the icon grid
-const labelOverrides: Record<string, string> = {
-  'AWS (Lambda, S3, API Gateway)': 'Amazon Web Services',
-  AWS: 'AWS',
-};
-
-// DevOps keywords used to split Tools/Infrastructure into Backend vs DevOps & Infra panels
-const devopsKeywords = new Set([
-  'AWS (Lambda, S3, API Gateway)',
-  'Docker',
-  'Ansible',
-  'Datadog',
-  'FullStory',
-  'Nginx',
-  'GitHub Actions CI/CD',
-]);
-
-// Keywords from Languages/Frameworks that belong in the Backend panel instead
-const movedToBackend = new Set(['Node.js', 'Django', 'Python']);
 
 // Helper to find keywords by category name from resumeData.skills
 const getKeywords = (name: string): string[] =>
@@ -164,56 +150,6 @@ const panelConfig = [
   },
 ];
 
-// Map skill keywords to devicon names
-const iconMap: Record<string, string | null> = {
-  JavaScript: 'devicon:javascript',
-  TypeScript: 'devicon:typescript',
-  Angular: 'devicon:angular',
-  React: 'devicon:react',
-  Vue: 'devicon:vuejs',
-  'Node.js': 'devicon:nodejs',
-  Python: 'devicon:python',
-  Django: 'devicon:python',
-  NgRx: 'devicon:redux',
-  Redux: 'devicon:redux',
-  Tailwind: 'devicon:tailwindcss',
-  'Angular Material': 'devicon:angularmaterial',
-  HTML5: 'devicon:html5',
-  CSS: 'devicon:css3',
-  SCSS: 'devicon:sass',
-  Less: null,
-  Bootstrap: 'devicon:bootstrap',
-  'AWS (Lambda, S3, API Gateway)': 'devicon:amazonwebservices',
-  AWS: 'devicon:amazonwebservices',
-  Docker: 'devicon:docker',
-  MongoDB: 'devicon:mongodb',
-  MySQL: 'devicon:mysql',
-  Datadog: 'devicon:datadog',
-  FullStory: null,
-  Nginx: 'devicon:nginx',
-  'GitHub Actions CI/CD': 'devicon:github',
-  Ansible: 'devicon:ansible',
-  Karma: 'devicon:karma',
-  Jasmine: 'devicon:jasmine',
-  Jest: null,
-  Vitest: 'devicon:vitest',
-  pytest: 'devicon:pytest',
-  Mocha: 'devicon:mocha',
-  Chai: null,
-  Firebase: 'devicon:firebase',
-  'GitHub Copilot': 'devicon:github',
-  'Claude Code': null,
-  Gemini: null,
-  'OpenAI API': null,
-  Cursor: null,
-  Kiro: null,
-  'Software architecture': null,
-  Fintech: null,
-  'Accessibility/WCAG': null,
-  'AI implementation': null,
-  'UI/UX optimization': null,
-  'A/B tests': null,
-};
 ---
 
 <BaseLayout
@@ -270,45 +206,13 @@ const iconMap: Record<string, string | null> = {
                 id={`panel-${i}`}
                 aria-labelledby={`tab-${i}`}
               >
-                <div class="detail-role">{w.role}</div>
-                {w.client && <div class="detail-client">{w.client}</div>}
-                <p class="detail-blurb">{w.blurb}</p>
-                {w.wins.length > 0 && (
-                  <div class="detail-wins">
-                    {w.wins.map((win) => (
-                      <span class="win">{win}</span>
-                    ))}
-                  </div>
-                )}
-                <div class="detail-stack">
-                  {w.stack
-                    .filter((s) => !skipTiles.has(s))
-                    .map((s) => {
-                      const icon = iconMap[s];
-                      return (
-                        <div class="skill-icon-tile">
-                          {icon ? (
-                            <Icon
-                              name={icon}
-                              size={28}
-                              aria-hidden="true"
-                              class="skill-icon"
-                            />
-                          ) : (
-                            <span
-                              class="skill-icon-fallback"
-                              aria-hidden="true"
-                            >
-                              ✦
-                            </span>
-                          )}
-                          <span class="skill-icon-label">
-                            {labelOverrides[s] ?? s}
-                          </span>
-                        </div>
-                      );
-                    })}
-                </div>
+                <WorkCardContent
+                  role={w.role}
+                  client={w.client || undefined}
+                  blurb={w.blurb}
+                  wins={w.wins}
+                  stack={w.stack}
+                />
               </div>
             ))
           }
@@ -343,44 +247,12 @@ const iconMap: Record<string, string | null> = {
                 aria-labelledby={`accordion-tab-${i}`}
               >
                 <div class="accordion-content">
-                  <div class="detail-role">{w.role}</div>
-                  <p class="detail-blurb">{w.blurb}</p>
-                  {w.wins.length > 0 && (
-                    <div class="detail-wins">
-                      {w.wins.map((win) => (
-                        <span class="win">{win}</span>
-                      ))}
-                    </div>
-                  )}
-                  <div class="detail-stack">
-                    {w.stack
-                      .filter((s) => !skipTiles.has(s))
-                      .map((s) => {
-                        const icon = iconMap[s];
-                        return (
-                          <div class="skill-icon-tile">
-                            {icon ? (
-                              <Icon
-                                name={icon}
-                                size={28}
-                                aria-hidden="true"
-                                class="skill-icon"
-                              />
-                            ) : (
-                              <span
-                                class="skill-icon-fallback"
-                                aria-hidden="true"
-                              >
-                                ✦
-                              </span>
-                            )}
-                            <span class="skill-icon-label">
-                              {labelOverrides[s] ?? s}
-                            </span>
-                          </div>
-                        );
-                      })}
-                  </div>
+                  <WorkCardContent
+                    role={w.role}
+                    blurb={w.blurb}
+                    wins={w.wins}
+                    stack={w.stack}
+                  />
                 </div>
               </div>
             </div>
@@ -516,7 +388,7 @@ const iconMap: Record<string, string | null> = {
     margin-bottom: 48px;
   }
   .section-label {
-    font-family: 'Geist Mono', monospace;
+    font-family: var(--font-geist-mono);
     font-size: 11px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -525,7 +397,7 @@ const iconMap: Record<string, string | null> = {
     margin-bottom: 16px;
   }
   .work-h1 {
-    font-family: 'Fraunces', serif;
+    font-family: var(--font-fraunces);
     font-weight: 400;
     font-variation-settings: 'opsz' 72;
     font-size: clamp(32px, 4vw, 52px);
@@ -581,7 +453,7 @@ const iconMap: Record<string, string | null> = {
     border-left: 3px solid #d4af37;
   }
   .tab-co {
-    font-family: 'Fraunces', serif;
+    font-family: var(--font-fraunces);
     font-weight: 500;
     font-variation-settings: 'opsz' 72;
     font-size: 18px;
@@ -590,7 +462,7 @@ const iconMap: Record<string, string | null> = {
   }
   .tab-period {
     font-size: 11px;
-    font-family: 'Geist Mono', monospace;
+    font-family: var(--font-geist-mono);
     color: #a8c8b4;
     margin-top: 4px;
   }
@@ -609,55 +481,6 @@ const iconMap: Record<string, string | null> = {
     display: block;
   }
 
-  .detail-role {
-    font-weight: 600;
-    font-size: 16px;
-    margin-bottom: 4px;
-    color: #ede8d8;
-  }
-  .detail-client {
-    font-size: 12px;
-    font-family: 'Geist Mono', monospace;
-    color: #a8c8b4;
-    margin-bottom: 20px;
-  }
-  .detail-blurb {
-    font-size: 15px;
-    line-height: 1.7;
-    color: #e2ede6;
-    margin: 0 0 24px;
-    max-width: 560px;
-  }
-  .detail-wins {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 24px;
-  }
-  .win {
-    background: rgba(212, 175, 55, 0.15);
-    color: #d4af37;
-    padding: 5px 14px;
-    border-radius: 999px;
-    font:
-      500 12px 'Geist Mono',
-      monospace;
-  }
-  .detail-stack {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .pill {
-    display: inline-block;
-    padding: 4px 12px;
-    border: 1px solid rgba(137, 174, 151, 0.2);
-    border-radius: 999px;
-    font:
-      500 12px 'Geist Mono',
-      monospace;
-    color: #d9d0bc;
-  }
 
   @media (max-width: 900px) {
     .work-main {
@@ -754,7 +577,7 @@ const iconMap: Record<string, string | null> = {
     min-width: 0;
   }
   .accordion-co {
-    font-family: 'Fraunces', serif;
+    font-family: var(--font-fraunces);
     font-weight: 500;
     font-variation-settings: 'opsz' 72;
     font-size: 20px;
@@ -769,12 +592,12 @@ const iconMap: Record<string, string | null> = {
   }
   .accordion-period {
     font-size: 11px;
-    font-family: 'Geist Mono', monospace;
+    font-family: var(--font-geist-mono);
     color: #a8c8b4;
   }
   .accordion-client {
     font-size: 11px;
-    font-family: 'Geist Mono', monospace;
+    font-family: var(--font-geist-mono);
     color: #a8c8b4;
   }
   .accordion-client::before {
@@ -812,7 +635,7 @@ const iconMap: Record<string, string | null> = {
     border-top: 1px solid rgba(137, 174, 151, 0.2);
   }
   .skills-h2 {
-    font-family: 'Fraunces', serif;
+    font-family: var(--font-fraunces);
     font-weight: 400;
     font-variation-settings: 'opsz' 72;
     font-size: clamp(28px, 3.5vw, 44px);
@@ -858,7 +681,7 @@ const iconMap: Record<string, string | null> = {
     }
   }
   .bento-panel-heading {
-    font-family: 'Geist Mono', monospace;
+    font-family: var(--font-geist-mono);
     font-size: 11px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
@@ -906,7 +729,7 @@ const iconMap: Record<string, string | null> = {
     height: 28px;
   }
   .skill-icon-label {
-    font-family: 'Geist Mono', monospace;
+    font-family: var(--font-geist-mono);
     font-size: 12px;
     color: #1a2e1e;
     text-align: center;
@@ -923,9 +746,7 @@ const iconMap: Record<string, string | null> = {
     padding: 7px 16px;
     border: 1px solid rgba(137, 174, 151, 0.3);
     border-radius: 999px;
-    font:
-      500 13px 'Geist Mono',
-      monospace;
+    font: 500 13px var(--font-geist-mono);
     color: #f0ece0;
     transition: border-color 0.2s;
   }
@@ -940,7 +761,7 @@ const iconMap: Record<string, string | null> = {
     border-top: 1px solid rgba(137, 174, 151, 0.2);
   }
   .community-h2 {
-    font-family: 'Fraunces', serif;
+    font-family: var(--font-fraunces);
     font-weight: 400;
     font-variation-settings: 'opsz' 72;
     font-size: clamp(28px, 3.5vw, 44px);

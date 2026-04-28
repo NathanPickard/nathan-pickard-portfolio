@@ -66,7 +66,7 @@ const posts = (await getCollection('blog', ({ data }) => data.archived ?? false)
     margin-bottom: 48px;
   }
   .section-label {
-    font-family: 'Geist Mono', monospace;
+    font-family: var(--font-geist-mono);
     font-size: 11px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -75,7 +75,7 @@ const posts = (await getCollection('blog', ({ data }) => data.archived ?? false)
     margin-bottom: 16px;
   }
   .archived-h1 {
-    font-family: 'Fraunces', serif;
+    font-family: var(--font-fraunces);
     font-weight: 400;
     font-variation-settings: "opsz" 72;
     font-size: clamp(36px, 5vw, 64px);
@@ -118,7 +118,7 @@ const posts = (await getCollection('blog', ({ data }) => data.archived ?? false)
     border: 1px solid rgba(137,174,151,0.2);
   }
   .post-date {
-    font-family: 'Geist Mono', monospace;
+    font-family: var(--font-geist-mono);
     font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -126,7 +126,7 @@ const posts = (await getCollection('blog', ({ data }) => data.archived ?? false)
     margin-bottom: 6px;
   }
   .post-title {
-    font-family: 'Fraunces', serif;
+    font-family: var(--font-fraunces);
     font-weight: 500;
     font-variation-settings: "opsz" 72;
     font-size: 20px;

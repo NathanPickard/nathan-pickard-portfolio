@@ -114,21 +114,23 @@ const socials = [
 </div>
 
 <script>
-  const btn = document.querySelector(".hamburger") as HTMLButtonElement;
-  const menu = document.querySelector(".mobile-menu") as HTMLDivElement;
+  document.addEventListener("astro:page-load", () => {
+    const btn = document.querySelector(".hamburger") as HTMLButtonElement;
+    const menu = document.querySelector(".mobile-menu") as HTMLDivElement;
+    if (!btn || !menu) return;
 
-  btn?.addEventListener("click", () => {
-    const isOpen = menu.classList.toggle("open");
-    btn.setAttribute("aria-expanded", String(isOpen));
-    menu.setAttribute("aria-hidden", String(!isOpen));
-  });
+    btn.addEventListener("click", () => {
+      const isOpen = menu.classList.toggle("open");
+      btn.setAttribute("aria-expanded", String(isOpen));
+      menu.setAttribute("aria-hidden", String(!isOpen));
+    });
 
-  // Close menu when a link is clicked
-  menu?.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      menu.classList.remove("open");
-      btn?.setAttribute("aria-expanded", "false");
-      menu.setAttribute("aria-hidden", "true");
+    menu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        menu.classList.remove("open");
+        btn.setAttribute("aria-expanded", "false");
+        menu.setAttribute("aria-hidden", "true");
+      });
     });
   });
 </script>
@@ -147,7 +149,7 @@ const socials = [
     margin: 0 auto;
   }
   .dark-wordmark {
-    font-family: "Fraunces", serif;
+    font-family: var(--font-fraunces);
     font-weight: 700;
     font-size: 20px;
     letter-spacing: 0.04em;

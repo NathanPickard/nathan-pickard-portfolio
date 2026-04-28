@@ -1,0 +1,120 @@
+---
+import { Icon } from 'astro-icon/components';
+import { iconMap, labelOverrides, skipTiles } from '../data/workIconMap';
+
+interface Props {
+  role: string;
+  client?: string;
+  blurb: string;
+  wins: string[];
+  stack: string[];
+}
+
+const { role, client, blurb, wins, stack } = Astro.props;
+---
+
+<div class="detail-role">{role}</div>
+{client && <div class="detail-client">{client}</div>}
+<p class="detail-blurb">{blurb}</p>
+{wins.length > 0 && (
+  <div class="detail-wins">
+    {wins.map((win) => <span class="win">{win}</span>)}
+  </div>
+)}
+<div class="detail-stack">
+  {stack
+    .filter((s) => !skipTiles.has(s))
+    .map((s) => {
+      const icon = iconMap[s];
+      return (
+        <div class="skill-icon-tile">
+          {icon ? (
+            <Icon name={icon} size={28} aria-hidden="true" class="skill-icon" />
+          ) : (
+            <span class="skill-icon-fallback" aria-hidden="true">✦</span>
+          )}
+          <span class="skill-icon-label">{labelOverrides[s] ?? s}</span>
+        </div>
+      );
+    })}
+</div>
+
+<style>
+  .detail-role {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 4px;
+    color: #ede8d8;
+  }
+  .detail-client {
+    font-size: 12px;
+    font-family: var(--font-geist-mono);
+    color: #a8c8b4;
+    margin-bottom: 20px;
+  }
+  .detail-blurb {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #e2ede6;
+    margin: 0 0 24px;
+    max-width: 560px;
+  }
+  .detail-wins {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .win {
+    background: rgba(212, 175, 55, 0.15);
+    color: #d4af37;
+    padding: 5px 14px;
+    border-radius: 999px;
+    font: 500 12px var(--font-geist-mono);
+  }
+  .detail-stack {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .skill-icon-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 10px;
+    background: #f0ede4;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    min-width: 72px;
+    width: max-content;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: default;
+  }
+  .skill-icon-tile:hover {
+    border-color: rgba(0, 0, 0, 0.2);
+    background: #e8e4da;
+  }
+  .skill-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+  .skill-icon-fallback {
+    font-size: 18px;
+    color: #2d5a3d;
+    line-height: 28px;
+    display: block;
+    text-align: center;
+    width: 28px;
+    height: 28px;
+  }
+  .skill-icon-label {
+    font-family: var(--font-geist-mono);
+    font-size: 12px;
+    color: #1a2e1e;
+    text-align: center;
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+</style>

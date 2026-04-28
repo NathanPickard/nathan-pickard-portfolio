@@ -1,5 +1,6 @@
 ---
 import type { ImageMetadata } from 'astro';
+import { Font } from 'astro:assets';
 import FallbackImage from '../assets/blog-placeholder-1.jpg';
 import { SITE_TITLE } from '../consts';
 
@@ -14,8 +15,10 @@ const {
   image = FallbackImage,
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const socialImage = new URL(image.src, Astro.site);
+// Astro.site is undefined in test contexts (AstroContainer); skip absolute URLs there.
+const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : null;
+const socialImage = Astro.site ? new URL(image.src, Astro.site) : null;
+const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
 ---
 
 <!doctype html>
@@ -27,34 +30,40 @@ const socialImage = new URL(image.src, Astro.site);
     <title>{title}</title>
     <meta name="description" content={description} />
 
-    <link rel="canonical" href={canonicalURL} />
+    {canonicalURL && <link rel="canonical" href={canonicalURL} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <link
-      rel="alternate"
-      type="application/rss+xml"
-      title={SITE_TITLE}
-      href={new URL('rss.xml', Astro.site)}
-    />
+    {rssURL && (
+      <link
+        rel="alternate"
+        type="application/rss+xml"
+        title={SITE_TITLE}
+        href={rssURL}
+      />
+    )}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <Font cssVariable="--font-fraunces" />
+    <Font cssVariable="--font-inter" />
+    <Font cssVariable="--font-geist-mono" />
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={socialImage} />
+    {canonicalURL && socialImage && (
+      <>
+        <!-- Open Graph -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalURL} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={socialImage} />
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content={canonicalURL} />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={socialImage} />
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={canonicalURL} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={socialImage} />
+      </>
+    )}
   </head>
   <body>
     <div class="page-wrapper">
@@ -67,7 +76,7 @@ const socialImage = new URL(image.src, Astro.site);
   *, *::before, *::after { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; height: 100%; }
   body {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: var(--font-inter);
     -webkit-font-smoothing: antialiased;
     background: #0D1C10;
     color: #EDE8D8;

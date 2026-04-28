@@ -1,0 +1,68 @@
+export const skipTiles = new Set(['Less', 'Wordpress']);
+
+export const labelOverrides: Record<string, string> = {
+  'AWS (Lambda, S3, API Gateway)': 'Amazon Web Services',
+  AWS: 'AWS',
+};
+
+export const devopsKeywords = new Set([
+  'AWS (Lambda, S3, API Gateway)',
+  'Docker',
+  'Ansible',
+  'Datadog',
+  'FullStory',
+  'Nginx',
+  'GitHub Actions CI/CD',
+]);
+
+export const movedToBackend = new Set(['Node.js', 'Django', 'Python']);
+
+export const iconMap: Record<string, string | null> = {
+  JavaScript: 'devicon:javascript',
+  TypeScript: 'devicon:typescript',
+  Angular: 'devicon:angular',
+  React: 'devicon:react',
+  Vue: 'devicon:vuejs',
+  'Node.js': 'devicon:nodejs',
+  Python: 'devicon:python',
+  Django: 'devicon:python',
+  NgRx: 'devicon:redux',
+  Redux: 'devicon:redux',
+  Tailwind: 'devicon:tailwindcss',
+  'Angular Material': 'devicon:angularmaterial',
+  HTML5: 'devicon:html5',
+  CSS: 'devicon:css3',
+  SCSS: 'devicon:sass',
+  Less: null,
+  Bootstrap: 'devicon:bootstrap',
+  'AWS (Lambda, S3, API Gateway)': 'devicon:amazonwebservices',
+  AWS: 'devicon:amazonwebservices',
+  Docker: 'devicon:docker',
+  MongoDB: 'devicon:mongodb',
+  MySQL: 'devicon:mysql',
+  Datadog: 'devicon:datadog',
+  FullStory: null,
+  Nginx: 'devicon:nginx',
+  'GitHub Actions CI/CD': 'devicon:github',
+  Ansible: 'devicon:ansible',
+  Karma: 'devicon:karma',
+  Jasmine: 'devicon:jasmine',
+  Jest: null,
+  Vitest: 'devicon:vitest',
+  pytest: 'devicon:pytest',
+  Mocha: 'devicon:mocha',
+  Chai: null,
+  Firebase: 'devicon:firebase',
+  'GitHub Copilot': 'devicon:github',
+  'Claude Code': null,
+  Gemini: null,
+  'OpenAI API': null,
+  Cursor: null,
+  Kiro: null,
+  'Software architecture': null,
+  Fintech: null,
+  'Accessibility/WCAG': null,
+  'AI implementation': null,
+  'UI/UX optimization': null,
+  'A/B tests': null,
+};

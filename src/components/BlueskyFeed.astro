@@ -161,13 +161,13 @@ function postUrl(uri: string) {
                           size={14}
                           aria-hidden="true"
                         />
-                        {item.post.replyCount}
+                        <span class="stat-count">{item.post.replyCount}</span>
                       </span>
                     )}
                     {item.post.repostCount !== undefined && (
                       <span title="Reposts" class="stat stat-repost">
                         <Icon name="mdi:repeat" size={14} aria-hidden="true" />
-                        {item.post.repostCount}
+                        <span class="stat-count">{item.post.repostCount}</span>
                       </span>
                     )}
                     {item.post.likeCount !== undefined && (
@@ -177,7 +177,7 @@ function postUrl(uri: string) {
                           size={14}
                           aria-hidden="true"
                         />
-                        {item.post.likeCount}
+                        <span class="stat-count">{item.post.likeCount}</span>
                       </span>
                     )}
                   </span>
@@ -202,9 +202,60 @@ function postUrl(uri: string) {
   >
     View all on Bluesky →
   </a>
+
+  <template id="post-template">
+    <li class="post">
+      <a target="_blank" rel="noopener noreferrer" class="post-link">
+        <p class="post-date"><time></time></p>
+        <p class="post-text"></p>
+        <div class="post-images" hidden></div>
+        <div class="post-external-thumb" hidden>
+          <img class="post-img" loading="lazy" alt="" />
+        </div>
+        <div class="post-meta">
+          <span class="post-stats">
+            <span title="Replies" class="stat stat-reply">
+              <Icon name="mdi:message-outline" size={14} aria-hidden="true" />
+              <span class="stat-count"></span>
+            </span>
+            <span title="Reposts" class="stat stat-repost">
+              <Icon name="mdi:repeat" size={14} aria-hidden="true" />
+              <span class="stat-count"></span>
+            </span>
+            <span title="Likes" class="stat stat-like">
+              <Icon name="mdi:heart-outline" size={14} aria-hidden="true" />
+              <span class="stat-count"></span>
+            </span>
+          </span>
+        </div>
+      </a>
+    </li>
+  </template>
+
+  <template id="post-image-template">
+    <img class="post-img" loading="lazy" alt="" />
+  </template>
 </section>
 
 <script>
+  type EmbedImage = { thumb: string; alt: string };
+  type Embed = {
+    $type: string;
+    images?: EmbedImage[];
+    external?: { uri: string; title: string; thumb?: string };
+  };
+  type FeedItem = {
+    post: {
+      uri: string;
+      record: { text: string; createdAt: string };
+      embed?: Embed;
+      replyCount?: number;
+      repostCount?: number;
+      likeCount?: number;
+    };
+    reason?: { $type: string };
+  };
+
   const scrollEl = document.getElementById("feed-scroll") as HTMLDivElement;
   const list = document.getElementById("bluesky-posts") as HTMLUListElement;
   const sentinel = document.getElementById("feed-sentinel")!;
@@ -212,6 +263,12 @@ function postUrl(uri: string) {
     "feed-loading",
   ) as HTMLParagraphElement;
   const endEl = document.getElementById("feed-end") as HTMLParagraphElement;
+  const postTemplate = document.getElementById(
+    "post-template",
+  ) as HTMLTemplateElement;
+  const imageTemplate = document.getElementById(
+    "post-image-template",
+  ) as HTMLTemplateElement;
 
   const HANDLE = list.dataset.handle!;
   const LIMIT = list.dataset.limit!;
@@ -231,32 +288,21 @@ function postUrl(uri: string) {
     return `https://bsky.app/profile/${HANDLE}/post/${rkey}`;
   }
 
-  function buildImagesHtml(images: { thumb: string; alt: string }[]) {
-    const count = Math.min(images.length, 4);
-    const imgs = images
-      .slice(0, 4)
-      .map(
-        (img) =>
-          `<img src="${img.thumb}" alt="${img.alt.replace(/"/g, "&quot;")}" class="post-img" loading="lazy" />`,
-      )
-      .join("");
-    return `<div class="post-images count-${count}">${imgs}</div>`;
-  }
+  function renderPost(item: FeedItem): HTMLLIElement {
+    const node = postTemplate.content.firstElementChild!.cloneNode(
+      true,
+    ) as HTMLLIElement;
 
-  function iconSvg(path: string) {
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true" class="stat-icon">${path}</svg>`;
-  }
-  const ICON_REPLY = iconSvg(
-    '<path d="M9 22a1 1 0 0 1-1-1v-3H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6.1l-3.7 3.71c-.2.18-.45.29-.7.29H9m1-6v3.08L13.08 16H20V4H4v12h6z"/>',
-  );
-  const ICON_REPOST = iconSvg(
-    '<path d="M6 5.75L10.25 10H7v6h6.5l2 2H7a2 2 0 0 1-2-2v-6H1.75L6 5.75M18 18.25L13.75 14H17V8h-6.5l-2-2H17a2 2 0 0 1 2 2v6h3.25L18 18.25z"/>',
-  );
-  const ICON_LIKE = iconSvg(
-    '<path d="M12.1 18.55l-.1.1-.11-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04 1 3.57 2.36h1.86C13.46 6 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05M16.5 3c-1.74 0-3.41.81-4.5 2.08C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.41 2 8.5c0 3.77 3.4 6.86 8.55 11.53L12 21.35l1.45-1.32C18.6 15.36 22 12.27 22 8.5 22 5.41 19.58 3 16.5 3z"/>',
-  );
+    const link = node.querySelector(".post-link") as HTMLAnchorElement;
+    link.href = postUrl(item.post.uri);
 
-  function buildPostHtml(item: any) {
+    const time = node.querySelector(".post-date time") as HTMLTimeElement;
+    time.dateTime = item.post.record.createdAt;
+    time.textContent = formatDate(item.post.record.createdAt);
+
+    (node.querySelector(".post-text") as HTMLElement).textContent =
+      item.post.record.text;
+
     const embed = item.post.embed;
     const images =
       embed?.$type === "app.bsky.embed.images#view" ? (embed.images ?? []) : [];
@@ -265,43 +311,42 @@ function postUrl(uri: string) {
         ? embed.external.thumb
         : null;
 
-    const text = item.post.record.text
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
+    if (images.length > 0) {
+      const grid = node.querySelector(".post-images") as HTMLDivElement;
+      grid.hidden = false;
+      grid.classList.add(`count-${Math.min(images.length, 4)}`);
+      images.slice(0, 4).forEach((img) => {
+        const imgEl = imageTemplate.content.firstElementChild!.cloneNode(
+          true,
+        ) as HTMLImageElement;
+        imgEl.src = img.thumb;
+        imgEl.alt = img.alt;
+        grid.appendChild(imgEl);
+      });
+    } else if (externalThumb) {
+      const ext = node.querySelector(
+        ".post-external-thumb",
+      ) as HTMLDivElement;
+      ext.hidden = false;
+      const img = ext.querySelector("img") as HTMLImageElement;
+      img.src = externalThumb;
+      img.alt = embed?.external?.title ?? "";
+    }
 
-    const imagesHtml = images.length > 0 ? buildImagesHtml(images) : "";
-    const externalHtml =
-      externalThumb && images.length === 0
-        ? `<div class="post-external-thumb"><img src="${externalThumb}" alt="${(embed?.external?.title ?? "").replace(/"/g, "&quot;")}" class="post-img" loading="lazy" /></div>`
-        : "";
+    const setStat = (selector: string, count: number | undefined) => {
+      const el = node.querySelector(selector) as HTMLSpanElement;
+      if (count != null) {
+        (el.querySelector(".stat-count") as HTMLElement).textContent =
+          String(count);
+      } else {
+        el.hidden = true;
+      }
+    };
+    setStat(".stat-reply", item.post.replyCount);
+    setStat(".stat-repost", item.post.repostCount);
+    setStat(".stat-like", item.post.likeCount);
 
-    const replies =
-      item.post.replyCount != null
-        ? `<span title="Replies" class="stat stat-reply">${ICON_REPLY} ${item.post.replyCount}</span>`
-        : "";
-    const reposts =
-      item.post.repostCount != null
-        ? `<span title="Reposts" class="stat stat-repost">${ICON_REPOST} ${item.post.repostCount}</span>`
-        : "";
-    const likes =
-      item.post.likeCount != null
-        ? `<span title="Likes" class="stat stat-like">${ICON_LIKE} ${item.post.likeCount}</span>`
-        : "";
-
-    return `
-      <li class="post">
-        <a href="${postUrl(item.post.uri)}" target="_blank" rel="noopener noreferrer" class="post-link">
-          <p class="post-date"><time datetime="${item.post.record.createdAt}">${formatDate(item.post.record.createdAt)}</time></p>
-          <p class="post-text">${text}</p>
-          ${imagesHtml}
-          ${externalHtml}
-          <div class="post-meta">
-            <span class="post-stats">${replies}${reposts}${likes}</span>
-          </div>
-        </a>
-      </li>
-    `;
+    return node;
   }
 
   async function loadMore() {
@@ -315,11 +360,9 @@ function postUrl(uri: string) {
       if (!res.ok) throw new Error("fetch failed");
 
       const data = await res.json();
-      const posts = (data.feed as any[]).filter((item) => !item.reason);
+      const posts = (data.feed as FeedItem[]).filter((item) => !item.reason);
 
-      posts.forEach((item) => {
-        list.insertAdjacentHTML("beforeend", buildPostHtml(item));
-      });
+      posts.forEach((item) => list.appendChild(renderPost(item)));
 
       cursor = data.cursor ?? "";
       if (!cursor) {

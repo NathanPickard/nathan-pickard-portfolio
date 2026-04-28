@@ -1,5 +1,5 @@
 /**
- * Tests for BaseHead canonical URL construction.
+ * Tests for BaseLayout canonical URL construction.
  *
  * Tests the logic: const canonicalURL = new URL(Astro.url.pathname, Astro.site);
  */
@@ -7,7 +7,7 @@
 import { describe, it, expect } from 'vitest';
 
 // ---------------------------------------------------------------------------
-// Helper to mirror BaseHead URL construction logic
+// Helper to mirror BaseLayout URL construction logic
 // ---------------------------------------------------------------------------
 
 /**
@@ -29,7 +29,7 @@ function getCanonicalUrlString(pathname: string, siteUrl: string): string {
 // Tests
 // ---------------------------------------------------------------------------
 
-describe('BaseHead canonical URL construction', () => {
+describe('BaseLayout canonical URL construction', () => {
   const SITE_URL = 'https://nathanpickard.com';
 
   describe('basic URL construction', () => {

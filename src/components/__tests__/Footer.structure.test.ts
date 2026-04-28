@@ -19,7 +19,7 @@ describe('Footer.astro', () => {
     expect(html).toContain('https://www.linkedin.com/in/nathanpickard/');
     expect(html).toContain('https://bsky.app/profile/nathanpickard.bsky.social');
     expect(html).toContain('https://x.com/NathanPickard');
-    expect(html).toContain('mailto:nathan.pickard87@gmail.com');
+    expect(html).toContain('mailto:nathanppickard@gmail.com');
   });
 
   it('renders external-link attributes and invert markers used by styles', async () => {

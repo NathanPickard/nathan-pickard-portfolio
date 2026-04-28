@@ -6,10 +6,10 @@ const GITHUB_USER = 'nathanpickard';
 const REPO_COUNT = 5;
 
 const query = `
-  query {
-    user(login: "${GITHUB_USER}") {
+  query GetRepos($user: String!, $count: Int!) {
+    user(login: $user) {
       repositories(
-        first: ${REPO_COUNT}
+        first: $count
         orderBy: { field: PUSHED_AT, direction: DESC }
         ownerAffiliations: [OWNER]
         privacy: PUBLIC
@@ -27,9 +27,9 @@ const query = `
           pushedAt
           isArchived
         }
-        }
       }
     }
+  }
 `;
 
 interface Repo {
@@ -52,7 +52,7 @@ try {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${GITHUB_TOKEN}`,
     },
-    body: JSON.stringify({ query }),
+    body: JSON.stringify({ query, variables: { user: GITHUB_USER, count: REPO_COUNT } }),
   });
 
   if (res.ok) {
@@ -63,7 +63,8 @@ try {
   } else {
     fetchError = true;
   }
-} catch {
+} catch (err) {
+  console.warn('GitHubFeed: fetch failed', err);
   fetchError = true;
 }
 
@@ -89,7 +90,7 @@ function formatDate(dateStr: string) {
   }
   {
     !fetchError && repos.length === 0 && (
-      <p class="feed-error">No repositores found.</p>
+      <p class="feed-error">No repositories found.</p>
     )
   }
 
@@ -120,7 +121,10 @@ function formatDate(dateStr: string) {
               )}
               <span class="repo-stats">
                 {repo.stargazerCount > 0 && (
-                  <span title="Stars">* {repo.stargazerCount}</span>
+                  <span title="Stars" class="repo-stars">
+                    <Icon name="mdi:star-outline" size={13} aria-hidden="true" />
+                    {repo.stargazerCount}
+                  </span>
                 )}
                 <time datetime={repo.pushedAt}>
                   {formatDate(repo.pushedAt)}
@@ -240,6 +244,12 @@ function formatDate(dateStr: string) {
   .repo-stats {
     display: flex;
     gap: 0.75rem;
+  }
+
+  .repo-stars {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
   }
 
   .view-all {
