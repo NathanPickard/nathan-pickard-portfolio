@@ -6,9 +6,12 @@ import {
   StyleSheet,
   Font,
 } from '@react-pdf/renderer';
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 
-const fontsDir = resolve(process.cwd(), 'public/fonts');
+// process.cwd() resolves to the project root because Astro runs Font.register
+// at build time and `npm run build` always runs from the package.json directory.
+// import.meta.url won't work — it resolves to the bundled file location, not source.
+const fontsDir = resolve(process.cwd(), 'fonts');
 
 Font.register({
   family: 'Carlito',

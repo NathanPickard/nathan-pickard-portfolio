@@ -6,6 +6,8 @@ import type { ReactElement } from 'react';
 import { ResumePDF } from '../components/ResumePDF';
 import resume from '../data/resume.json';
 
+export const prerender = true;
+
 export const GET: APIRoute = async () => {
   const element = createElement(ResumePDF, { resume }) as ReactElement<DocumentProps>;
   const buffer = await renderToBuffer(element);
