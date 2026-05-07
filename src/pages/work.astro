@@ -84,7 +84,6 @@ const work = [
   },
 ];
 
-
 // Helper to find keywords by category name from resumeData.skills
 const getKeywords = (name: string): string[] =>
   resumeData.skills.find((s) => s.name === name)?.keywords ?? [];
@@ -94,7 +93,9 @@ const backendKeywords = [
   // Node.js and Django pulled from Languages/Frameworks
   ...getKeywords('Languages/Frameworks').filter((kw) => movedToBackend.has(kw)),
   // Tools/Infrastructure minus devops keywords
-  ...toolsKeywords.filter((kw) => !devopsKeywords.has(kw) && !skipTiles.has(kw)),
+  ...toolsKeywords.filter(
+    (kw) => !devopsKeywords.has(kw) && !skipTiles.has(kw),
+  ),
 ];
 const devopsFilteredKeywords = toolsKeywords.filter(
   (kw) => devopsKeywords.has(kw) && !skipTiles.has(kw),
@@ -149,7 +150,6 @@ const panelConfig = [
     keywords: getKeywords('AI Models & Tools'),
   },
 ];
-
 ---
 
 <BaseLayout
@@ -161,17 +161,24 @@ const panelConfig = [
   <main class="work-main">
     <div class="work-inner">
       <div class="work-header">
-        <span class="section-label">Work History</span>
         <h1 class="work-h1">From idea to impact</h1>
         <p class="work-sub">Work that ships and results that stick</p>
       </div>
 
-      {/* Icon sprite preloader — keeps astro-icon SVG symbols in the always-visible DOM
-          so icons in hidden .work-panel tabs don't break the bento grid */}
-      <div aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden;">
-        {Object.values(iconMap).filter((v): v is string => v !== null).filter((v, i, a) => a.indexOf(v) === i).map((name) => (
-          <Icon name={name} size={1} />
-        ))}
+      {
+        /* Icon sprite preloader — keeps astro-icon SVG symbols in the always-visible DOM
+          so icons in hidden .work-panel tabs don't break the bento grid */
+      }
+      <div
+        aria-hidden="true"
+        style="position:absolute;width:0;height:0;overflow:hidden;"
+      >
+        {
+          Object.values(iconMap)
+            .filter((v): v is string => v !== null)
+            .filter((v, i, a) => a.indexOf(v) === i)
+            .map((name) => <Icon name={name} size={1} />)
+        }
       </div>
 
       <div class="work-grid" id="work-grid">
@@ -194,7 +201,7 @@ const panelConfig = [
               </button>
             ))
           }
-        </div>
+        </div>  
 
         <!-- Desktop panels -->
         <div class="work-panels">
@@ -235,10 +242,14 @@ const panelConfig = [
                   <div class="accordion-co">{w.co}</div>
                   <div class="accordion-meta">
                     <span class="accordion-period">{w.period}</span>
-                    {w.client && <span class="accordion-client">{w.client}</span>}
+                    {w.client && (
+                      <span class="accordion-client">{w.client}</span>
+                    )}
                   </div>
                 </div>
-                <span class="accordion-chevron" aria-hidden="true">›</span>
+                <span class="accordion-chevron" aria-hidden="true">
+                  ›
+                </span>
               </button>
               <div
                 class={`accordion-panel${i === 0 ? ' open' : ''}`}
@@ -261,7 +272,6 @@ const panelConfig = [
       </div>
 
       <section class="skills-section" aria-labelledby="skills-heading">
-        <span class="section-label">Technical Skills</span>
         <h2 class="skills-h2" id="skills-heading">The tools I reach for</h2>
         <div class="bento-grid">
           {
@@ -314,7 +324,6 @@ const panelConfig = [
       </section>
 
       <section class="community-section" aria-labelledby="community-heading">
-        <span class="section-label">Community</span>
         <h2 class="community-h2" id="community-heading">In the community</h2>
         <div class="community-body">
           {
@@ -351,8 +360,10 @@ const panelConfig = [
   });
 
   // Mobile accordion behavior
-  const accordionTriggers = document.querySelectorAll<HTMLButtonElement>('.accordion-trigger');
-  const accordionPanels = document.querySelectorAll<HTMLDivElement>('.accordion-panel');
+  const accordionTriggers =
+    document.querySelectorAll<HTMLButtonElement>('.accordion-trigger');
+  const accordionPanels =
+    document.querySelectorAll<HTMLDivElement>('.accordion-panel');
 
   accordionTriggers.forEach((trigger) => {
     trigger.addEventListener('click', () => {
@@ -387,20 +398,11 @@ const panelConfig = [
   .work-header {
     margin-bottom: 48px;
   }
-  .section-label {
-    font-family: var(--font-geist-mono);
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #e2ede6;
-    display: block;
-    margin-bottom: 16px;
-  }
   .work-h1 {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 400;
     font-variation-settings: 'opsz' 72;
-    font-size: var(--text-h1);
+    font-size: clamp(28px, 3.6vw, 44px);
     line-height: 1;
     letter-spacing: var(--tracking-heading);
     margin: 0 0 12px;
@@ -453,7 +455,7 @@ const panelConfig = [
     border-left: 3px solid #d4af37;
   }
   .tab-co {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 500;
     font-variation-settings: 'opsz' 72;
     font-size: 18px;
@@ -480,7 +482,6 @@ const panelConfig = [
   .work-panel.active {
     display: block;
   }
-
 
   @media (max-width: 900px) {
     .work-main {
@@ -577,7 +578,7 @@ const panelConfig = [
     min-width: 0;
   }
   .accordion-co {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 500;
     font-variation-settings: 'opsz' 72;
     font-size: 20px;
@@ -635,10 +636,10 @@ const panelConfig = [
     border-top: 1px solid rgba(137, 174, 151, 0.2);
   }
   .skills-h2 {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 400;
     font-variation-settings: 'opsz' 72;
-    font-size: var(--text-h2);
+    font-size: clamp(24px, 3vw, 36px);
     line-height: 1.05;
     letter-spacing: var(--tracking-sub);
     margin: 0 0 40px;
@@ -761,7 +762,7 @@ const panelConfig = [
     border-top: 1px solid rgba(137, 174, 151, 0.2);
   }
   .community-h2 {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 400;
     font-variation-settings: 'opsz' 72;
     font-size: clamp(28px, 3.5vw, 44px);

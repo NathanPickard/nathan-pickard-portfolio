@@ -21,20 +21,31 @@ export default defineConfig({
 
   fonts: [
     {
-      name: 'Fraunces',
-      cssVariable: '--font-fraunces',
+      name: 'Cormorant Garamond',
+      cssVariable: '--font-cormorant',
       provider: fontProviders.google(),
-      weights: [300, 400, 500, 600, 700, 800, 900],
+      weights: [300, 400, 500, 600],
       styles: ['normal', 'italic'],
       subsets: ['latin'],
       fallbacks: ['serif'],
-      options: {
-        experimental: {
-          variableAxis: {
-            opsz: [['9', '144']],
-          },
-        },
-      },
+    },
+    {
+      name: 'Vollkorn',
+      cssVariable: '--font-vollkorn',
+      provider: fontProviders.google(),
+      weights: [400, 500, 600, 700],
+      styles: ['normal', 'italic'],
+      subsets: ['latin'],
+      fallbacks: ['serif'],
+    },
+    {
+      name: 'EB Garamond',
+      cssVariable: '--font-eb-garamond',
+      provider: fontProviders.google(),
+      weights: [400, 500, 600, 700, 800],
+      styles: ['normal', 'italic'],
+      subsets: ['latin'],
+      fallbacks: ['serif'],
     },
     {
       name: 'Inter',
@@ -74,6 +85,7 @@ export default defineConfig({
           'menu',
           'close',
           'star-outline',
+          'linkedin',
         ],
         devicon: ['*'],
         local: ['src/icons'],

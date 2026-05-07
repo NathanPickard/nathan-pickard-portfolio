@@ -1,37 +1,46 @@
 ---
-import { Icon } from "astro-icon/components";
+import { Icon } from 'astro-icon/components';
 
 const currentPath = Astro.url.pathname;
 const links = [
-  { href: "/work", label: "Work" },
-  { href: "/blog", label: "Blog" },
-  { href: "/about", label: "About" },
-  { href: "/resume", label: "Resume" },
+  { href: '/work', label: 'Work' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/about', label: 'About' },
+  { href: '/resume', label: 'Resume' },
 ];
 
-const socials = [
+interface Social {
+  href: string;
+  label: string;
+  icon: string;
+  hoverIcon?: string;
+  invert: boolean;
+}
+
+const socials: Social[] = [
   {
-    href: "https://github.com/nathanpickard",
-    label: "GitHub",
-    icon: "devicon:github",
+    href: 'https://github.com/nathanpickard',
+    label: 'GitHub',
+    icon: 'devicon:github',
     invert: true,
   },
   {
-    href: "https://www.linkedin.com/in/nathanpickard/",
-    label: "LinkedIn",
-    icon: "devicon:linkedin",
+    href: 'https://www.linkedin.com/in/nathanpickard/',
+    label: 'LinkedIn',
+    icon: 'mdi:linkedin',
+    hoverIcon: 'devicon:linkedin',
     invert: false,
   },
   {
-    href: "https://bsky.app/profile/nathanpickard.bsky.social",
-    label: "Bluesky",
-    icon: "bluesky",
+    href: 'https://bsky.app/profile/nathanpickard.bsky.social',
+    label: 'Bluesky',
+    icon: 'bluesky',
     invert: false,
   },
   {
-    href: "https://x.com/NathanPickard",
-    label: "X / Twitter",
-    icon: "devicon:twitter",
+    href: 'https://x.com/NathanPickard',
+    label: 'X / Twitter',
+    icon: 'devicon:twitter',
     invert: true,
   },
 ];
@@ -47,7 +56,7 @@ const socials = [
         links.map((l) => (
           <a
             href={l.href}
-            class={currentPath.startsWith(l.href) ? "active" : ""}
+            class={currentPath.startsWith(l.href) ? 'active' : ''}
           >
             {l.label}
           </a>
@@ -65,16 +74,34 @@ const socials = [
             rel="noopener noreferrer"
             aria-label={s.label}
             class="social-link"
-            data-invert={s.invert ? "true" : undefined}
+            data-invert={s.invert ? 'true' : undefined}
           >
-            <Icon name={s.icon} size={24} aria-hidden="true" />
+            <Icon
+              name={s.icon}
+              size={24}
+              aria-hidden="true"
+              class="icon-default"
+            />
+            {s.hoverIcon && (
+              <Icon
+                name={s.hoverIcon}
+                size={24}
+                aria-hidden="true"
+                class="icon-hover"
+              />
+            )}
           </a>
         ))
       }
     </div>
 
     <!-- Hamburger button (mobile only) -->
-    <button class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+    <button
+      class="hamburger"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
       <Icon name="mdi:menu" size={24} class="icon-open" aria-hidden="true" />
       <Icon name="mdi:close" size={24} class="icon-close" aria-hidden="true" />
     </button>
@@ -87,7 +114,7 @@ const socials = [
         links.map((l) => (
           <a
             href={l.href}
-            class={currentPath.startsWith(l.href) ? "active" : ""}
+            class={currentPath.startsWith(l.href) ? 'active' : ''}
           >
             {l.label}
           </a>
@@ -103,9 +130,22 @@ const socials = [
             rel="noopener noreferrer"
             aria-label={s.label}
             class="social-link"
-            data-invert={s.invert ? "true" : undefined}
+            data-invert={s.invert ? 'true' : undefined}
           >
-            <Icon name={s.icon} size={22} aria-hidden="true" />
+            <Icon
+              name={s.icon}
+              size={22}
+              aria-hidden="true"
+              class="icon-default"
+            />
+            {s.hoverIcon && (
+              <Icon
+                name={s.hoverIcon}
+                size={22}
+                aria-hidden="true"
+                class="icon-hover"
+              />
+            )}
           </a>
         ))
       }
@@ -114,22 +154,22 @@ const socials = [
 </div>
 
 <script>
-  document.addEventListener("astro:page-load", () => {
-    const btn = document.querySelector(".hamburger") as HTMLButtonElement;
-    const menu = document.querySelector(".mobile-menu") as HTMLDivElement;
+  document.addEventListener('astro:page-load', () => {
+    const btn = document.querySelector('.hamburger') as HTMLButtonElement;
+    const menu = document.querySelector('.mobile-menu') as HTMLDivElement;
     if (!btn || !menu) return;
 
-    btn.addEventListener("click", () => {
-      const isOpen = menu.classList.toggle("open");
-      btn.setAttribute("aria-expanded", String(isOpen));
-      menu.setAttribute("aria-hidden", String(!isOpen));
+    btn.addEventListener('click', () => {
+      const isOpen = menu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(isOpen));
+      menu.setAttribute('aria-hidden', String(!isOpen));
     });
 
-    menu.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => {
-        menu.classList.remove("open");
-        btn.setAttribute("aria-expanded", "false");
-        menu.setAttribute("aria-hidden", "true");
+    menu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
       });
     });
   });
@@ -149,34 +189,40 @@ const socials = [
     margin: 0 auto;
   }
   .dark-wordmark {
-    font-family: var(--font-fraunces);
-    font-weight: 700;
-    font-size: 20px;
-    letter-spacing: 0.04em;
-    color: #ede8d8;
+    font-family: var(--font-cormorant);
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    color: #e2ede6;
     text-decoration: none;
-    font-variation-settings: "opsz" 72;
     white-space: nowrap;
+  }
+  .wordmark-dot {
+    color: #d4af37;
   }
 
   /* Desktop nav */
   .dark-nav {
     display: flex;
-    gap: 28px;
+    gap: 36px;
     align-items: center;
   }
   .dark-nav a {
-    color: #E2EDE6;
+    font-family: var(--font-vollkorn);
+    color: #c8e0d0;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 21px;
+    font-weight: 400;
     transition: color 0.2s;
-    padding-bottom: 2px;
-    border-bottom: 2px solid transparent;
   }
-  .dark-nav a:hover,
+  .dark-nav a:hover {
+    color: #d4af37;
+  }
   .dark-nav a.active {
-    color: #ede8d8;
-    border-bottom-color: #d4af37;
+    color: #d4af37;
+    text-decoration: underline;
+    text-underline-offset: 6px;
+    text-decoration-thickness: 1px;
   }
 
   /* Desktop social links */
@@ -194,19 +240,57 @@ const socials = [
     border-bottom: none !important;
     transition: background 0.2s;
     text-decoration: none;
-    color: #E2EDE6;
+    color: #e2ede6;
   }
   .social-link:hover {
     background: rgba(212, 175, 55, 0.15);
   }
   .social-link :global(svg) {
-    transition: transform 0.2s;
+    transition:
+      filter 0.25s,
+      color 0.25s,
+      transform 0.2s;
   }
   .social-link:hover :global(svg) {
     transform: translateY(-1px);
   }
-  .social-link[data-invert="true"] :global(svg) {
-    filter: invert(1);
+  .social-link[data-invert='true'] :global(svg) {
+    filter: brightness(0) invert(1);
+  }
+  /* LinkedIn — white square with transparent "in" default (mdi:linkedin uses evenodd cutouts),
+     full brand icon on hover (devicon:linkedin). Opacity swap avoids layout collapse / flicker. */
+  .social-link[aria-label='LinkedIn'] {
+    position: relative;
+  }
+  .social-link[aria-label='LinkedIn'] :global(.icon-default) {
+    filter: brightness(0) invert(1);
+    transition: opacity 0.2s;
+  }
+  .social-link :global(.icon-hover) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .social-link[aria-label='LinkedIn']:hover :global(.icon-default) {
+    opacity: 0;
+  }
+  .social-link[aria-label='LinkedIn']:hover :global(.icon-hover) {
+    opacity: 1;
+    transform: translate(-50%, calc(-50% - 1px));
+  }
+  .social-link[aria-label='LinkedIn']:hover {
+    background: transparent;
+  }
+  /* Bluesky — white by default, brand color on hover */
+  .social-link[aria-label='Bluesky'] :global(svg) {
+    filter: brightness(0) invert(1);
+  }
+  .social-link[aria-label='Bluesky']:hover :global(svg) {
+    filter: none;
   }
 
   /* Hamburger */
@@ -225,9 +309,15 @@ const socials = [
   .hamburger:hover {
     background: rgba(137, 174, 151, 0.1);
   }
-  .icon-close { display: none; }
-  .hamburger[aria-expanded="true"] .icon-open { display: none; }
-  .hamburger[aria-expanded="true"] .icon-close { display: flex; }
+  .icon-close {
+    display: none;
+  }
+  .hamburger[aria-expanded='true'] .icon-open {
+    display: none;
+  }
+  .hamburger[aria-expanded='true'] .icon-close {
+    display: flex;
+  }
 
   /* Mobile menu */
   .mobile-menu {
@@ -238,7 +328,9 @@ const socials = [
     padding: 0;
     overflow: hidden;
     max-height: 0;
-    transition: max-height 0.25s ease, padding 0.25s ease;
+    transition:
+      max-height 0.25s ease,
+      padding 0.25s ease;
   }
   .mobile-menu.open {
     max-height: 400px;
@@ -249,12 +341,16 @@ const socials = [
     flex-direction: column;
   }
   .mobile-nav a {
+    font-family: var(--font-vollkorn);
     padding: 14px 24px;
-    font-size: 16px;
-    color: #E2EDE6;
+    font-size: 17px;
+    color: #c8e0d0;
     text-decoration: none;
     border-left: 3px solid transparent;
-    transition: border-color 0.15s, background 0.15s;
+    transition:
+      border-color 0.15s,
+      background 0.15s,
+      color 0.15s;
     min-height: 44px;
     display: flex;
     align-items: center;
@@ -263,6 +359,7 @@ const socials = [
   .mobile-nav a.active {
     border-left-color: #d4af37;
     background: rgba(137, 174, 151, 0.06);
+    color: #d4af37;
   }
   .mobile-socials {
     display: flex;
@@ -288,10 +385,13 @@ const socials = [
       padding: 16px 24px;
     }
     .dark-wordmark {
-      font-size: 17px;
+      font-size: 21px;
     }
     .dark-nav {
-      gap: 16px;
+      gap: 22px;
+    }
+    .dark-nav a {
+      font-size: 17px;
     }
   }
 

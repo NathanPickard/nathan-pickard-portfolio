@@ -57,24 +57,30 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
         opacity="0.08"></path>
     </svg>
     <div class="hero-inner">
-      <Image
-        src={profilePhoto}
-        alt="Nathan Pickard"
-        class="portrait"
-        loading="eager"
-        fetchpriority="high"
-        widths={[280, 560]}
-        sizes="280px"
-      />
+      <div class="portrait-frame">
+        <Image
+          src={profilePhoto}
+          alt="Nathan Pickard"
+          class="portrait"
+          loading="eager"
+          fetchpriority="high"
+          widths={[280, 560]}
+          sizes="280px"
+        />
+      </div>
       <div class="hero-text">
-        <div class="eyebrow">Software Engineer</div>
         <h1 class="display">Nathan Pickard</h1>
+        <div class="eyebrow eyebrow--below eyebrow--norule">
+          Software Engineer
+        </div>
         <p class="hero-sub">
           I build web experiences that connect great ideas to the people who
-          need them
+          need them.
         </p>
         <div class="ctas">
-          <a href="/resume" class="btn-primary">View Resume →</a>
+          <a href="/resume" class="btn-primary"
+            >View Resume <span class="arrow">→</span></a
+          >
           <a href="/blog" class="btn-ghost">Read Blog</a>
         </div>
       </div>
@@ -85,7 +91,6 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
   <section class="feeds-section">
     <div class="feeds-inner">
       <div class="feeds-header">
-        <span class="section-label">Activity</span>
         <h2 class="feeds-h2">What I've been up to</h2>
       </div>
       <div class="feeds-grid">
@@ -103,8 +108,8 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
   .hero {
     position: relative;
     overflow: hidden;
-    border-bottom: 1px solid rgba(137, 174, 151, 0.2);
-    padding: 100px 60px 80px;
+    border-bottom: 1px solid var(--color-border);
+    padding: 100px 60px 90px;
   }
   .topo {
     position: absolute;
@@ -119,32 +124,77 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     grid-template-columns: 280px auto;
     gap: 60px;
     align-items: center;
-    max-width: 860px;
+    max-width: 920px;
     margin: 0 auto;
     position: relative;
   }
-  .eyebrow {
-    font-family: var(--font-geist-mono);
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #E2EDE6;
-    margin-bottom: 28px;
+  .portrait-frame {
+    position: relative;
+    width: 280px;
   }
+  .portrait-frame::before {
+    content: "";
+    position: absolute;
+    inset: 12px -12px -12px 12px;
+    border: 1px solid var(--color-accent);
+    opacity: 0.35;
+    border-radius: 4px;
+    z-index: 0;
+  }
+  .portrait {
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+
   .display {
-    font-family: var(--font-fraunces);
-    font-weight: 400;
-    font-variation-settings: 'opsz' 144;
-    font-size: var(--text-display);
-    line-height: 1;
+    font-family: var(--font-cormorant);
+    font-weight: 500;
+    font-size: clamp(40px, 4.5vw, 68px);
+    line-height: 0.96;
     letter-spacing: var(--tracking-display);
-    margin: 0 0 32px;
-    color: #e2ede6;;
-    white-space: nowrap;
+    margin: 0 0 18px;
+    color: var(--color-text-heading);
   }
-  .hero-sub {
+  .eyebrow {
+    font-family: var(--font-vollkorn);
+    font-style: italic;
+    font-weight: 400;
     font-size: 17px;
-    line-height: 1.6;
+    color: var(--color-accent);
+    margin-bottom: 22px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 32px;
+    height: 1px;
+    background: var(--color-accent);
+    opacity: 0.6;
+  }
+  .eyebrow--below {
+    margin-top: 0;
+    margin-bottom: 32px;
+    font-size: 22px;
+    font-style: normal;
+  }
+  .eyebrow--norule::before {
+    display: none;
+  }
+
+  .hero-sub {
+    font-family: var(--font-vollkorn);
+    font-weight: 300;
+    font-size: 19px;
+    line-height: 1.55;
     color: #f0ece0;
     max-width: 480px;
     margin: 0 0 36px;
@@ -155,77 +205,70 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     flex-wrap: wrap;
   }
   .btn-primary {
-    display: inline-block;
-    padding: 13px 26px;
-    background: #d4af37;
-    color: #0d1c10;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    background: var(--color-accent);
+    color: var(--color-bg);
     border-radius: 4px;
-    font-weight: 600;
-    font-size: 14px;
+    font-family: var(--font-vollkorn);
+    font-weight: 700;
+    font-size: 15px;
     text-decoration: none;
-    letter-spacing: 0.02em;
-    transition: opacity 0.2s;
+    transition: opacity 0.2s, transform 0.2s;
   }
   .btn-primary:hover {
-    opacity: 0.85;
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+  .btn-primary .arrow {
+    display: inline-block;
+    transition: transform 0.2s;
+  }
+  .btn-primary:hover .arrow {
+    transform: translateX(3px);
   }
   .btn-ghost {
     display: inline-block;
-    padding: 13px 26px;
-    border: 1px solid rgba(137, 174, 151, 0.2);
+    padding: 14px 28px;
+    border: 1px solid var(--color-border);
     color: #ede8d8;
     border-radius: 4px;
-    font-size: 14px;
+    font-family: var(--font-vollkorn);
+    font-size: 15px;
     text-decoration: none;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, color 0.2s;
   }
   .btn-ghost:hover {
-    border-color: #8aae97;
-  }
-  .portrait {
-    width: 100%;
-    max-width: 280px;
-    aspect-ratio: 4/5;
-    object-fit: cover;
-    object-position: top;
-    border-radius: 6px;
-    border: 1px solid rgba(137, 174, 151, 0.2);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
   }
 
   /* ── Feeds ── */
   .feeds-section {
-    padding: 80px 60px;
+    padding: 50px 60px;
   }
   .feeds-inner {
-    max-width: 1000px;
+    max-width: 920px;
     margin: 0 auto;
   }
   .feeds-header {
     margin-bottom: 25px;
   }
-  .section-label {
-    font-family: var(--font-geist-mono);
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #e2ede6;
-    display: block;
-    margin-bottom: 12px;
-  }
   .feeds-h2 {
-    font-family: var(--font-fraunces);
-    font-weight: 400;
-    font-variation-settings: 'opsz' 72;
-    font-size: var(--text-h2);
+    font-family: var(--font-cormorant);
+    font-weight: 500;
+    font-size: clamp(28px, 3.6vw, 44px);
     line-height: 1.05;
     letter-spacing: var(--tracking-sub);
     margin: 0;
-    color: #ede8d8;
+    color: var(--color-text-heading);
   }
   .feeds-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 48px;
+    gap: 40px;
     align-items: stretch;
   }
 
@@ -238,7 +281,8 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     height: 640px;
     overflow-x: visible;
     overflow-y: auto;
-    padding-top: 4px;
+    padding: 0.25rem 0.75rem 0.25rem 0.25rem;
+    scrollbar-gutter: stable;
     scrollbar-width: thin;
     scrollbar-color: rgba(137,174,151,0.3) transparent;
   }
@@ -301,20 +345,19 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     }
     .hero-inner {
       grid-template-columns: 1fr;
-      gap: 40px;
+      gap: 36px;
+      max-width: 480px;
     }
-    .portrait {
-      max-width: 220px;
+    .portrait-frame {
+      max-width: 240px;
+      width: 100%;
     }
     .feeds-section {
-      padding: 60px 24px;
+      padding: 60px 24px 80px;
     }
     .feeds-grid {
       grid-template-columns: 1fr;
-      gap: 48px;
-    }
-    .display {
-      white-space: normal;
+      gap: 28px;
     }
   }
 </style>

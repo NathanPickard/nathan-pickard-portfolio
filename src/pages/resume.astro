@@ -15,7 +15,6 @@ import { Icon } from 'astro-icon/components';
       <!-- Page header -->
       <div class="resume-page-header">
         <div>
-          <span class="section-label">Resume</span>
           <h1 class="resume-name">{resume.basics.name}</h1>
           <p class="resume-label">{resume.basics.label}</p>
           <p class="resume-contact">
@@ -125,27 +124,18 @@ import { Icon } from 'astro-icon/components';
     border-bottom: 1px solid rgba(137,174,151,0.2);
     margin-bottom: 48px;
   }
-  .section-label {
-    font-family: var(--font-geist-mono);
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #E2EDE6;
-    display: block;
-    margin-bottom: 12px;
-  }
   .resume-name {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 400;
     font-variation-settings: "opsz" 144;
-    font-size: var(--text-h1);
+    font-size: clamp(28px, 3.6vw, 44px);
     line-height: 1.0;
     letter-spacing: var(--tracking-heading);
     color: #E2EDE6;
     margin: 0 0 8px;
   }
   .resume-label {
-    font-size: 16px;
+    font-size: 18px;
     color: #E2EDE6;
     margin: 0 0 10px;
   }
@@ -196,7 +186,7 @@ import { Icon } from 'astro-icon/components';
     padding-bottom: 0;
   }
   .section-heading {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 500;
     font-variation-settings: "opsz" 72;
     font-size: 22px;
@@ -207,7 +197,7 @@ import { Icon } from 'astro-icon/components';
 
   /* Summary */
   .summary-text {
-    font-size: 15px;
+    font-size: 17px;
     line-height: 1.75;
     color: #E2EDE6;
     margin: 0;
@@ -223,7 +213,7 @@ import { Icon } from 'astro-icon/components';
     display: grid;
     grid-template-columns: 180px 1fr;
     gap: 16px;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.6;
   }
   .skill-name {
@@ -244,12 +234,12 @@ import { Icon } from 'astro-icon/components';
     gap: 4px;
   }
   .edu-institution {
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 600;
     color: #EDE8D8;
   }
   .edu-degree {
-    font-size: 14px;
+    font-size: 16px;
     color: #E2EDE6;
   }
 
@@ -280,7 +270,7 @@ import { Icon } from 'astro-icon/components';
     gap: 3px;
   }
   .work-company {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 600;
     font-variation-settings: "opsz" 72;
     font-size: 20px;
@@ -288,18 +278,18 @@ import { Icon } from 'astro-icon/components';
     color: #E2EDE6;
   }
   .work-position {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     color: #E2EDE6;
   }
   .work-desc {
-    font-size: 13px;
+    font-size: 14px;
     font-family: var(--font-geist-mono);
     color: #c8e0d0;
   }
   .work-dates {
     font-family: var(--font-geist-mono);
-    font-size: 12px;
+    font-size: 13px;
     color: #c8e0d0;
     white-space: nowrap;
     flex-shrink: 0;
@@ -313,7 +303,7 @@ import { Icon } from 'astro-icon/components';
     gap: 8px;
   }
   .work-highlights li {
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.65;
     color: #E2EDE6;
     padding-left: 16px;
@@ -334,7 +324,7 @@ import { Icon } from 'astro-icon/components';
     margin: 0;
   }
   .activities-list li {
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.65;
     color: #E2EDE6;
     padding-left: 16px;

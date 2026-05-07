@@ -43,7 +43,9 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
       />
     )}
 
-    <Font cssVariable="--font-fraunces" />
+    <Font cssVariable="--font-cormorant" />
+    <Font cssVariable="--font-vollkorn" />
+    <Font cssVariable="--font-eb-garamond" />
     <Font cssVariable="--font-inter" />
     <Font cssVariable="--font-geist-mono" />
 
@@ -75,15 +77,15 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
 <style is:global>
   :root {
     /* ── Type scale ── */
-    --text-display: clamp(40px, 5.5vw, 80px);
+    --text-display: clamp(56px, 6.2vw, 96px);
     --text-h1: clamp(32px, 4.5vw, 56px);
-    --text-h2: clamp(24px, 3vw, 40px);
+    --text-h2: clamp(38px, 4.4vw, 60px);
     --text-h3: 22px;
     /* ── Letter-spacing ── */
-    --tracking-display: -0.04em;
-    --tracking-heading: -0.03em;
-    --tracking-sub: -0.025em;
-    --tracking-label: 0.2em;
+    --tracking-display: -0.022em;
+    --tracking-heading: -0.018em;
+    --tracking-sub: -0.018em;
+    --tracking-label: 0;
     /* ── Colors ── */
     --color-bg: #0D1C10;
     --color-text: #EDE8D8;
@@ -101,7 +103,8 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
   *, *::before, *::after { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; height: 100%; }
   body {
-    font-family: var(--font-inter);
+    font-family: var(--font-vollkorn);
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
     background: var(--color-bg);
     color: var(--color-text);

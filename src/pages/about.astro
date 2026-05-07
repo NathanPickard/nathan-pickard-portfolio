@@ -3,7 +3,6 @@ import { Icon } from 'astro-icon/components';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-
 ---
 
 <BaseLayout
@@ -14,10 +13,8 @@ import Footer from '../components/Footer.astro';
 
   <main class="about-main">
     <div class="about-inner">
-
       <!-- Header: full width -->
       <div class="about-header">
-        <span class="section-label">About</span>
         <h1 class="about-h1">
           Craft, curiosity, and coffee<br />- A bit about me
         </h1>
@@ -48,20 +45,24 @@ import Footer from '../components/Footer.astro';
           <div class="pnw-title">Life outside the IDE</div>
           {
             [
-              ['mdi:coffee',    'Coffee aficionado'],
-              ['mdi:hiking',    'Hiking/Exploring'],
+              ['mdi:coffee', 'Coffee aficionado'],
+              ['mdi:hiking', 'Hiking/Exploring'],
               ['mdi:pot-steam', 'Home cook, BBQ enthusiast'],
               ['mdi:pine-tree', 'Portland local, PNW-based'],
             ].map(([icon, text]) => (
               <div class="pnw-item">
-                <Icon name={icon} size={16} aria-hidden="true" class="pnw-icon" />
+                <Icon
+                  name={icon}
+                  size={16}
+                  aria-hidden="true"
+                  class="pnw-icon"
+                />
                 <span>{text}</span>
               </div>
             ))
           }
         </div>
       </div>
-
     </div>
   </main>
 
@@ -76,25 +77,16 @@ import Footer from '../components/Footer.astro';
     max-width: 1000px;
     margin: 0 auto;
   }
-  .section-label {
-    font-family: var(--font-geist-mono);
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #e2ede6;
-    display: block;
-    margin-bottom: 16px;
-  }
 
   /* Full-width header */
   .about-header {
     margin-bottom: 40px;
   }
   .about-h1 {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 400;
     font-variation-settings: 'opsz' 72;
-    font-size: var(--text-h1);
+    font-size: clamp(28px, 3.6vw, 44px);
     line-height: 1.05;
     letter-spacing: var(--tracking-heading);
     margin: 0;
@@ -134,7 +126,9 @@ import Footer from '../components/Footer.astro';
     text-decoration: none;
     transition: opacity 0.2s;
   }
-  .btn-primary:hover { opacity: 0.85; }
+  .btn-primary:hover {
+    opacity: 0.85;
+  }
   .btn-ghost {
     display: inline-block;
     padding: 13px 26px;
@@ -145,7 +139,9 @@ import Footer from '../components/Footer.astro';
     text-decoration: none;
     transition: border-color 0.2s;
   }
-  .btn-ghost:hover { border-color: #8aae97; }
+  .btn-ghost:hover {
+    border-color: #8aae97;
+  }
 
   /* PNW card */
   .pnw-card {
@@ -172,14 +168,18 @@ import Footer from '../components/Footer.astro';
     color: #e2ede6;
     align-items: center;
   }
-  .pnw-item:last-child { border-bottom: 0; }
+  .pnw-item:last-child {
+    border-bottom: 0;
+  }
   .pnw-icon {
     color: #8aae97;
     flex-shrink: 0;
   }
 
   @media (max-width: 900px) {
-    .about-main { padding: 60px 24px; }
+    .about-main {
+      padding: 60px 24px;
+    }
     .about-body-row {
       grid-template-columns: 1fr;
       gap: 40px;
