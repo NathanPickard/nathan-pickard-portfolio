@@ -160,7 +160,7 @@ const panelConfig = [
 
   <main class="work-main">
     <div class="work-inner">
-      <div class="work-header">
+      <div class="work-header" data-reveal>
         <h1 class="work-h1">From idea to impact</h1>
         <p class="work-sub">Work that ships and results that stick</p>
       </div>
@@ -181,7 +181,7 @@ const panelConfig = [
         }
       </div>
 
-      <div class="work-grid" id="work-grid">
+      <div class="work-grid" id="work-grid" data-reveal>
         <!-- Desktop tabs sidebar -->
         <div class="work-tabs" role="tablist" aria-label="Work history">
           {
@@ -227,7 +227,7 @@ const panelConfig = [
       </div>
 
       <!-- Mobile accordion (hidden on desktop) -->
-      <div class="work-accordion" aria-label="Work history">
+      <div class="work-accordion" aria-label="Work history" data-reveal>
         {
           work.map((w, i) => (
             <div class="accordion-item">
@@ -272,14 +272,15 @@ const panelConfig = [
       </div>
 
       <section class="skills-section" aria-labelledby="skills-heading">
-        <h2 class="skills-h2" id="skills-heading">The tools I reach for</h2>
-        <div class="bento-grid">
+        <h2 class="skills-h2" id="skills-heading" data-reveal>The tools I reach for</h2>
+        <div class="bento-grid" data-reveal-stagger>
           {
             panelConfig.map((panel) => (
               <div
                 class="bento-panel"
                 data-panel-id={panel.id}
                 style={`--accent: ${panel.accent}`}
+                data-reveal
               >
                 <h3 class="bento-panel-heading">{panel.label}</h3>
                 {panel.type === 'icon' ? (
@@ -323,7 +324,7 @@ const panelConfig = [
         </div>
       </section>
 
-      <section class="community-section" aria-labelledby="community-heading">
+      <section class="community-section" aria-labelledby="community-heading" data-reveal>
         <h2 class="community-h2" id="community-heading">In the community</h2>
         <div class="community-body">
           {
@@ -334,7 +335,7 @@ const panelConfig = [
         </div>
       </section>
 
-      <div class="work-cta-row">
+      <div class="work-cta-row" data-reveal>
         <a href="/resume" class="btn-primary">View full resume →</a>
       </div>
     </div>
