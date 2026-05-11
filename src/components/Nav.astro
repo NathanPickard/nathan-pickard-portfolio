@@ -48,7 +48,7 @@ const socials: Social[] = [
 
 <div class="dark-header-main-border">
   <div class="dark-header-main">
-    <a href="/" class="dark-wordmark">Nathan Pickard</a>
+    <a href="/" class="dark-wordmark" transition:name="wordmark" aria-label="Nathan Pickard — home">NP</a>
 
     <!-- Desktop nav -->
     <nav class="dark-nav" aria-label="Main navigation">
@@ -154,11 +154,10 @@ const socials: Social[] = [
 </div>
 
 <script>
-  document.addEventListener('astro:page-load', () => {
-    const btn = document.querySelector('.hamburger') as HTMLButtonElement;
-    const menu = document.querySelector('.mobile-menu') as HTMLDivElement;
-    if (!btn || !menu) return;
+  const btn = document.querySelector('.hamburger') as HTMLButtonElement;
+  const menu = document.querySelector('.mobile-menu') as HTMLDivElement;
 
+  if (btn && menu) {
     btn.addEventListener('click', () => {
       const isOpen = menu.classList.toggle('open');
       btn.setAttribute('aria-expanded', String(isOpen));
@@ -172,7 +171,7 @@ const socials: Social[] = [
         menu.setAttribute('aria-hidden', 'true');
       });
     });
-  });
+  }
 </script>
 
 <style>
@@ -191,11 +190,15 @@ const socials: Social[] = [
   .dark-wordmark {
     font-family: var(--font-cormorant);
     font-weight: 500;
-    font-size: 24px;
+    font-size: 30px;
     letter-spacing: -0.01em;
     color: #e2ede6;
     text-decoration: none;
     white-space: nowrap;
+    transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .dark-wordmark:hover {
+    color: #d4af37;
   }
   .wordmark-dot {
     color: #d4af37;
@@ -213,16 +216,29 @@ const socials: Social[] = [
     text-decoration: none;
     font-size: 21px;
     font-weight: 400;
-    transition: color 0.2s;
+    transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
   }
   .dark-nav a:hover {
     color: #d4af37;
   }
   .dark-nav a.active {
     color: #d4af37;
-    text-decoration: underline;
-    text-underline-offset: 6px;
-    text-decoration-thickness: 1px;
+  }
+  .dark-nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: #d4af37;
+    transform-origin: left;
+    animation: underlineGrow 0.3s ease-out both;
+  }
+  @keyframes underlineGrow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
   }
 
   /* Desktop social links */
@@ -238,7 +254,7 @@ const socials: Social[] = [
     padding: 7px;
     border-radius: 6px;
     border-bottom: none !important;
-    transition: background 0.2s;
+    transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none;
     color: #e2ede6;
   }
@@ -247,9 +263,9 @@ const socials: Social[] = [
   }
   .social-link :global(svg) {
     transition:
-      filter 0.25s,
-      color 0.25s,
-      transform 0.2s;
+      filter 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .social-link:hover :global(svg) {
     transform: translateY(-1px);
@@ -304,7 +320,7 @@ const socials: Social[] = [
     align-items: center;
     justify-content: center;
     border-radius: 6px;
-    transition: background 0.2s;
+    transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .hamburger:hover {
     background: rgba(137, 174, 151, 0.1);
@@ -348,9 +364,9 @@ const socials: Social[] = [
     text-decoration: none;
     border-left: 3px solid transparent;
     transition:
-      border-color 0.15s,
-      background 0.15s,
-      color 0.15s;
+      border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+      background 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     min-height: 44px;
     display: flex;
     align-items: center;
