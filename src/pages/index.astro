@@ -8,7 +8,7 @@ import GitHubFeed from '../components/GitHubFeed.astro';
 import profilePhoto from '../assets/nathan-pickard-profile.jpg';
 ---
 
-<BaseLayout title="Nathan Pickard — Software Engineer">
+<BaseLayout title="Nathan Pickard — Senior Software Engineer">
   <Nav />
 
   <!-- Hero -->
@@ -71,7 +71,7 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
       <div class="hero-text">
         <h1 class="display">Nathan Pickard</h1>
         <div class="eyebrow eyebrow--below eyebrow--norule">
-          Software Engineer
+          Senior Software Engineer
         </div>
         <p class="hero-sub">
           I build web experiences that connect great ideas to the people who
@@ -119,6 +119,21 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     pointer-events: none;
     color: #ede8d8;
   }
+  @media (prefers-reduced-motion: no-preference) {
+    .topo path {
+      stroke-dasharray: 1400;
+      stroke-dashoffset: 1400;
+      animation: topoBreath 18s ease-in-out infinite alternate;
+    }
+    .topo path:nth-child(2) { animation-delay: 3s; }
+    .topo path:nth-child(3) { animation-delay: 6s; }
+    .topo path:nth-child(4) { animation-delay: 9s; }
+    .topo path:nth-child(5) { animation-delay: 12s; }
+    .topo path:nth-child(6) { animation-delay: 15s; }
+    @keyframes topoBreath {
+      to { stroke-dashoffset: 0; }
+    }
+  }
   .hero-inner {
     display: grid;
     grid-template-columns: 280px auto;
@@ -127,6 +142,15 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     max-width: 920px;
     margin: 0 auto;
     position: relative;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-inner {
+      animation: heroFadeIn 0.7s ease both;
+    }
+    @keyframes heroFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
   }
   .portrait-frame {
     position: relative;
@@ -140,6 +164,15 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     opacity: 0.35;
     border-radius: 4px;
     z-index: 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .portrait-frame::before {
+      animation: borderPulse 5s ease-in-out infinite;
+    }
+    @keyframes borderPulse {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 0.55; }
+    }
   }
   .portrait {
     width: 100%;
@@ -156,10 +189,10 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
   .display {
     font-family: var(--font-cormorant);
     font-weight: 500;
-    font-size: clamp(40px, 4.5vw, 68px);
+    font-size: clamp(36px, 4vw, 60px);
     line-height: 0.96;
     letter-spacing: var(--tracking-display);
-    margin: 0 0 18px;
+    margin: 0 0 5px;
     color: var(--color-text-heading);
   }
   .eyebrow {
@@ -216,7 +249,7 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     font-weight: 700;
     font-size: 15px;
     text-decoration: none;
-    transition: opacity 0.2s, transform 0.2s;
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .btn-primary:hover {
     opacity: 0.9;
@@ -238,7 +271,7 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     font-family: var(--font-vollkorn);
     font-size: 15px;
     text-decoration: none;
-    transition: border-color 0.2s, color 0.2s;
+    transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .btn-ghost:hover {
     border-color: var(--color-accent);
