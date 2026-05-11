@@ -154,24 +154,28 @@ const socials: Social[] = [
 </div>
 
 <script>
-  const btn = document.querySelector('.hamburger') as HTMLButtonElement;
-  const menu = document.querySelector('.mobile-menu') as HTMLDivElement;
+  function initHamburger() {
+    const btn = document.querySelector('.hamburger') as HTMLButtonElement;
+    const menu = document.querySelector('.mobile-menu') as HTMLDivElement;
 
-  if (btn && menu) {
-    btn.addEventListener('click', () => {
-      const isOpen = menu.classList.toggle('open');
-      btn.setAttribute('aria-expanded', String(isOpen));
-      menu.setAttribute('aria-hidden', String(!isOpen));
-    });
-
-    menu.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => {
-        menu.classList.remove('open');
-        btn.setAttribute('aria-expanded', 'false');
-        menu.setAttribute('aria-hidden', 'true');
+    if (btn && menu) {
+      btn.addEventListener('click', () => {
+        const isOpen = menu.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(isOpen));
+        menu.setAttribute('aria-hidden', String(!isOpen));
       });
-    });
+
+      menu.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+          menu.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+          menu.setAttribute('aria-hidden', 'true');
+        });
+      });
+    }
   }
+
+  document.addEventListener('astro:page-load', initHamburger);
 </script>
 
 <style>
