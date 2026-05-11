@@ -147,21 +147,24 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
   function initReveal() {
     // Apply manual delays from data-reveal-delay attribute (value in ms)
     document.querySelectorAll<HTMLElement>('[data-reveal][data-reveal-delay]').forEach(el => {
-      const delay = el.getAttribute('data-reveal-delay');
-      if (delay) el.style.transitionDelay = `${delay}ms`;
+      const delay = parseInt(el.getAttribute('data-reveal-delay') ?? '', 10);
+      if (!isNaN(delay) && delay >= 0) el.style.transitionDelay = `${delay}ms`;
     });
 
     // Apply stagger delays to direct [data-reveal] children of [data-reveal-stagger] containers
+    // Skip children that have an explicit data-reveal-delay so manual delays are not clobbered
     document.querySelectorAll('[data-reveal-stagger]').forEach(container => {
       const children = Array.from(container.children).filter(
         child => child.hasAttribute('data-reveal')
       ) as HTMLElement[];
       children.forEach((child, i) => {
-        child.style.transitionDelay = `${Math.min(i, 5) * 80}ms`;
+        if (!child.hasAttribute('data-reveal-delay')) {
+          child.style.transitionDelay = `${Math.min(i, 5) * 80}ms`;
+        }
       });
     });
 
-    // Observe all [data-reveal] elements
+    // Observe all [data-reveal] elements that haven't already been revealed
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(entry => {
@@ -174,7 +177,9 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
       { threshold: 0.15 }
     );
 
-    document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      if (!el.classList.contains('is-visible')) observer.observe(el);
+    });
   }
 
   // Fires on initial load and after each View Transition navigation
