@@ -17,14 +17,14 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
 
   <main class="blog-main">
     <div class="blog-inner">
-      <div class="blog-header">
+      <div class="blog-header" data-reveal>
         <h1 class="blog-h1">What I'm thinking, building, and reading</h1>
       </div>
 
-      <div class="blog-grid">
+      <div class="blog-grid" data-reveal-stagger>
         {
           posts.map((post) => (
-            <a href={`/blog/${post.id}/`} class="blog-card">
+            <a href={`/blog/${post.id}/`} class="blog-card" data-reveal>
               {post.data.heroImage && (
                 <Image
                   width={720}
@@ -92,14 +92,15 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     overflow: hidden;
     text-decoration: none;
     color: inherit;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.05);
     transition:
-      border-color 0.2s,
-      box-shadow 0.2s,
-      transform 0.15s;
+      border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .blog-card:hover {
     border-color: #d4af37;
-    box-shadow: 0 8px 32px rgba(200, 120, 64, 0.1);
+    box-shadow: 0 8px 32px rgba(212, 175, 55, 0.13);
     transform: translateY(-2px);
   }
   .card-image {
