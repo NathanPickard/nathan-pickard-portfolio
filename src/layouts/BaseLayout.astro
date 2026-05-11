@@ -1,6 +1,7 @@
 ---
 import type { ImageMetadata } from 'astro';
 import { Font } from 'astro:assets';
+import { ClientRouter } from 'astro:transitions';
 import FallbackImage from '../assets/blog-placeholder-1.jpg';
 import { SITE_TITLE } from '../consts';
 
@@ -48,6 +49,8 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
     <Font cssVariable="--font-eb-garamond" />
     <Font cssVariable="--font-inter" />
     <Font cssVariable="--font-geist-mono" />
+
+    <ClientRouter />
 
     {canonicalURL && socialImage && (
       <>
@@ -120,4 +123,22 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
   }
   a { color: inherit; }
   img { max-width: 100%; height: auto; }
+
+  /* Scroll reveal system */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal] {
+      opacity: 0;
+      transition: opacity 0.65s ease;
+    }
+    [data-reveal].is-visible {
+      opacity: 1;
+    }
+  }
+
+  /* Keyboard focus ring */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
 </style>
