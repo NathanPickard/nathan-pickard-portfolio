@@ -14,14 +14,14 @@ import Footer from '../components/Footer.astro';
   <main class="about-main">
     <div class="about-inner">
       <!-- Header: full width -->
-      <div class="about-header">
+      <div class="about-header" data-reveal>
         <h1 class="about-h1">
           Craft, curiosity, and coffee<br />- A bit about me
         </h1>
       </div>
 
       <!-- Body: bio left, card right -->
-      <div class="about-body-row">
+      <div class="about-body-row" data-reveal>
         <div class="about-body">
           <p class="bio">
             Six years shipping consumer-facing software at the intersection of
@@ -41,7 +41,7 @@ import Footer from '../components/Footer.astro';
           </div>
         </div>
 
-        <div class="pnw-card">
+        <div class="pnw-card" data-reveal data-reveal-delay="120">
           <div class="pnw-title">Life outside the IDE</div>
           {
             [
