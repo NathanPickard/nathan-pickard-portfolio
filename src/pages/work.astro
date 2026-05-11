@@ -438,11 +438,13 @@ const panelConfig = [
     width: 100%;
     background: transparent;
     border: 0;
+    border-left: 3px solid transparent;
     border-bottom: 1px solid rgba(137, 174, 151, 0.2);
     padding: 20px 24px;
     text-align: left;
     cursor: pointer;
-    transition: background 0.15s;
+    transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                border-left-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     color: #ede8d8;
   }
   .work-tab:last-child {
@@ -453,7 +455,7 @@ const panelConfig = [
   }
   .work-tab.active {
     background: #162b1b;
-    border-left: 3px solid #d4af37;
+    border-left-color: #d4af37;
   }
   .tab-co {
     font-family: var(--font-eb-garamond);
@@ -563,7 +565,7 @@ const panelConfig = [
     justify-content: space-between;
     gap: 12px;
     color: #ede8d8;
-    transition: background 0.15s;
+    transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .accordion-trigger:hover {
     background: rgba(255, 255, 255, 0.04);
@@ -708,8 +710,8 @@ const panelConfig = [
     min-width: 72px;
     width: max-content;
     transition:
-      border-color 0.2s,
-      background 0.2s;
+      border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: default;
   }
   .skill-icon-tile:hover {
@@ -750,7 +752,7 @@ const panelConfig = [
     border-radius: 999px;
     font: 500 13px var(--font-geist-mono);
     color: #f0ece0;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .spec-pill:hover {
     border-color: rgba(137, 174, 151, 0.6);
@@ -801,7 +803,7 @@ const panelConfig = [
     font-size: 14px;
     text-decoration: none;
     letter-spacing: 0.02em;
-    transition: opacity 0.2s;
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .btn-primary:hover {
     opacity: 0.85;
