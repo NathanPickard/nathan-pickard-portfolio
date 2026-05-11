@@ -90,12 +90,12 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
   <!-- Activity Feeds -->
   <section class="feeds-section">
     <div class="feeds-inner">
-      <div class="feeds-header">
+      <div class="feeds-header" data-reveal>
         <h2 class="feeds-h2">What I've been up to</h2>
       </div>
-      <div class="feeds-grid">
-        <BlueskyFeed />
-        <GitHubFeed />
+      <div class="feeds-grid" data-reveal-stagger>
+        <div data-reveal><BlueskyFeed /></div>
+        <div data-reveal><GitHubFeed /></div>
       </div>
     </div>
   </section>
