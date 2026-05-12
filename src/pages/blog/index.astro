@@ -17,15 +17,14 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
 
   <main class="blog-main">
     <div class="blog-inner">
-      <div class="blog-header">
-        <span class="section-label">Blog</span>
+      <div class="blog-header" data-reveal>
         <h1 class="blog-h1">What I'm thinking, building, and reading</h1>
       </div>
 
-      <div class="blog-grid">
+      <div class="blog-grid" data-reveal-stagger>
         {
           posts.map((post) => (
-            <a href={`/blog/${post.id}/`} class="blog-card">
+            <a href={`/blog/${post.id}/`} class="blog-card" data-reveal>
               {post.data.heroImage && (
                 <Image
                   width={720}
@@ -67,21 +66,12 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
   .blog-header {
     margin-bottom: 48px;
   }
-  .section-label {
-    font-family: var(--font-geist-mono);
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #e2ede6;
-    display: block;
-    margin-bottom: 16px;
-  }
   .blog-h1 {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 400;
     font-variation-settings: 'opsz' 72;
-    font-size: var(--text-h1);
-    line-height: 1;
+    font-size: clamp(28px, 3.6vw, 44px);
+    line-height: 1.05;
     letter-spacing: var(--tracking-heading);
     margin: 0;
     color: #e2ede6;
@@ -102,14 +92,15 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     overflow: hidden;
     text-decoration: none;
     color: inherit;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.05);
     transition:
-      border-color 0.2s,
-      box-shadow 0.2s,
-      transform 0.15s;
+      border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .blog-card:hover {
     border-color: #d4af37;
-    box-shadow: 0 8px 32px rgba(200, 120, 64, 0.1);
+    box-shadow: 0 8px 32px rgba(212, 175, 55, 0.13);
     transform: translateY(-2px);
   }
   .card-image {
@@ -128,24 +119,24 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
   }
   .card-date {
     font-family: var(--font-geist-mono);
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
     color: #e2ede6;
     margin: 0 0 8px;
   }
   .card-title {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 500;
     font-variation-settings: 'opsz' 72;
-    font-size: 19px;
+    font-size: 23px;
     letter-spacing: -0.01em;
     line-height: 1.25;
     color: #ede8d8;
     margin: 0 0 10px;
   }
   .card-desc {
-    font-size: 14px;
+    font-size: 16px;
     color: #e2ede6;
     line-height: 1.6;
     margin: 0;
@@ -156,7 +147,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     flex: 1;
   }
   .archived-link {
-    font-size: 14px;
+    font-size: 20px;
     color: #d4af37;
     text-decoration: none;
     transition: opacity 0.2s;

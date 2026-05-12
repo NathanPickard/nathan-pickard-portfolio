@@ -30,7 +30,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     }
 
     <div class="post-inner">
-      <div class="post-header">
+      <div class="post-header" data-reveal>
         <div class="post-date">
           <FormattedDate date={pubDate} />
           {
@@ -96,7 +96,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     color: #a8c8b4;
   }
   .post-title {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 400;
     font-variation-settings: 'opsz' 144;
     font-size: var(--text-h1);
@@ -125,7 +125,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     color: #ede8d8;
   }
   .prose :global(h2) {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 500;
     font-variation-settings: 'opsz' 72;
     font-size: 28px;
@@ -134,7 +134,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     margin: 2em 0 0.75em;
   }
   .prose :global(h3) {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 500;
     font-variation-settings: 'opsz' 72;
     font-size: 22px;
@@ -208,7 +208,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
   .back-link {
     display: inline-block;
     margin-top: 48px;
-    font-size: 14px;
+    font-size: 20px;
     color: #d4af37;
     text-decoration: none;
     transition: opacity 0.2s;

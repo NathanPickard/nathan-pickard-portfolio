@@ -84,7 +84,6 @@ const work = [
   },
 ];
 
-
 // Helper to find keywords by category name from resumeData.skills
 const getKeywords = (name: string): string[] =>
   resumeData.skills.find((s) => s.name === name)?.keywords ?? [];
@@ -94,7 +93,9 @@ const backendKeywords = [
   // Node.js and Django pulled from Languages/Frameworks
   ...getKeywords('Languages/Frameworks').filter((kw) => movedToBackend.has(kw)),
   // Tools/Infrastructure minus devops keywords
-  ...toolsKeywords.filter((kw) => !devopsKeywords.has(kw) && !skipTiles.has(kw)),
+  ...toolsKeywords.filter(
+    (kw) => !devopsKeywords.has(kw) && !skipTiles.has(kw),
+  ),
 ];
 const devopsFilteredKeywords = toolsKeywords.filter(
   (kw) => devopsKeywords.has(kw) && !skipTiles.has(kw),
@@ -149,7 +150,6 @@ const panelConfig = [
     keywords: getKeywords('AI Models & Tools'),
   },
 ];
-
 ---
 
 <BaseLayout
@@ -160,21 +160,28 @@ const panelConfig = [
 
   <main class="work-main">
     <div class="work-inner">
-      <div class="work-header">
-        <span class="section-label">Work History</span>
+      <div class="work-header" data-reveal>
         <h1 class="work-h1">From idea to impact</h1>
         <p class="work-sub">Work that ships and results that stick</p>
       </div>
 
-      {/* Icon sprite preloader — keeps astro-icon SVG symbols in the always-visible DOM
-          so icons in hidden .work-panel tabs don't break the bento grid */}
-      <div aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden;">
-        {Object.values(iconMap).filter((v): v is string => v !== null).filter((v, i, a) => a.indexOf(v) === i).map((name) => (
-          <Icon name={name} size={1} />
-        ))}
+      {
+        /* Icon sprite preloader — keeps astro-icon SVG symbols in the always-visible DOM
+          so icons in hidden .work-panel tabs don't break the bento grid */
+      }
+      <div
+        aria-hidden="true"
+        style="position:absolute;width:0;height:0;overflow:hidden;"
+      >
+        {
+          Object.values(iconMap)
+            .filter((v): v is string => v !== null)
+            .filter((v, i, a) => a.indexOf(v) === i)
+            .map((name) => <Icon name={name} size={1} />)
+        }
       </div>
 
-      <div class="work-grid" id="work-grid">
+      <div class="work-grid" id="work-grid" data-reveal>
         <!-- Desktop tabs sidebar -->
         <div class="work-tabs" role="tablist" aria-label="Work history">
           {
@@ -220,7 +227,7 @@ const panelConfig = [
       </div>
 
       <!-- Mobile accordion (hidden on desktop) -->
-      <div class="work-accordion" aria-label="Work history">
+      <div class="work-accordion" aria-label="Work history" data-reveal>
         {
           work.map((w, i) => (
             <div class="accordion-item">
@@ -235,10 +242,14 @@ const panelConfig = [
                   <div class="accordion-co">{w.co}</div>
                   <div class="accordion-meta">
                     <span class="accordion-period">{w.period}</span>
-                    {w.client && <span class="accordion-client">{w.client}</span>}
+                    {w.client && (
+                      <span class="accordion-client">{w.client}</span>
+                    )}
                   </div>
                 </div>
-                <span class="accordion-chevron" aria-hidden="true">›</span>
+                <span class="accordion-chevron" aria-hidden="true">
+                  ›
+                </span>
               </button>
               <div
                 class={`accordion-panel${i === 0 ? ' open' : ''}`}
@@ -261,15 +272,17 @@ const panelConfig = [
       </div>
 
       <section class="skills-section" aria-labelledby="skills-heading">
-        <span class="section-label">Technical Skills</span>
-        <h2 class="skills-h2" id="skills-heading">The tools I reach for</h2>
-        <div class="bento-grid">
+        <h2 class="skills-h2" id="skills-heading" data-reveal>
+          The tools I reach for
+        </h2>
+        <div class="bento-grid" data-reveal-stagger>
           {
             panelConfig.map((panel) => (
               <div
                 class="bento-panel"
                 data-panel-id={panel.id}
                 style={`--accent: ${panel.accent}`}
+                data-reveal
               >
                 <h3 class="bento-panel-heading">{panel.label}</h3>
                 {panel.type === 'icon' ? (
@@ -313,8 +326,11 @@ const panelConfig = [
         </div>
       </section>
 
-      <section class="community-section" aria-labelledby="community-heading">
-        <span class="section-label">Community</span>
+      <section
+        class="community-section"
+        aria-labelledby="community-heading"
+        data-reveal
+      >
         <h2 class="community-h2" id="community-heading">In the community</h2>
         <div class="community-body">
           {
@@ -325,7 +341,7 @@ const panelConfig = [
         </div>
       </section>
 
-      <div class="work-cta-row">
+      <div class="work-cta-row" data-reveal>
         <a href="/resume" class="btn-primary">View full resume →</a>
       </div>
     </div>
@@ -335,45 +351,47 @@ const panelConfig = [
 </BaseLayout>
 
 <script>
-  const tabs = document.querySelectorAll<HTMLButtonElement>('.work-tab');
-  const panels = document.querySelectorAll<HTMLDivElement>('.work-panel');
+  function initWork() {
+    const tabs = document.querySelectorAll<HTMLButtonElement>('.work-tab');
+    const panels = document.querySelectorAll<HTMLDivElement>('.work-panel');
 
-  // Desktop tab behavior
-  tabs.forEach((tab) => {
-    tab.addEventListener('click', () => {
-      const idx = Number(tab.dataset.index);
-      tabs.forEach((t, i) => {
-        t.classList.toggle('active', i === idx);
-        t.setAttribute('aria-selected', String(i === idx));
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const idx = Number(tab.dataset.index);
+        tabs.forEach((t, i) => {
+          t.classList.toggle('active', i === idx);
+          t.setAttribute('aria-selected', String(i === idx));
+        });
+        panels.forEach((p, i) => p.classList.toggle('active', i === idx));
       });
-      panels.forEach((p, i) => p.classList.toggle('active', i === idx));
     });
-  });
 
-  // Mobile accordion behavior
-  const accordionTriggers = document.querySelectorAll<HTMLButtonElement>('.accordion-trigger');
-  const accordionPanels = document.querySelectorAll<HTMLDivElement>('.accordion-panel');
+    const accordionTriggers =
+      document.querySelectorAll<HTMLButtonElement>('.accordion-trigger');
+    const accordionPanels =
+      document.querySelectorAll<HTMLDivElement>('.accordion-panel');
 
-  accordionTriggers.forEach((trigger) => {
-    trigger.addEventListener('click', () => {
-      const idx = Number(trigger.dataset.accordionIndex);
-      const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+    accordionTriggers.forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const idx = Number(trigger.dataset.accordionIndex);
+        const isOpen = trigger.getAttribute('aria-expanded') === 'true';
 
-      // Close all
-      accordionTriggers.forEach((t) => {
-        t.classList.remove('active');
-        t.setAttribute('aria-expanded', 'false');
+        accordionTriggers.forEach((t) => {
+          t.classList.remove('active');
+          t.setAttribute('aria-expanded', 'false');
+        });
+        accordionPanels.forEach((p) => p.classList.remove('open'));
+
+        if (!isOpen) {
+          trigger.classList.add('active');
+          trigger.setAttribute('aria-expanded', 'true');
+          accordionPanels[idx].classList.add('open');
+        }
       });
-      accordionPanels.forEach((p) => p.classList.remove('open'));
-
-      // Open clicked (toggle — if it was open, leave closed)
-      if (!isOpen) {
-        trigger.classList.add('active');
-        trigger.setAttribute('aria-expanded', 'true');
-        accordionPanels[idx].classList.add('open');
-      }
     });
-  });
+  }
+
+  document.addEventListener('astro:page-load', initWork);
 </script>
 
 <style>
@@ -387,20 +405,11 @@ const panelConfig = [
   .work-header {
     margin-bottom: 48px;
   }
-  .section-label {
-    font-family: var(--font-geist-mono);
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #e2ede6;
-    display: block;
-    margin-bottom: 16px;
-  }
   .work-h1 {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 400;
     font-variation-settings: 'opsz' 72;
-    font-size: var(--text-h1);
+    font-size: clamp(28px, 3.6vw, 44px);
     line-height: 1;
     letter-spacing: var(--tracking-heading);
     margin: 0 0 12px;
@@ -435,11 +444,14 @@ const panelConfig = [
     width: 100%;
     background: transparent;
     border: 0;
+    border-left: 3px solid transparent;
     border-bottom: 1px solid rgba(137, 174, 151, 0.2);
     padding: 20px 24px;
     text-align: left;
     cursor: pointer;
-    transition: background 0.15s;
+    transition:
+      background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      border-left-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     color: #ede8d8;
   }
   .work-tab:last-child {
@@ -450,10 +462,10 @@ const panelConfig = [
   }
   .work-tab.active {
     background: #162b1b;
-    border-left: 3px solid #d4af37;
+    border-left-color: #d4af37;
   }
   .tab-co {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 500;
     font-variation-settings: 'opsz' 72;
     font-size: 18px;
@@ -480,7 +492,6 @@ const panelConfig = [
   .work-panel.active {
     display: block;
   }
-
 
   @media (max-width: 900px) {
     .work-main {
@@ -561,7 +572,7 @@ const panelConfig = [
     justify-content: space-between;
     gap: 12px;
     color: #ede8d8;
-    transition: background 0.15s;
+    transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .accordion-trigger:hover {
     background: rgba(255, 255, 255, 0.04);
@@ -577,7 +588,7 @@ const panelConfig = [
     min-width: 0;
   }
   .accordion-co {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 500;
     font-variation-settings: 'opsz' 72;
     font-size: 20px;
@@ -635,10 +646,10 @@ const panelConfig = [
     border-top: 1px solid rgba(137, 174, 151, 0.2);
   }
   .skills-h2 {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 400;
     font-variation-settings: 'opsz' 72;
-    font-size: var(--text-h2);
+    font-size: clamp(24px, 3vw, 36px);
     line-height: 1.05;
     letter-spacing: var(--tracking-sub);
     margin: 0 0 40px;
@@ -706,8 +717,8 @@ const panelConfig = [
     min-width: 72px;
     width: max-content;
     transition:
-      border-color 0.2s,
-      background 0.2s;
+      border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: default;
   }
   .skill-icon-tile:hover {
@@ -748,7 +759,7 @@ const panelConfig = [
     border-radius: 999px;
     font: 500 13px var(--font-geist-mono);
     color: #f0ece0;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .spec-pill:hover {
     border-color: rgba(137, 174, 151, 0.6);
@@ -761,7 +772,7 @@ const panelConfig = [
     border-top: 1px solid rgba(137, 174, 151, 0.2);
   }
   .community-h2 {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 400;
     font-variation-settings: 'opsz' 72;
     font-size: clamp(28px, 3.5vw, 44px);
@@ -796,10 +807,10 @@ const panelConfig = [
     color: #0d1c10;
     border-radius: 4px;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 16px;
     text-decoration: none;
     letter-spacing: 0.02em;
-    transition: opacity 0.2s;
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .btn-primary:hover {
     opacity: 0.85;

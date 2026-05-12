@@ -7,45 +7,51 @@ import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 
-const posts = (await getCollection('blog', ({ data }) => data.archived ?? false)).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const posts = (
+  await getCollection('blog', ({ data }) => data.archived ?? false)
+).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<BaseLayout title={`${SITE_TITLE} — Archived Posts`} description={SITE_DESCRIPTION}>
+<BaseLayout
+  title={`${SITE_TITLE} — Archived Posts`}
+  description={SITE_DESCRIPTION}
+>
   <Nav />
 
   <main class="archived-main">
     <div class="archived-inner">
       <div class="archived-header">
-        <span class="section-label">Blog</span>
         <h1 class="archived-h1">Archived posts</h1>
       </div>
 
-      {posts.length === 0 ? (
-        <p class="empty">No archived posts yet.</p>
-      ) : (
-        <div class="post-list">
-          {posts.map((post) => (
-            <a href={`/blog/${post.id}/`} class="post-row">
-              {post.data.heroImage && (
-                <Image
-                  width={120}
-                  height={80}
-                  src={post.data.heroImage}
-                  alt=""
-                  class="post-thumb"
-                />
-              )}
-              <div class="post-info">
-                <div class="post-date"><FormattedDate date={post.data.pubDate} /></div>
-                <div class="post-title">{post.data.title}</div>
-              </div>
-              <span class="post-arrow">→</span>
-            </a>
-          ))}
-        </div>
-      )}
+      {
+        posts.length === 0 ? (
+          <p class="empty">No archived posts yet.</p>
+        ) : (
+          <div class="post-list">
+            {posts.map((post) => (
+              <a href={`/blog/${post.id}/`} class="post-row">
+                {post.data.heroImage && (
+                  <Image
+                    width={120}
+                    height={80}
+                    src={post.data.heroImage}
+                    alt=""
+                    class="post-thumb"
+                  />
+                )}
+                <div class="post-info">
+                  <div class="post-date">
+                    <FormattedDate date={post.data.pubDate} />
+                  </div>
+                  <div class="post-title">{post.data.title}</div>
+                </div>
+                <span class="post-arrow">→</span>
+              </a>
+            ))}
+          </div>
+        )
+      }
 
       <a href="/blog" class="back-link">← Back to Blog</a>
     </div>
@@ -65,27 +71,18 @@ const posts = (await getCollection('blog', ({ data }) => data.archived ?? false)
   .archived-header {
     margin-bottom: 48px;
   }
-  .section-label {
-    font-family: var(--font-geist-mono);
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #E2EDE6;
-    display: block;
-    margin-bottom: 16px;
-  }
   .archived-h1 {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 400;
-    font-variation-settings: "opsz" 72;
-    font-size: clamp(36px, 5vw, 64px);
-    line-height: 1.0;
-    letter-spacing: -0.03em;
+    font-variation-settings: 'opsz' 72;
+    font-size: clamp(22px, 2.8vw, 34px);
+    line-height: 1.1;
+    letter-spacing: var(--tracking-heading);
     margin: 0;
-    color: #E2EDE6;
+    color: #e2ede6;
   }
   .empty {
-    color: #8AAE97;
+    color: #8aae97;
     font-size: 16px;
   }
   .post-list {
@@ -100,63 +97,81 @@ const posts = (await getCollection('blog', ({ data }) => data.archived ?? false)
     gap: 24px;
     align-items: center;
     padding: 20px 0;
-    border-top: 1px solid rgba(137,174,151,0.2);
+    border-top: 1px solid rgba(137, 174, 151, 0.2);
     text-decoration: none;
     color: inherit;
     transition: opacity 0.2s;
   }
   .post-row:last-child {
-    border-bottom: 1px solid rgba(137,174,151,0.2);
+    border-bottom: 1px solid rgba(137, 174, 151, 0.2);
   }
-  .post-row:hover { opacity: 0.75; }
+  .post-row:hover {
+    opacity: 0.75;
+  }
   .post-thumb {
     width: 120px;
     height: 80px;
     object-fit: cover;
     border-radius: 6px;
     display: block;
-    border: 1px solid rgba(137,174,151,0.2);
+    border: 1px solid rgba(137, 174, 151, 0.2);
   }
   .post-date {
     font-family: var(--font-geist-mono);
     font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #E2EDE6;
+    color: #e2ede6;
     margin-bottom: 6px;
   }
   .post-title {
-    font-family: var(--font-fraunces);
+    font-family: var(--font-eb-garamond);
     font-weight: 500;
-    font-variation-settings: "opsz" 72;
+    font-variation-settings: 'opsz' 72;
     font-size: 20px;
     letter-spacing: -0.01em;
     line-height: 1.25;
-    color: #EDE8D8;
+    color: #ede8d8;
   }
   .post-arrow {
-    color: #D4AF37;
+    color: #d4af37;
     font-size: 18px;
     transition: transform 0.2s;
   }
-  .post-row:hover .post-arrow { transform: translateX(4px); }
+  .post-row:hover .post-arrow {
+    transform: translateX(4px);
+  }
 
   .back-link {
     display: inline-block;
-    font-size: 14px;
-    color: #D4AF37;
+    font-size: 20px;
+    color: #d4af37;
     text-decoration: none;
     transition: opacity 0.2s;
   }
-  .back-link:hover { opacity: 0.8; }
+  .back-link:hover {
+    opacity: 0.8;
+  }
 
   @media (max-width: 900px) {
-    .archived-main { padding: 60px 24px; }
-    .post-row { grid-template-columns: 80px 1fr auto; gap: 16px; }
-    .post-thumb { width: 80px; height: 56px; }
+    .archived-main {
+      padding: 60px 24px;
+    }
+    .post-row {
+      grid-template-columns: 80px 1fr auto;
+      gap: 16px;
+    }
+    .post-thumb {
+      width: 80px;
+      height: 56px;
+    }
   }
   @media (max-width: 600px) {
-    .post-row { grid-template-columns: 1fr auto; }
-    .post-thumb { display: none; }
+    .post-row {
+      grid-template-columns: 1fr auto;
+    }
+    .post-thumb {
+      display: none;
+    }
   }
 </style>

@@ -1,6 +1,7 @@
 ---
 import type { ImageMetadata } from 'astro';
 import { Font } from 'astro:assets';
+import { ClientRouter } from 'astro:transitions';
 import FallbackImage from '../assets/blog-placeholder-1.jpg';
 import { SITE_TITLE } from '../consts';
 
@@ -43,9 +44,13 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
       />
     )}
 
-    <Font cssVariable="--font-fraunces" />
+    <Font cssVariable="--font-cormorant" />
+    <Font cssVariable="--font-vollkorn" />
+    <Font cssVariable="--font-eb-garamond" />
     <Font cssVariable="--font-inter" />
     <Font cssVariable="--font-geist-mono" />
+
+    <ClientRouter />
 
     {canonicalURL && socialImage && (
       <>
@@ -75,15 +80,15 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
 <style is:global>
   :root {
     /* ── Type scale ── */
-    --text-display: clamp(40px, 5.5vw, 80px);
+    --text-display: clamp(56px, 6.2vw, 96px);
     --text-h1: clamp(32px, 4.5vw, 56px);
-    --text-h2: clamp(24px, 3vw, 40px);
+    --text-h2: clamp(38px, 4.4vw, 60px);
     --text-h3: 22px;
     /* ── Letter-spacing ── */
-    --tracking-display: -0.04em;
-    --tracking-heading: -0.03em;
-    --tracking-sub: -0.025em;
-    --tracking-label: 0.2em;
+    --tracking-display: -0.022em;
+    --tracking-heading: -0.018em;
+    --tracking-sub: -0.018em;
+    --tracking-label: 0;
     /* ── Colors ── */
     --color-bg: #0D1C10;
     --color-text: #EDE8D8;
@@ -101,7 +106,8 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
   *, *::before, *::after { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; height: 100%; }
   body {
-    font-family: var(--font-inter);
+    font-family: var(--font-vollkorn);
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
     background: var(--color-bg);
     color: var(--color-text);
@@ -117,4 +123,65 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
   }
   a { color: inherit; }
   img { max-width: 100%; height: auto; }
+
+  /* Scroll reveal system */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal] {
+      opacity: 0;
+      transition: opacity 0.65s ease;
+    }
+    [data-reveal].is-visible {
+      opacity: 1;
+    }
+  }
+
+  /* Keyboard focus ring */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
 </style>
+
+<script>
+  function initReveal() {
+    // Apply manual delays from data-reveal-delay attribute (value in ms)
+    document.querySelectorAll<HTMLElement>('[data-reveal][data-reveal-delay]').forEach(el => {
+      const delay = parseInt(el.getAttribute('data-reveal-delay') ?? '', 10);
+      if (!isNaN(delay) && delay >= 0) el.style.transitionDelay = `${delay}ms`;
+    });
+
+    // Apply stagger delays to direct [data-reveal] children of [data-reveal-stagger] containers
+    // Skip children that have an explicit data-reveal-delay so manual delays are not clobbered
+    document.querySelectorAll('[data-reveal-stagger]').forEach(container => {
+      const children = Array.from(container.children).filter(
+        child => child.hasAttribute('data-reveal')
+      ) as HTMLElement[];
+      children.forEach((child, i) => {
+        if (!child.hasAttribute('data-reveal-delay')) {
+          child.style.transitionDelay = `${Math.min(i, 5) * 80}ms`;
+        }
+      });
+    });
+
+    // Observe all [data-reveal] elements that haven't already been revealed
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      if (!el.classList.contains('is-visible')) observer.observe(el);
+    });
+  }
+
+  // Fires on initial load and after each View Transition navigation
+  document.addEventListener('astro:page-load', initReveal);
+</script>
