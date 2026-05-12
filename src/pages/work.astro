@@ -201,7 +201,7 @@ const panelConfig = [
               </button>
             ))
           }
-        </div>  
+        </div>
 
         <!-- Desktop panels -->
         <div class="work-panels">
@@ -272,7 +272,9 @@ const panelConfig = [
       </div>
 
       <section class="skills-section" aria-labelledby="skills-heading">
-        <h2 class="skills-h2" id="skills-heading" data-reveal>The tools I reach for</h2>
+        <h2 class="skills-h2" id="skills-heading" data-reveal>
+          The tools I reach for
+        </h2>
         <div class="bento-grid" data-reveal-stagger>
           {
             panelConfig.map((panel) => (
@@ -324,7 +326,11 @@ const panelConfig = [
         </div>
       </section>
 
-      <section class="community-section" aria-labelledby="community-heading" data-reveal>
+      <section
+        class="community-section"
+        aria-labelledby="community-heading"
+        data-reveal
+      >
         <h2 class="community-h2" id="community-heading">In the community</h2>
         <div class="community-body">
           {
@@ -345,47 +351,47 @@ const panelConfig = [
 </BaseLayout>
 
 <script>
-  const tabs = document.querySelectorAll<HTMLButtonElement>('.work-tab');
-  const panels = document.querySelectorAll<HTMLDivElement>('.work-panel');
+  function initWork() {
+    const tabs = document.querySelectorAll<HTMLButtonElement>('.work-tab');
+    const panels = document.querySelectorAll<HTMLDivElement>('.work-panel');
 
-  // Desktop tab behavior
-  tabs.forEach((tab) => {
-    tab.addEventListener('click', () => {
-      const idx = Number(tab.dataset.index);
-      tabs.forEach((t, i) => {
-        t.classList.toggle('active', i === idx);
-        t.setAttribute('aria-selected', String(i === idx));
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const idx = Number(tab.dataset.index);
+        tabs.forEach((t, i) => {
+          t.classList.toggle('active', i === idx);
+          t.setAttribute('aria-selected', String(i === idx));
+        });
+        panels.forEach((p, i) => p.classList.toggle('active', i === idx));
       });
-      panels.forEach((p, i) => p.classList.toggle('active', i === idx));
     });
-  });
 
-  // Mobile accordion behavior
-  const accordionTriggers =
-    document.querySelectorAll<HTMLButtonElement>('.accordion-trigger');
-  const accordionPanels =
-    document.querySelectorAll<HTMLDivElement>('.accordion-panel');
+    const accordionTriggers =
+      document.querySelectorAll<HTMLButtonElement>('.accordion-trigger');
+    const accordionPanels =
+      document.querySelectorAll<HTMLDivElement>('.accordion-panel');
 
-  accordionTriggers.forEach((trigger) => {
-    trigger.addEventListener('click', () => {
-      const idx = Number(trigger.dataset.accordionIndex);
-      const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+    accordionTriggers.forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const idx = Number(trigger.dataset.accordionIndex);
+        const isOpen = trigger.getAttribute('aria-expanded') === 'true';
 
-      // Close all
-      accordionTriggers.forEach((t) => {
-        t.classList.remove('active');
-        t.setAttribute('aria-expanded', 'false');
+        accordionTriggers.forEach((t) => {
+          t.classList.remove('active');
+          t.setAttribute('aria-expanded', 'false');
+        });
+        accordionPanels.forEach((p) => p.classList.remove('open'));
+
+        if (!isOpen) {
+          trigger.classList.add('active');
+          trigger.setAttribute('aria-expanded', 'true');
+          accordionPanels[idx].classList.add('open');
+        }
       });
-      accordionPanels.forEach((p) => p.classList.remove('open'));
-
-      // Open clicked (toggle — if it was open, leave closed)
-      if (!isOpen) {
-        trigger.classList.add('active');
-        trigger.setAttribute('aria-expanded', 'true');
-        accordionPanels[idx].classList.add('open');
-      }
     });
-  });
+  }
+
+  document.addEventListener('astro:page-load', initWork);
 </script>
 
 <style>
@@ -443,8 +449,9 @@ const panelConfig = [
     padding: 20px 24px;
     text-align: left;
     cursor: pointer;
-    transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-                border-left-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+      background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      border-left-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     color: #ede8d8;
   }
   .work-tab:last-child {
@@ -800,7 +807,7 @@ const panelConfig = [
     color: #0d1c10;
     border-radius: 4px;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 16px;
     text-decoration: none;
     letter-spacing: 0.02em;
     transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);

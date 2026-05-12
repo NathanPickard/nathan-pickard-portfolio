@@ -6,12 +6,14 @@ import resume from '../data/resume.json';
 import { Icon } from 'astro-icon/components';
 ---
 
-<BaseLayout title="Resume — Nathan Pickard" description="Senior Software Engineer with 6+ years shipping consumer-facing software in fintech, wellness, and healthtech.">
+<BaseLayout
+  title="Resume — Nathan Pickard"
+  description="Senior Software Engineer with 6+ years shipping consumer-facing software in fintech, wellness, and healthtech."
+>
   <Nav />
 
   <main class="resume-main">
     <div class="resume-inner">
-
       <!-- Page header -->
       <div class="resume-page-header">
         <div>
@@ -22,9 +24,17 @@ import { Icon } from 'astro-icon/components';
             <span class="sep">·</span>
             <a href={`mailto:${resume.basics.email}`}>{resume.basics.email}</a>
             <span class="sep">·</span>
-            <a href="https://linkedin.com/in/nathanpickard" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a
+              href="https://linkedin.com/in/nathanpickard"
+              target="_blank"
+              rel="noopener noreferrer">LinkedIn</a
+            >
             <span class="sep">·</span>
-            <a href="https://github.com/nathanpickard" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a
+              href="https://github.com/nathanpickard"
+              target="_blank"
+              rel="noopener noreferrer">GitHub</a
+            >
           </p>
         </div>
         <a href="/resume.pdf" class="download-btn">
@@ -43,62 +53,78 @@ import { Icon } from 'astro-icon/components';
       <section class="resume-section">
         <h2 class="section-heading">Skills</h2>
         <div class="skills-list">
-          {resume.skills.map(skill => (
-            <div class="skill-row">
-              <span class="skill-name">{skill.name}</span>
-              <span class="skill-keywords">{skill.keywords.join(', ')}</span>
-            </div>
-          ))}
+          {
+            resume.skills.map((skill) => (
+              <div class="skill-row">
+                <span class="skill-name">{skill.name}</span>
+                <span class="skill-keywords">{skill.keywords.join(', ')}</span>
+              </div>
+            ))
+          }
         </div>
       </section>
 
       <!-- Education -->
-      {resume.education && resume.education.length > 0 && (
-        <section class="resume-section">
-          <h2 class="section-heading">Education</h2>
-          {resume.education.map(edu => (
-            <div class="edu-row">
-              <span class="edu-institution">{edu.institution}</span>
-              <span class="edu-degree">{edu.studyType} {edu.area}{edu.status ? ` — ${edu.status}` : ''}</span>
-            </div>
-          ))}
-        </section>
-      )}
+      {
+        resume.education && resume.education.length > 0 && (
+          <section class="resume-section">
+            <h2 class="section-heading">Education</h2>
+            {resume.education.map((edu) => (
+              <div class="edu-row">
+                <span class="edu-institution">{edu.institution}</span>
+                <span class="edu-degree">
+                  {edu.studyType} {edu.area}
+                  {edu.status ? ` — ${edu.status}` : ''}
+                </span>
+              </div>
+            ))}
+          </section>
+        )
+      }
 
       <!-- Experience -->
       <section class="resume-section">
         <h2 class="section-heading">Experience</h2>
         <div class="work-list">
-          {resume.work.map(job => (
-            <div class="work-item">
-              <div class="work-header">
-                <div class="work-header-left">
-                  <span class="work-company">{job.company}</span>
-                  <span class="work-position">{job.position}</span>
-                  {job.description && <span class="work-desc">{job.description}</span>}
+          {
+            resume.work.map((job) => (
+              <div class="work-item">
+                <div class="work-header">
+                  <div class="work-header-left">
+                    <span class="work-company">{job.company}</span>
+                    <span class="work-position">{job.position}</span>
+                    {job.description && (
+                      <span class="work-desc">{job.description}</span>
+                    )}
+                  </div>
+                  <span class="work-dates">
+                    {job.startDate} – {job.endDate}
+                  </span>
                 </div>
-                <span class="work-dates">{job.startDate} – {job.endDate}</span>
+                <ul class="work-highlights">
+                  {job.highlights.map((h) => (
+                    <li>{h}</li>
+                  ))}
+                </ul>
               </div>
-              <ul class="work-highlights">
-                {job.highlights.map(h => (
-                  <li>{h}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
+            ))
+          }
         </div>
       </section>
 
       <!-- Activities -->
-      {resume.activities && resume.activities.length > 0 && (
-        <section class="resume-section">
-          <h2 class="section-heading">Activities & Community</h2>
-          <ul class="activities-list">
-            {resume.activities.map(a => <li>{a}</li>)}
-          </ul>
-        </section>
-      )}
-
+      {
+        resume.activities && resume.activities.length > 0 && (
+          <section class="resume-section">
+            <h2 class="section-heading">Activities & Community</h2>
+            <ul class="activities-list">
+              {resume.activities.map((a) => (
+                <li>{a}</li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
     </div>
   </main>
 
@@ -121,27 +147,27 @@ import { Icon } from 'astro-icon/components';
     align-items: flex-start;
     gap: 24px;
     padding-bottom: 40px;
-    border-bottom: 1px solid rgba(137,174,151,0.2);
+    border-bottom: 1px solid rgba(137, 174, 151, 0.2);
     margin-bottom: 48px;
   }
   .resume-name {
     font-family: var(--font-eb-garamond);
     font-weight: 400;
-    font-variation-settings: "opsz" 144;
+    font-variation-settings: 'opsz' 144;
     font-size: clamp(28px, 3.6vw, 44px);
-    line-height: 1.0;
+    line-height: 1;
     letter-spacing: var(--tracking-heading);
-    color: #E2EDE6;
+    color: #e2ede6;
     margin: 0 0 8px;
   }
   .resume-label {
     font-size: 18px;
-    color: #E2EDE6;
+    color: #e2ede6;
     margin: 0 0 10px;
   }
   .resume-contact {
     font-family: var(--font-geist-mono);
-    font-size: 12px;
+    font-size: 14px;
     color: #c8e0d0;
     margin: 0;
     display: flex;
@@ -150,35 +176,41 @@ import { Icon } from 'astro-icon/components';
     align-items: center;
   }
   .resume-contact a {
-    color: #D4AF37;
+    color: #d4af37;
     text-decoration: none;
     transition: opacity 0.2s;
   }
-  .resume-contact a:hover { opacity: 0.8; }
-  .sep { color: rgba(137,174,151,0.4); }
+  .resume-contact a:hover {
+    opacity: 0.8;
+  }
+  .sep {
+    color: rgba(137, 174, 151, 0.4);
+  }
 
   .download-btn {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 12px 22px;
-    background: #D4AF37;
-    color: #0D1C10;
+    background: #d4af37;
+    color: #0d1c10;
     border-radius: 4px;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 16px;
     text-decoration: none;
     white-space: nowrap;
     flex-shrink: 0;
     transition: opacity 0.2s;
   }
-  .download-btn:hover { opacity: 0.85; }
+  .download-btn:hover {
+    opacity: 0.85;
+  }
 
   /* Sections */
   .resume-section {
     margin-bottom: 48px;
     padding-bottom: 48px;
-    border-bottom: 1px solid rgba(137,174,151,0.2);
+    border-bottom: 1px solid rgba(137, 174, 151, 0.2);
   }
   .resume-section:last-child {
     border-bottom: none;
@@ -188,10 +220,10 @@ import { Icon } from 'astro-icon/components';
   .section-heading {
     font-family: var(--font-eb-garamond);
     font-weight: 500;
-    font-variation-settings: "opsz" 72;
-    font-size: 22px;
+    font-variation-settings: 'opsz' 72;
+    font-size: 26px;
     letter-spacing: -0.01em;
-    color: #EDE8D8;
+    color: #ede8d8;
     margin: 0 0 20px;
   }
 
@@ -199,7 +231,7 @@ import { Icon } from 'astro-icon/components';
   .summary-text {
     font-size: 17px;
     line-height: 1.75;
-    color: #E2EDE6;
+    color: #e2ede6;
     margin: 0;
   }
 
@@ -219,12 +251,12 @@ import { Icon } from 'astro-icon/components';
   .skill-name {
     font-family: var(--font-geist-mono);
     font-size: 12px;
-    color: #E2EDE6;
+    color: #e2ede6;
     font-weight: 500;
     padding-top: 1px;
   }
   .skill-keywords {
-    color: #EDE8D8;
+    color: #ede8d8;
   }
 
   /* Education */
@@ -236,11 +268,11 @@ import { Icon } from 'astro-icon/components';
   .edu-institution {
     font-size: 17px;
     font-weight: 600;
-    color: #EDE8D8;
+    color: #ede8d8;
   }
   .edu-degree {
     font-size: 16px;
-    color: #E2EDE6;
+    color: #e2ede6;
   }
 
   /* Experience */
@@ -251,7 +283,7 @@ import { Icon } from 'astro-icon/components';
   }
   .work-item {
     padding-bottom: 40px;
-    border-bottom: 1px solid rgba(137,174,151,0.1);
+    border-bottom: 1px solid rgba(137, 174, 151, 0.1);
   }
   .work-item:last-child {
     border-bottom: none;
@@ -272,15 +304,15 @@ import { Icon } from 'astro-icon/components';
   .work-company {
     font-family: var(--font-eb-garamond);
     font-weight: 600;
-    font-variation-settings: "opsz" 72;
+    font-variation-settings: 'opsz' 72;
     font-size: 20px;
     letter-spacing: -0.01em;
-    color: #E2EDE6;
+    color: #e2ede6;
   }
   .work-position {
     font-size: 16px;
     font-weight: 600;
-    color: #E2EDE6;
+    color: #e2ede6;
   }
   .work-desc {
     font-size: 14px;
@@ -305,7 +337,7 @@ import { Icon } from 'astro-icon/components';
   .work-highlights li {
     font-size: 16px;
     line-height: 1.65;
-    color: #E2EDE6;
+    color: #e2ede6;
     padding-left: 16px;
     position: relative;
   }
@@ -313,7 +345,7 @@ import { Icon } from 'astro-icon/components';
     content: '·';
     position: absolute;
     left: 0;
-    color: #D4AF37;
+    color: #d4af37;
     font-weight: 700;
   }
 
@@ -326,7 +358,7 @@ import { Icon } from 'astro-icon/components';
   .activities-list li {
     font-size: 16px;
     line-height: 1.65;
-    color: #E2EDE6;
+    color: #e2ede6;
     padding-left: 16px;
     position: relative;
   }
@@ -334,15 +366,28 @@ import { Icon } from 'astro-icon/components';
     content: '·';
     position: absolute;
     left: 0;
-    color: #D4AF37;
+    color: #d4af37;
     font-weight: 700;
   }
 
   @media (max-width: 900px) {
-    .resume-main { padding: 60px 24px; }
-    .resume-page-header { flex-direction: column; gap: 20px; }
-    .skill-row { grid-template-columns: 1fr; gap: 4px; }
-    .work-header { flex-direction: column; gap: 4px; }
-    .work-dates { align-self: flex-start; }
+    .resume-main {
+      padding: 60px 24px;
+    }
+    .resume-page-header {
+      flex-direction: column;
+      gap: 20px;
+    }
+    .skill-row {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+    .work-header {
+      flex-direction: column;
+      gap: 4px;
+    }
+    .work-dates {
+      align-self: flex-start;
+    }
   }
 </style>
