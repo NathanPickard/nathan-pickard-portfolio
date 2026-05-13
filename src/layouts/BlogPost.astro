@@ -31,6 +31,8 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 
     <div class="post-inner">
       <div class="post-header" data-reveal>
+        <h1 class="post-title">{title}</h1>
+        {description && <p class="post-desc">{description}</p>}
         <div class="post-date">
           <FormattedDate date={pubDate} />
           {
@@ -42,8 +44,6 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
             )
           }
         </div>
-        <h1 class="post-title">{title}</h1>
-        {description && <p class="post-desc">{description}</p>}
         <div class="post-divider"></div>
       </div>
 
@@ -85,11 +85,12 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     margin-bottom: 40px;
   }
   .post-date {
-    font-family: var(--font-geist-mono);
-    font-size: 12px;
+    font-family: var(--font-dm-sans);
+    font-size: 14px;
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
     color: #e2ede6;
+    margin-top: 12px;
     margin-bottom: 16px;
   }
   .updated {
@@ -103,7 +104,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     line-height: 1.05;
     letter-spacing: var(--tracking-heading);
     color: #e2ede6;
-    margin: 0 0 16px;
+    margin: 0 0 14px;
   }
   .post-desc {
     font-size: 18px;
@@ -157,7 +158,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     font-weight: 600;
   }
   .prose :global(code) {
-    font-family: var(--font-geist-mono);
+    font-family: Menlo, Monaco, 'Courier New', monospace;
     font-size: 0.875em;
     background: rgba(137, 174, 151, 0.12);
     border: 1px solid rgba(137, 174, 151, 0.2);
@@ -200,9 +201,43 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     margin: 2em 0;
   }
   .prose :global(img) {
-    border-radius: 8px;
-    border: 1px solid rgba(137, 174, 151, 0.2);
+    /* border-radius: 8px;
+    border: 1px solid rgba(137, 174, 151, 0.2); */
     margin: 1em 0;
+  }
+
+  .prose :global(.post-float-right) {
+    float: right;
+    display: flex;
+    align-items: center;
+
+    gap: 0.75rem;
+    margin: 0.25rem 0 1rem 1.5rem;
+    max-width: 280px;
+  }
+  .prose :global(.post-float-right img) {
+    width: 100%;
+    height: auto;
+  }
+  .prose :global(.post-float-right + p),
+  .prose :global(.post-float-right ~ p) {
+    overflow: visible;
+  }
+
+  .prose :global(figure) {
+    margin: 2em 0;
+  }
+  .prose :global(figure img) {
+    margin: 0;
+    display: block;
+  }
+  .prose :global(figcaption) {
+    font-family: var(--font-eb-garamond);
+    font-style: italic;
+    font-size: 0.95em;
+    color: #a8c8b4;
+    text-align: left;
+    margin-top: 0.75em;
   }
 
   .back-link {

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import BlogPost from '../BlogPost.astro';
-import HeroImage from '../../assets/blog-placeholder-1.jpg';
+import HeroImage from '../../assets/blog-placeholder-2.jpg';
 
 interface BlogPostProps {
   title: string;

@@ -11,15 +11,14 @@ describe('work.astro skills panels', () => {
   it('renders expected skills section headings and panel labels', async () => {
     const html = await renderWorkPage();
 
-    expect(html).toContain('Technical Skills');
     expect(html).toContain('The tools I reach for');
 
-    expect(html).toContain('FRONTEND');
-    expect(html).toContain('BACKEND');
-    expect(html).toContain('DEVOPS &amp; INFRASTRUCTURE');
-    expect(html).toContain('TESTING');
-    expect(html).toContain('SPECIALIZATIONS');
-    expect(html).toContain('AI &amp; TOOLS');
+    expect(html).toContain('Frontend');
+    expect(html).toContain('Backend');
+    expect(html).toContain('DevOps &amp; Infrastructure');
+    expect(html).toContain('Testing');
+    expect(html).toContain('Specializations');
+    expect(html).toContain('AI &amp; Tools');
   });
 
   it('renders expected panel ids and accent values from production config', async () => {

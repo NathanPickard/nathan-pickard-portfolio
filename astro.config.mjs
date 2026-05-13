@@ -3,12 +3,13 @@
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig, envField, fontProviders } from 'astro/config';
-
 import icon from 'astro-icon';
-
 import tailwindcss from '@tailwindcss/vite';
-
 import react from '@astrojs/react';
+import rehypeExternalLinks from 'rehype-external-links';
+import { visualizer } from 'rollup-plugin-visualizer';
+
+import expressiveCode from 'astro-expressive-code';
 
 // https://astro.build/config
 export default defineConfig({
@@ -57,17 +58,24 @@ export default defineConfig({
       fallbacks: ['sans-serif'],
     },
     {
-      name: 'Geist Mono',
-      cssVariable: '--font-geist-mono',
+      name: 'DM Sans',
+      cssVariable: '--font-dm-sans',
       provider: fontProviders.google(),
       weights: [400, 500, 600],
       styles: ['normal'],
       subsets: ['latin'],
-      fallbacks: ['monospace'],
+      fallbacks: ['sans-serif'],
     },
   ],
 
   integrations: [
+    expressiveCode({
+      themes: ['one-dark-pro'],
+      styleOverrides: {
+        borderRadius: '0.5rem',
+        codeFontFamily: 'Menlo, Monaco, "Courier New", monospace',
+      },
+    }),
     mdx(),
     sitemap(),
     icon({
@@ -94,7 +102,26 @@ export default defineConfig({
     react(),
   ],
 
+  markdown: {
+    rehypePlugins: [
+      [
+        rehypeExternalLinks,
+        {
+          target: '_blank',
+          rel: ['noopener', 'noreferrer'],
+          // content: { type: 'text', value: ' 🔗' }
+        },
+      ],
+    ],
+  },
+
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [
+      tailwindcss(),
+      visualizer({
+        emitFile: true,
+        filename: 'stats.html',
+      }),
+    ],
   },
 });

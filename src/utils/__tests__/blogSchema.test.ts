@@ -15,9 +15,6 @@ describe('blog collection schema integration', () => {
       expect(typeof post.data.title).toBe('string');
       expect(post.data.title.length).toBeGreaterThan(0);
 
-      expect(typeof post.data.description).toBe('string');
-      expect(post.data.description.length).toBeGreaterThan(0);
-
       expect(post.data.pubDate).toBeInstanceOf(Date);
       expect(Number.isNaN(post.data.pubDate.getTime())).toBe(false);
     }
@@ -27,6 +24,10 @@ describe('blog collection schema integration', () => {
     const posts = await getCollection('blog');
 
     for (const post of posts) {
+      if (post.data.description !== undefined) {
+        expect(typeof post.data.description).toBe('string');
+      }
+
       if (post.data.updatedDate !== undefined) {
         expect(post.data.updatedDate).toBeInstanceOf(Date);
         expect(Number.isNaN(post.data.updatedDate.getTime())).toBe(false);

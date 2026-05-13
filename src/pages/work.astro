@@ -21,7 +21,7 @@ const work = [
     role: 'Founding Senior Full-Stack Engineer',
     period: 'Mar 2026 – present',
     blurb:
-      'Architecting an AI-powered applicant tracking system from the ground up — human-in-the-loop matching, automated candidate re-engagement, and a real-time analytics engine for hiring funnel health.',
+      'Architecting an AI-powered applicant tracking system from the ground up. Engineering human-in-the-loop matching, automated candidate re-engagement, and a real-time analytics engine for hiring funnel health.',
     stack: [],
     wins: [],
   },
@@ -105,7 +105,7 @@ const devopsFilteredKeywords = toolsKeywords.filter(
 const panelConfig = [
   {
     id: 'frontend',
-    label: 'FRONTEND',
+    label: 'Frontend',
     accent: '#d4af37',
     type: 'icon',
     keywords: getKeywords('Languages/Frameworks').filter(
@@ -114,21 +114,21 @@ const panelConfig = [
   },
   {
     id: 'backend',
-    label: 'BACKEND',
+    label: 'Backend',
     accent: '#d4af37',
     type: 'icon',
     keywords: backendKeywords,
   },
   {
     id: 'devops',
-    label: 'DEVOPS & INFRASTRUCTURE',
+    label: 'DevOps & Infrastructure',
     accent: '#b07fd4',
     type: 'icon',
     keywords: devopsFilteredKeywords,
   },
   {
     id: 'testing',
-    label: 'TESTING',
+    label: 'Testing',
     accent: '#f06292',
     type: 'icon',
     keywords: getKeywords('Testing & Quality').filter(
@@ -137,14 +137,14 @@ const panelConfig = [
   },
   {
     id: 'specializations',
-    label: 'SPECIALIZATIONS',
+    label: 'Specializations',
     accent: '#d4af37',
     type: 'tag',
     keywords: getKeywords('Specializations'),
   },
   {
     id: 'ai-tools',
-    label: 'AI & TOOLS',
+    label: 'AI & Tools',
     accent: '#b07fd4',
     type: 'tag',
     keywords: getKeywords('AI Models & Tools'),
@@ -275,52 +275,54 @@ const panelConfig = [
         <h2 class="skills-h2" id="skills-heading" data-reveal>
           The tools I reach for
         </h2>
-        <div class="bento-grid" data-reveal-stagger>
+        <div class="tools-card" data-reveal-stagger>
           {
             panelConfig.map((panel) => (
-              <div
-                class="bento-panel"
+              <section
+                class="tools-row"
                 data-panel-id={panel.id}
                 style={`--accent: ${panel.accent}`}
                 data-reveal
               >
-                <h3 class="bento-panel-heading">{panel.label}</h3>
-                {panel.type === 'icon' ? (
-                  <div class="skill-icons">
-                    {panel.keywords.map((kw) => {
-                      const icon = iconMap[kw];
-                      return (
-                        <div class="skill-icon-tile">
-                          {icon ? (
-                            <Icon
-                              name={icon}
-                              size={28}
-                              aria-hidden="true"
-                              class="skill-icon"
-                            />
-                          ) : (
-                            <span
-                              class="skill-icon-fallback"
-                              aria-hidden="true"
-                            >
-                              ✦
+                <header class="tools-row-h">
+                  <span class="tools-dot" aria-hidden="true" />
+                  <h3 class="tools-row-label">{panel.label}</h3>
+                </header>
+                <div class="tools-items">
+                  {panel.type === 'icon'
+                    ? panel.keywords.map((kw) => {
+                        const icon = iconMap[kw];
+                        return (
+                          <div class="tools-tile">
+                            {icon ? (
+                              <Icon
+                                name={icon}
+                                size={20}
+                                aria-hidden="true"
+                                class="tools-tile-icon"
+                              />
+                            ) : (
+                              <span
+                                class="tools-tile-fallback"
+                                aria-hidden="true"
+                              >
+                                ✦
+                              </span>
+                            )}
+                            <span class="tools-tile-label">
+                              {labelOverrides[kw] ?? kw}
                             </span>
-                          )}
-                          <span class="skill-icon-label">
-                            {labelOverrides[kw] ?? kw}
-                          </span>
+                          </div>
+                        );
+                      })
+                    : panel.keywords.map((kw) => (
+                        <div class="tools-tile tools-tile--tag">
+                          <span class="tools-tile-bullet" aria-hidden="true" />
+                          <span class="tools-tile-label">{kw}</span>
                         </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div class="spec-pills">
-                    {panel.keywords.map((kw) => (
-                      <span class="spec-pill">{kw}</span>
-                    ))}
-                  </div>
-                )}
-              </div>
+                      ))}
+                </div>
+              </section>
             ))
           }
         </div>
@@ -468,13 +470,13 @@ const panelConfig = [
     font-family: var(--font-eb-garamond);
     font-weight: 500;
     font-variation-settings: 'opsz' 72;
-    font-size: 18px;
+    font-size: 20px;
     letter-spacing: -0.01em;
     color: #ede8d8;
   }
   .tab-period {
-    font-size: 11px;
-    font-family: var(--font-geist-mono);
+    font-size: 14px;
+    font-family: var(--font-dm-sans);
     color: #a8c8b4;
     margin-top: 4px;
   }
@@ -591,7 +593,7 @@ const panelConfig = [
     font-family: var(--font-eb-garamond);
     font-weight: 500;
     font-variation-settings: 'opsz' 72;
-    font-size: 20px;
+    font-size: 26px;
     letter-spacing: -0.01em;
     color: #ede8d8;
   }
@@ -602,13 +604,13 @@ const panelConfig = [
     align-items: center;
   }
   .accordion-period {
-    font-size: 11px;
-    font-family: var(--font-geist-mono);
+    font-size: 14px;
+    font-family: var(--font-dm-sans);
     color: #a8c8b4;
   }
   .accordion-client {
     font-size: 11px;
-    font-family: var(--font-geist-mono);
+    font-family: var(--font-dm-sans);
     color: #a8c8b4;
   }
   .accordion-client::before {
@@ -655,114 +657,112 @@ const panelConfig = [
     margin: 0 0 40px;
     color: #e2ede6;
   }
-  .bento-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    border: 1px solid rgba(137, 174, 151, 0.2);
-    border-radius: 10px;
+  .tools-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
     overflow: hidden;
-    background: #162b1b;
     margin-top: 32px;
   }
-  @media (min-width: 700px) {
-    .bento-grid {
-      grid-template-columns: 1fr 1fr;
-    }
+  .tools-row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 32px;
+    padding: 28px 32px;
+    border-bottom: 1px solid var(--color-border);
   }
-  .bento-panel {
-    padding: 24px;
-    border-bottom: 1px solid rgba(137, 174, 151, 0.2);
-    border-top: 3px solid var(--accent);
-  }
-  .bento-panel:last-child {
+  .tools-row:last-child {
     border-bottom: 0;
   }
-  @media (min-width: 700px) {
-    .bento-panel {
-      border-right: 1px solid rgba(137, 174, 151, 0.2);
-    }
-    .bento-panel:nth-child(2n) {
-      border-right: 0;
-    }
-    .bento-panel:nth-last-child(-n + 2) {
-      border-bottom: 0;
-    }
-    .bento-panel:last-child {
-      border-bottom: 0;
-    }
-  }
-  .bento-panel-heading {
-    font-family: var(--font-geist-mono);
-    font-size: 11px;
-    letter-spacing: var(--tracking-label);
-    text-transform: uppercase;
-    color: var(--accent);
-    margin: 0 0 16px;
-    font-weight: 500;
-  }
-  .skill-icons {
+  .tools-row-h {
     display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .skill-icon-tile {
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 6px;
-    padding: 12px 10px;
-    background: #f0ede4;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 8px;
-    min-width: 72px;
-    width: max-content;
-    transition:
-      border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-      background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: default;
+    gap: 10px;
+    padding-top: 4px;
   }
-  .skill-icon-tile:hover {
-    border-color: rgba(0, 0, 0, 0.2);
-    background: #e8e4da;
-  }
-  .skill-icon {
-    width: 28px;
-    height: 28px;
+  .tools-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--accent);
     flex-shrink: 0;
   }
-  .skill-icon-fallback {
-    font-size: 18px;
-    color: #2d5a3d;
-    line-height: 28px;
-    display: block;
-    text-align: center;
-    width: 28px;
-    height: 28px;
+  .tools-row-label {
+    font-family: var(--font-vollkorn);
+    font-feature-settings:
+      'smcp' 1,
+      'c2sc' 1;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--color-text-heading);
+    margin: 0;
+    line-height: 1.4;
   }
-  .skill-icon-label {
-    font-family: var(--font-geist-mono);
-    font-size: 12px;
-    color: #1a2e1e;
-    text-align: center;
-    line-height: 1.3;
+  .tools-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tools-tile {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px 8px 10px;
+    background: #ede8d8;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    transition:
+      border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .tools-tile:hover {
+    background: #d8d2c0;
+    border-color: var(--accent);
+    transform: translateY(-1px);
+  }
+  .tools-tile--tag {
+    padding: 8px 12px;
+  }
+  .tools-tile-icon {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+  }
+  .tools-tile-fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    font-family: var(--font-dm-sans);
+    font-size: 13px;
+    color: var(--color-text-muted);
+  }
+  .tools-tile-bullet {
+    width: 4px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--accent);
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+  .tools-tile-label {
+    font-family: var(--font-dm-sans);
+    font-size: 14px;
+    color: #1a2e1f;
+    line-height: 1;
     white-space: nowrap;
   }
-  /* Specializations / AI tools pills */
-  .spec-pills {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .spec-pill {
-    padding: 7px 16px;
-    border: 1px solid rgba(137, 174, 151, 0.3);
-    border-radius: 999px;
-    font: 500 13px var(--font-geist-mono);
-    color: #f0ece0;
-    transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .spec-pill:hover {
-    border-color: rgba(137, 174, 151, 0.6);
+
+  /* Stack the label above the chips on narrow viewports */
+  @media (max-width: 700px) {
+    .tools-row {
+      grid-template-columns: 1fr;
+      gap: 14px;
+      padding: 22px 20px;
+    }
   }
 
   /* Community section */
