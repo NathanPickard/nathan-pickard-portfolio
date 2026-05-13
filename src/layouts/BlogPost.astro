@@ -89,12 +89,12 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     font-size: 14px;
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
-    color: #e2ede6;
+    color: #f7f2e4;
     margin-top: 12px;
     margin-bottom: 16px;
   }
   .updated {
-    color: #a8c8b4;
+    color: #c8dccf;
   }
   .post-title {
     font-family: var(--font-eb-garamond);
@@ -103,13 +103,13 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     font-size: var(--text-h1);
     line-height: 1.05;
     letter-spacing: var(--tracking-heading);
-    color: #e2ede6;
+    color: #f7f2e4;
     margin: 0 0 14px;
   }
   .post-desc {
     font-size: 18px;
     line-height: 1.6;
-    color: #e2ede6;
+    color: #f7f2e4;
     margin: 0 0 24px;
   }
   .post-divider {
@@ -123,7 +123,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     font-family: var(--font-inter);
     font-size: 17px;
     line-height: 1.8;
-    color: #ede8d8;
+    color: #f7f2e4;
   }
   .prose :global(h2) {
     font-family: var(--font-eb-garamond);
@@ -131,7 +131,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     font-variation-settings: 'opsz' 72;
     font-size: 28px;
     letter-spacing: -0.02em;
-    color: #ede8d8;
+    color: #f7f2e4;
     margin: 2em 0 0.75em;
   }
   .prose :global(h3) {
@@ -139,7 +139,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     font-weight: 500;
     font-variation-settings: 'opsz' 72;
     font-size: 22px;
-    color: #ede8d8;
+    color: #f7f2e4;
     margin: 1.75em 0 0.5em;
   }
   .prose :global(p) {
@@ -154,7 +154,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     opacity: 0.8;
   }
   .prose :global(strong) {
-    color: #ede8d8;
+    color: #f7f2e4;
     font-weight: 600;
   }
   .prose :global(code) {
@@ -164,7 +164,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     border: 1px solid rgba(137, 174, 151, 0.2);
     border-radius: 4px;
     padding: 2px 6px;
-    color: #e2ede6;
+    color: #f7f2e4;
   }
   .prose :global(pre) {
     background: #162b1b;
@@ -184,7 +184,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     border-left: 3px solid #c87840;
     padding-left: 1.25rem;
     margin: 0 0 1.4em;
-    color: #e2ede6;
+    color: #f7f2e4;
     font-style: italic;
   }
   .prose :global(ul),
@@ -206,22 +206,72 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     margin: 1em 0;
   }
 
-  .prose :global(.post-float-right) {
-    float: right;
+  .prose :global(.post-float-right),
+  .prose :global(.post-float-left) {
     display: flex;
     align-items: center;
-
     gap: 0.75rem;
-    margin: 0.25rem 0 1rem 1.5rem;
-    max-width: 280px;
+    max-width: 320px;
   }
-  .prose :global(.post-float-right img) {
+  .prose :global(.post-float-right.is-small),
+  .prose :global(.post-float-left.is-small) {
+    max-width: 200px;
+  }
+  .prose :global(.post-float-right.is-large),
+  .prose :global(.post-float-left.is-large) {
+    max-width: 440px;
+  }
+  .prose :global(.post-float-right) {
+    float: right;
+    margin: 0.25rem 0 1rem 1.5rem;
+  }
+  .prose :global(.post-float-left) {
+    float: left;
+    margin: 0.25rem 1.5rem 1rem 0;
+  }
+  .prose :global(.post-float-right img),
+  .prose :global(.post-float-left img) {
     width: 100%;
     height: auto;
+    margin: 0;
   }
-  .prose :global(.post-float-right + p),
-  .prose :global(.post-float-right ~ p) {
-    overflow: visible;
+
+  .prose :global(.post-image) {
+    margin: 1.6em auto;
+    max-width: 560px;
+  }
+  .prose :global(.post-image.is-small) {
+    max-width: 320px;
+  }
+  .prose :global(.post-image.is-large) {
+    max-width: 100%;
+  }
+  .prose :global(.post-image.is-full) {
+    max-width: min(960px, calc(100vw - 48px));
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+  .prose :global(.post-image img) {
+    width: 100%;
+    height: auto;
+    margin: 0;
+    display: block;
+  }
+
+  @media (max-width: 720px) {
+    .prose :global(.post-float-right),
+    .prose :global(.post-float-left) {
+      float: none;
+      max-width: 100%;
+      margin: 1.4em 0;
+    }
+    .prose :global(.post-image),
+    .prose :global(.post-image.is-small),
+    .prose :global(.post-image.is-full) {
+      max-width: 100%;
+      margin-left: auto;
+      transform: none;
+    }
   }
 
   .prose :global(figure) {
@@ -234,8 +284,8 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
   .prose :global(figcaption) {
     font-family: var(--font-eb-garamond);
     font-style: italic;
-    font-size: 0.95em;
-    color: #a8c8b4;
+    font-size: 1em;
+    color: #f7f2e4;
     text-align: left;
     margin-top: 0.75em;
   }

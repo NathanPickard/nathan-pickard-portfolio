@@ -6,7 +6,11 @@ heroImage: '../../../assets/blog-placeholder-4.jpg'
 
  
 
+<div class="post-float-right">
+
 ![pexels-photo-149387.jpeg](./pexels-photo-149387.jpeg)
+
+</div>
 
 Coding and building software really is an art form.  In many ways, the best path to becoming a better builder of software is to get your hands dirty and simply code. But sometimes the best method to become a better programmer is to take a step back, shift gears, and look past the act of coding itself.  In this blog post I'll discuss some resources and ways to become a better web developer when you're not in front of the keyboard, building out your next app component, or hammering away at your next http request.
 
@@ -16,7 +20,11 @@ Coding and building software really is an art form.  In many ways, the best pat
 
 Listening to podcasts is an excellent way to increase your coding knowledge no matter where you are.  While getting some daily exercise, tackling the everyday chores, or making the commute to and from work, a great podcast can allow you to expand your coding horizons, keep up-to-date with current industry trends, and gain extremely insightful information from the biggest names in tech.  I've listed the following podcasts below that I've found to be engaging, informative, and well worth the time.
 
+<div class="post-float-right">
+
 ![sound-speaker-radio-microphone.jpg](./sound-speaker-radio-microphone.jpg)
+
+</div>
 
 - [Syntax.fm](https://syntax.fm/):
 
@@ -32,7 +40,11 @@ Every other week Charles chats with top developers and industry leaders in episo
 
 Those that are involved in the tech space, but may not do any direct development themselves, can still listen to JavaScript Jabber and see where the ever-evolving web development space is heading.
 
-![pexels-photo-347700.jpeg](./pexels-photo-3477001.jpeg)
+<div class="post-float-right">
+
+![pexels-photo-3477001.jpeg](./pexels-photo-3477001.jpeg)
+
+</div>
 
  
 
@@ -48,13 +60,27 @@ The Learn To Code With Me and Code Newbie podcasts are similar in that they are 
 
 Mind and body are most certainly connected to each other, so taking care of your health and fitness needs are important when sharpening your skills on your various coding ventures.  So, to code at your very best, it's imperative that you form health-conscience habits that your body naturally craves and will thank you for.
 
-![animal-koala-nature.jpg](./animal-koala-nature.jpg)You always hear about the stereotypical late-night programmer, hammering away on the keyboard late into the night.  While this may work OK for some coders, I've made it a point to close up shop no less than an hour and a half before I hit the sack.  I've personally found that I'm more productive during daytime hours, rather than coding late into the night.  After the laptop lid is closed, I check my agenda and make sure I'm set for the following day and on track for my weekly goals.  A [good night's sleep](http://programmergoals.com/sleep-more-code-more/) is vital and you owe it to yourself to get quality shut eye.
+<div class="post-float-right">
 
-### ![pexels-photo-209482.jpeg](./pexels-photo-209482.jpeg)
+![animal-koala-nature.jpg](./animal-koala-nature.jpg)
+
+</div>
+
+You always hear about the stereotypical late-night programmer, hammering away on the keyboard late into the night.  While this may work OK for some coders, I've made it a point to close up shop no less than an hour and a half before I hit the sack.  I've personally found that I'm more productive during daytime hours, rather than coding late into the night.  After the laptop lid is closed, I check my agenda and make sure I'm set for the following day and on track for my weekly goals.  A [good night's sleep](http://programmergoals.com/sleep-more-code-more/) is vital and you owe it to yourself to get quality shut eye.
+
+<div class="post-float-right">
+
+![pexels-photo-209482.jpeg](./pexels-photo-209482.jpeg)
+
+</div>
 
 Eating right and making sure you're properly nurturing your body with the nutrients it craves is equally important.  While it's common knowledge about what a balanced diet for most people would consists of, drinking plenty of water throughout the day and [consuming foods](https://codecrave.io/food-for-programmers/) that can promote brain function is a no brainer!
 
-### ![pexels-photo-416717.jpeg](./pexels-photo-416717.jpeg)
+<div class="post-float-right">
+
+![pexels-photo-416717.jpeg](./pexels-photo-416717.jpeg)
+
+</div>
 
 Exercise and maintaining great personal health go hand in hand.  For many people, it's one of those things that you mean to get around to and know you should do, but don't quite go through with it.  As coders, we spend a good amount of time sitting, so moving around and getting the blood flowing should definitely be a priority.  It's much easier to get your needed exercise when you have a designated time of day set aside just for this.  Once it becomes habitual, you automatically get into the routine and you don't have to think twice about making sure you get your daily exercise.
 
@@ -62,6 +88,10 @@ One resource I recommend for getting your fitness needs fulfilled is the [HASfi
 
 * * *
 
+<div class="post-float-right">
+
 ![pexels-photo-978344.jpeg](./pexels-photo-978344.jpeg)
+
+</div>
 
 Your overall well-being is extremely important and directly effects the quality of the code you write.  The most important aspect to keeping your overall health maintained while being an active developer is to make sure your [habits and routines](https://www.wanderlustworker.com/the-8-best-programming-habits-all-coders-should-have/) are set in place.  Becoming a better software developer obviously doesn't happen overnight, so it's the small habits that compound into great achievements and worthwhile learning experiences.  In my next blog post, I'll share and discuss some other resources that have really aided me on my ongoing coding journey and I hope they'll benefit your own.  Join me!

@@ -2,15 +2,13 @@
 title: 'How to improve your code without coding, Part 2!'
 description: 'How to improve your code without coding, Part 2!'
 pubDate: 2018-06-27
-heroImage: './man-coffee-cup-pen.jpg'
-archived: true
+heroImage: '../../../assets/blog-placeholder-4.jpg'
 ---
 
 Crafting quality code is certainly it's own "trade".  Putting out efficient and clean code is the overarching goal every developer hopes to achieve after a day of learning, testing, deploying, refactoring, and so on.  However, there are times when you start coding a project, inevitably hit a wall, research the answer, and implement said solution. Then, you hopefully glean enough knowledge to overcome the problem in the future and continue on your way towards the app's completion.  However, like most other vocations (tech related or otherwise), I've found it best to take a step back from hacking away, put things in perspective, and advance my skills through other productive means.
 
 In part two of "improving your coding and becoming a better developer without literally coding" , I'm going to cover a couple other topics not covered in [part one](https://nathanpickard.wordpress.com/2018/04/19/how-to-improve-your-code-without-coding/).  The following resources continually aid me in my coding journey, so no matter your current experience level, I hope this helps you in yours!
 
-<!--more-->
 
 ---
 
