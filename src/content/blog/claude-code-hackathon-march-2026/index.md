@@ -2,7 +2,7 @@
 title: 'Claude Code Hackathon'
 description: 'Hacking away with Claude Code'
 pubDate: 'April 22 2026'
-heroImage: '../../../assets/blog-placeholder-3.jpg'
+heroImage: '../../../assets/blog-placeholder-aurora.jpg'
 ---
 Had a fantastic experience at my first hackathon of the year at Claude Code Portland this past weekend! In two and a half hours, I built CodeReel! A VS Code extension that uses Claude AI to generate animated, step-by-step explanations of how your code works, directly inside your editor without all the context switching.
 

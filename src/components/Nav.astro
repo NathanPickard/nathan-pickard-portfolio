@@ -48,7 +48,11 @@ const socials: Social[] = [
 
 <div class="dark-header-main-border">
   <div class="dark-header-main">
-    <a href="/" class="dark-wordmark" transition:name="wordmark" aria-label="Nathan Pickard — home">NP</a>
+    <a
+      href="/"
+      class:list={['dark-wordmark', { 'is-home': currentPath === '/' }]}
+      transition:name="wordmark"
+      aria-label="Nathan Pickard — home">NP</a>
 
     <!-- Desktop nav -->
     <nav class="dark-nav" aria-label="Main navigation">
@@ -194,7 +198,7 @@ const socials: Social[] = [
   .dark-wordmark {
     font-family: var(--font-cormorant);
     font-weight: 500;
-    font-size: 30px;
+    font-size: 32px;
     letter-spacing: -0.01em;
     color: #e2ede6;
     text-decoration: none;
@@ -202,6 +206,9 @@ const socials: Social[] = [
     transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .dark-wordmark:hover {
+    color: #d4af37;
+  }
+  .dark-wordmark.is-home {
     color: #d4af37;
   }
   .wordmark-dot {

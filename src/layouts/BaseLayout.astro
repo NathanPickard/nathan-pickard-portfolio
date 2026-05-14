@@ -3,6 +3,7 @@ import type { ImageMetadata } from 'astro';
 import { Font } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 import FallbackImage from '../assets/blog-placeholder-2.jpg';
+import dougFirRings from '../assets/doug-fir-rings.png';
 import { SITE_TITLE } from '../consts';
 
 interface Props {
@@ -71,6 +72,32 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
     )}
   </head>
   <body>
+    <svg
+      class="site-topo"
+      aria-hidden="true"
+      viewBox="0 0 768 1024"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <defs>
+        <filter id="site-topo-green-tint" color-interpolation-filters="sRGB">
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0.537
+                    0 0 0 0 0.682
+                    0 0 0 0 0.592
+                    -1 -1 -1 0 1"
+          />
+        </filter>
+      </defs>
+      <image
+        href={dougFirRings.src}
+        width="768"
+        height="1024"
+        preserveAspectRatio="xMidYMid slice"
+        filter="url(#site-topo-green-tint)"
+        opacity="0.09"
+      />
+    </svg>
     <div class="page-wrapper">
       <slot />
     </div>
@@ -117,6 +144,26 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    position: relative;
+    z-index: 0;
+  }
+  .site-topo {
+    position: fixed;
+    top: -160px;
+    right: 200px;
+    height: 1700px;
+    aspect-ratio: 768 / 1024;
+    pointer-events: none;
+    z-index: -1;
+  }
+  @media (max-width: 900px) {
+    .site-topo {
+      top: 50%;
+      left: 50%;
+      right: auto;
+      height: 100vh;
+      transform: translate(-50%, -50%);
+    }
   }
   .page-wrapper > main {
     flex: 1;

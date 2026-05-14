@@ -1,7 +1,7 @@
 ---
 title: "How to improve your code without coding!"
 pubDate: 2018-04-20
-heroImage: '../../../assets/blog-placeholder-4.jpg'
+heroImage: '../../../assets/blog-placeholder-crater-lake.jpg'
 ---
 
  

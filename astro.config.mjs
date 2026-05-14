@@ -85,6 +85,7 @@ export default defineConfig({
           'hiking',
           'pot-steam',
           'pine-tree',
+          'pine-tree-variant-outline',
           'download',
           'email-outline',
           'message-outline',

@@ -17,36 +17,42 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
 
   <main class="blog-main">
     <div class="blog-inner">
-      <div class="blog-header" data-reveal>
+      <header class="blog-header" data-reveal>
         <h1 class="blog-h1">What I'm thinking, building, and reading</h1>
-      </div>
+      </header>
 
-      <div class="blog-grid" data-reveal-stagger>
+      <ul class="post-list" data-reveal-stagger>
         {
           posts.map((post) => (
-            <a href={`/blog/${post.id}/`} class="blog-card" data-reveal>
-              {post.data.heroImage && (
-                <Image
-                  width={720}
-                  height={360}
-                  src={post.data.heroImage}
-                  alt=""
-                  class="card-image"
-                />
-              )}
-              <div class="card-body">
-                <p class="card-date">
-                  <FormattedDate date={post.data.pubDate} />
-                </p>
-                <h2 class="card-title">{post.data.title}</h2>
-                {post.data.description && (
-                  <p class="card-desc">{post.data.description}</p>
-                )}
-              </div>
-            </a>
+            <li class="post-row" data-reveal>
+              <a href={`/blog/${post.id}/`} class="post-link">
+                <div class="post-media">
+                  {post.data.heroImage ? (
+                    <Image
+                      width={1600}
+                      height={600}
+                      src={post.data.heroImage}
+                      alt=""
+                      class="post-image"
+                    />
+                  ) : (
+                    <div class="post-image post-image--placeholder" />
+                  )}
+                </div>
+                <div class="post-content">
+                  <time class="post-date">
+                    <FormattedDate date={post.data.pubDate} />
+                  </time>
+                  <h2 class="post-title">{post.data.title}</h2>
+                  {post.data.description && (
+                    <p class="post-desc">{post.data.description}</p>
+                  )}
+                </div>
+              </a>
+            </li>
           ))
         }
-      </div>
+      </ul>
 
       <a href="/blog/archived" class="archived-link">View archived posts →</a>
     </div>
@@ -60,7 +66,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     padding: 80px 60px;
   }
   .blog-inner {
-    max-width: 1240px;
+    max-width: 800px;
     margin: 0 auto;
   }
   .blog-header {
@@ -74,80 +80,87 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     line-height: 1.05;
     letter-spacing: var(--tracking-heading);
     margin: 0;
-    color: #e2ede6;
+    color: #f7f2e4;
   }
 
-  .blog-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    margin-bottom: 40px;
-  }
-  .blog-card {
+  .post-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    background: #162b1b;
-    border: 1px solid rgba(137, 174, 151, 0.2);
-    border-radius: 10px;
-    overflow: hidden;
+    gap: 45px;
+  }
+
+  .post-link {
+    display: block;
     text-decoration: none;
     color: inherit;
-    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.05);
-    transition:
-      border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-      box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-      transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .blog-card:hover {
-    border-color: #d4af37;
-    box-shadow: 0 8px 32px rgba(212, 175, 55, 0.13);
-    transform: translateY(-2px);
+  .post-link:hover .post-title,
+  .post-link:hover .post-desc {
+    color: #d4af37;
   }
-  .card-image {
+  .post-link:hover .post-image {
+    transform: scale(1.015);
+  }
+
+  .post-media {
+    overflow: hidden;
+    border-radius: 6px;
+    aspect-ratio: 7 / 2;
+    background: #162b1b;
+    margin-bottom: 20px;
+  }
+  .post-image {
     width: 100%;
-    height: 180px;
+    height: 100%;
     object-fit: cover;
     display: block;
-    margin: 0;
-    border-radius: 0;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .card-body {
-    padding: 1.25rem;
-    flex: 1;
+  .post-image--placeholder {
+    background: linear-gradient(135deg, #162b1b 0%, #1f3a26 100%);
+  }
+
+  .post-content {
     display: flex;
     flex-direction: column;
+    gap: 10px;
+    max-width: 820px;
   }
-  .card-date {
+  .post-date {
     font-family: var(--font-dm-sans);
-    font-size: 13px;
+    font-size: 14px;
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
-    color: #e2ede6;
-    margin: 0 0 8px;
+    color: #f7f2e4;
+    opacity: 0.7;
   }
-  .card-title {
+  .post-title {
     font-family: var(--font-eb-garamond);
     font-weight: 500;
     font-variation-settings: 'opsz' 72;
-    font-size: 26px;
+    font-size: clamp(22px, 2.4vw, 30px);
+    line-height: 1.15;
     letter-spacing: -0.01em;
-    line-height: 1.25;
-    color: #ede8d8;
-    margin: 0 0 10px;
-  }
-  .card-desc {
-    font-size: 16px;
-    color: #e2ede6;
-    line-height: 1.6;
     margin: 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    flex: 1;
+    color: #f7f2e4;
+    transition: color 0.2s ease;
+  }
+  .post-desc {
+    font-family: var(--font-inter);
+    font-size: 16px;
+    line-height: 1.6;
+    color: #f7f2e4;
+    opacity: 0.85;
+    margin: 0;
+    transition: color 0.2s ease;
   }
   .archived-link {
-    font-size: 20px;
+    display: inline-block;
+    margin-top: 64px;
+    font-size: 18px;
     color: #d4af37;
     text-decoration: none;
     transition: opacity 0.2s;
@@ -160,13 +173,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     .blog-main {
       padding: 60px 24px;
     }
-    .blog-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  @media (max-width: 600px) {
-    .blog-grid {
-      grid-template-columns: 1fr;
+    .post-list {
+      gap: 28px;
     }
   }
 </style>

@@ -50,7 +50,15 @@ const socials: Social[] = [
   <div class="dark-footer-grid">
     <div>
       <div class="dark-footer-name">Nathan Pickard</div>
-      <div class="dark-footer-sub">Software Engineer · Portland, OR</div>
+      <div class="dark-footer-sub">
+        Software Engineer · Portland, OR
+        <Icon
+          name="mdi:pine-tree-variant-outline"
+          size={18}
+          class="location-icon"
+          aria-hidden="true"
+        />
+      </div>
     </div>
     <div class="dark-footer-links">
       {
@@ -101,6 +109,12 @@ const socials: Social[] = [
     font-size: 16px;
     color: #c8e0d0;
     margin-top: 6px;
+  }
+  .dark-footer-sub :global(.location-icon) {
+    display: inline-block;
+    vertical-align: -4px;
+    margin-left: 4px;
+    color: var(--color-green);
   }
   .dark-footer-links {
     display: flex;

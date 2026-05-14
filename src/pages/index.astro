@@ -13,49 +13,6 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
 
   <!-- Hero -->
   <header class="hero">
-    <svg
-      class="topo"
-      aria-hidden="true"
-      viewBox="0 0 1240 600"
-      preserveAspectRatio="xMidYMid slice"
-    >
-      <path
-        d="M-60,180 Q80,120 200,160 Q320,200 440,140 Q560,80 680,130 Q800,180 920,120 Q1040,60 1160,110 Q1280,160 1400,100"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1"
-        opacity="0.08"></path>
-      <path
-        d="M-60,240 Q80,180 200,220 Q320,260 440,200 Q560,140 680,190 Q800,240 920,180 Q1040,120 1160,170 Q1280,220 1400,160"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1"
-        opacity="0.08"></path>
-      <path
-        d="M-60,300 Q80,240 200,280 Q320,320 440,260 Q560,200 680,250 Q800,300 920,240 Q1040,180 1160,230 Q1280,280 1400,220"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1"
-        opacity="0.08"></path>
-      <path
-        d="M-60,360 Q80,300 200,340 Q320,380 440,320 Q560,260 680,310 Q800,360 920,300 Q1040,240 1160,290 Q1280,340 1400,280"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1"
-        opacity="0.08"></path>
-      <path
-        d="M-60,420 Q80,360 200,400 Q320,440 440,380 Q560,320 680,370 Q800,420 920,360 Q1040,300 1160,350 Q1280,400 1400,340"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1"
-        opacity="0.08"></path>
-      <path
-        d="M-60,120 Q80,60 200,100 Q320,140 440,80 Q560,20 680,70 Q800,120 920,60 Q1040,0 1160,50 Q1280,100 1400,40"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1"
-        opacity="0.08"></path>
-    </svg>
     <div class="hero-inner">
       <div class="portrait-frame">
         <Image
@@ -107,32 +64,8 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
   /* ── Hero ── */
   .hero {
     position: relative;
-    overflow: hidden;
-    border-bottom: 1px solid var(--color-border);
     padding: 100px 60px 90px;
-  }
-  .topo {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    color: #ede8d8;
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    .topo path {
-      stroke-dasharray: 1400;
-      stroke-dashoffset: 1400;
-      animation: topoBreath 18s ease-in-out infinite alternate;
-    }
-    .topo path:nth-child(2) { animation-delay: 3s; }
-    .topo path:nth-child(3) { animation-delay: 6s; }
-    .topo path:nth-child(4) { animation-delay: 9s; }
-    .topo path:nth-child(5) { animation-delay: 12s; }
-    .topo path:nth-child(6) { animation-delay: 15s; }
-    @keyframes topoBreath {
-      to { stroke-dashoffset: 0; }
-    }
+    margin-bottom: 50px;
   }
   .hero-inner {
     display: grid;
@@ -148,8 +81,12 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
       animation: heroFadeIn 0.7s ease both;
     }
     @keyframes heroFadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
     }
   }
   .portrait-frame {
@@ -170,8 +107,13 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
       animation: borderPulse 5s ease-in-out infinite;
     }
     @keyframes borderPulse {
-      0%, 100% { opacity: 0.35; }
-      50% { opacity: 0.55; }
+      0%,
+      100% {
+        opacity: 0.35;
+      }
+      50% {
+        opacity: 0.55;
+      }
     }
   }
   .portrait {
@@ -207,7 +149,7 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     gap: 14px;
   }
   .eyebrow::before {
-    content: "";
+    content: '';
     width: 32px;
     height: 1px;
     background: var(--color-accent);
@@ -249,7 +191,9 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     font-weight: 700;
     font-size: 15px;
     text-decoration: none;
-    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+      opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .btn-primary:hover {
     opacity: 0.9;
@@ -271,7 +215,9 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     font-family: var(--font-vollkorn);
     font-size: 15px;
     text-decoration: none;
-    transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+      border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .btn-ghost:hover {
     border-color: var(--color-accent);
@@ -287,12 +233,12 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     margin: 0 auto;
   }
   .feeds-header {
-    margin-bottom: 25px;
+    margin-bottom: 10px;
   }
   .feeds-h2 {
     font-family: var(--font-cormorant);
     font-weight: 500;
-    font-size: clamp(28px, 3.6vw, 44px);
+    font-size: clamp(22px, 2.6vw, 32px);
     line-height: 1.05;
     letter-spacing: var(--tracking-sub);
     margin: 0;
@@ -317,11 +263,11 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     padding: 0.25rem 0.75rem 0.25rem 0.25rem;
     scrollbar-gutter: stable;
     scrollbar-width: thin;
-    scrollbar-color: rgba(137,174,151,0.3) transparent;
+    scrollbar-color: rgba(137, 174, 151, 0.3) transparent;
   }
   :global(.bluesky-feed .feed-heading),
   :global(.github-feed .feed-heading) {
-    color: #ffffff;
+    color: #e2ede6;
   }
   :global(.github-feed .feed-heading svg) {
     filter: invert(1);
@@ -356,7 +302,7 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     color: #d4af37 !important;
   }
   :global(.github-feed .repo-description) {
-    color: #E2EDE6 !important;
+    color: #e2ede6 !important;
   }
   :global(.bluesky-feed .view-all),
   :global(.github-feed .view-all) {
