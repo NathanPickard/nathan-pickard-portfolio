@@ -1,0 +1,41 @@
+name: Scheduled site rebuild
+
+# The homepage Bluesky + GitHub activity feeds are fetched at *build time*
+# (src/components/BlueskyFeed.astro, src/components/GitHubFeed.astro). The site
+# is a static Astro build with no server runtime, so those feeds stay frozen at
+# whatever was current during the last deploy. This workflow periodically pings
+# a Netlify build hook to trigger a fresh rebuild, so the feeds pick up new
+# activity without a manual push.
+#
+# Setup (one time):
+#   1. Netlify  -> Site configuration -> Build & deploy -> Build hooks ->
+#      "Add build hook" (branch: main). Copy the generated URL.
+#   2. GitHub   -> repo Settings -> Secrets and variables -> Actions ->
+#      "New repository secret": name NETLIFY_BUILD_HOOK_URL, value = that URL.
+#
+# Test: Actions tab -> "Scheduled site rebuild" -> "Run workflow".
+
+on:
+  schedule:
+    # Every 12 hours, at 00:00 and 12:00 UTC. Each run consumes Netlify build
+    # minutes, so dial this back (e.g. '0 7 * * *' for once daily at 07:00 UTC)
+    # if you're close to your plan's build-minute limit.
+    - cron: '0 */12 * * *'
+  workflow_dispatch: {} # allow manual runs from the Actions tab
+
+permissions: {} # this job only calls an external URL; needs no repo permissions
+
+jobs:
+  trigger-netlify-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Netlify build hook
+        env:
+          BUILD_HOOK_URL: ${{ secrets.NETLIFY_BUILD_HOOK_URL }}
+        run: |
+          if [ -z "$BUILD_HOOK_URL" ]; then
+            echo "::error::NETLIFY_BUILD_HOOK_URL secret is not set. See the setup notes in this workflow file."
+            exit 1
+          fi
+          curl --fail --silent --show-error -X POST -d '{}' "$BUILD_HOOK_URL"
+          echo "Triggered Netlify rebuild."
