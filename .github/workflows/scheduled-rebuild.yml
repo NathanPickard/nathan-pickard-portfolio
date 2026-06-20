@@ -16,11 +16,11 @@ name: Scheduled site rebuild
 # Test: Actions tab -> "Scheduled site rebuild" -> "Run workflow".
 
 on:
-  schedule:
-    # Every 12 hours, at 00:00 and 12:00 UTC. Each run consumes Netlify build
-    # minutes, so dial this back (e.g. '0 7 * * *' for once daily at 07:00 UTC)
-    # if you're close to your plan's build-minute limit.
-    - cron: '0 */12 * * *'
+    schedule:
+    # Once daily at 07:00 UTC. Each run consumes Netlify build credits, so keep
+    # this as infrequent as the feed-freshness you want allows (e.g. '0 7 * * 1'
+    # for weekly on Mondays). Dialed back from every-12h to conserve credits.
+    - cron: '0 7 * * *'
   workflow_dispatch: {} # allow manual runs from the Actions tab
 
 permissions: {} # this job only calls an external URL; needs no repo permissions
