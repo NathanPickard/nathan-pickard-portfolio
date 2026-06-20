@@ -16,7 +16,7 @@ name: Scheduled site rebuild
 # Test: Actions tab -> "Scheduled site rebuild" -> "Run workflow".
 
 on:
-    schedule:
+  schedule:
     # Once daily at 07:00 UTC. Each run consumes Netlify build credits, so keep
     # this as infrequent as the feed-freshness you want allows (e.g. '0 7 * * 1'
     # for weekly on Mondays). Dialed back from every-12h to conserve credits.
