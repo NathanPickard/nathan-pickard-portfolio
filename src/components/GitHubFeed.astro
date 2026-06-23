@@ -1,148 +1,23 @@
 ---
-import { GITHUB_TOKEN } from 'astro:env/server';
 import { Icon } from 'astro-icon/components';
 
 const GITHUB_USER = 'nathanpickard';
 const REPO_COUNT = 5;
-
-const query = `
-  query GetRepos($user: String!, $count: Int!) {
-    user(login: $user) {
-      repositories(
-        first: $count
-        orderBy: { field: PUSHED_AT, direction: DESC }
-        ownerAffiliations: [OWNER]
-        privacy: PUBLIC
-        isFork: false
-      ) {
-        nodes {
-          name
-          description
-          url
-          stargazerCount
-          primaryLanguage {
-            name
-            color
-          }
-          pushedAt
-          isArchived
-        }
-      }
-    }
-  }
-`;
-
-interface Repo {
-  name: string;
-  description: string | null;
-  url: string;
-  stargazerCount: number;
-  primaryLanguage: { name: string; color: string } | null;
-  pushedAt: string;
-  isArchived: boolean;
-}
-
-let repos: Repo[] = [];
-let fetchError = false;
-
-try {
-  const res = await fetch('https://api.github.com/graphql', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${GITHUB_TOKEN}`,
-    },
-    body: JSON.stringify({
-      query,
-      variables: { user: GITHUB_USER, count: REPO_COUNT },
-    }),
-  });
-
-  if (res.ok) {
-    const json = await res.json();
-    repos = (json.data.user.repositories.nodes as Repo[]).filter(
-      (r) => !r.isArchived,
-    );
-  } else {
-    fetchError = true;
-  }
-} catch (err) {
-  console.warn('GitHubFeed: fetch failed', err);
-  fetchError = true;
-}
-
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
-}
 ---
 
-<section class="github-feed">
+<section
+  class="github-feed"
+  data-github-user={GITHUB_USER}
+  data-repo-count={REPO_COUNT}
+>
   <h4 class="feed-heading">
     <Icon name="devicon:github" size={24} aria-hidden="true" />
     Recent GitHub activity
   </h4>
 
-  {
-    fetchError && (
-      <p class="feed-error">Could not load repositories right now.</p>
-    )
-  }
-  {
-    !fetchError && repos.length === 0 && (
-      <p class="feed-error">No repositories found.</p>
-    )
-  }
+  <p class="feed-status" data-feed-status>Loading repositories…</p>
+  <ul class="repo-grid" hidden></ul>
 
-  <ul class="repo-grid">
-    {
-      repos.map((repo) => (
-        <li class="repo-card">
-          <a
-            href={repo.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="repo-link"
-          >
-            <p class="repo-name">{repo.name}</p>
-            {repo.description && (
-              <p class="repo-description">{repo.description}</p>
-            )}
-            <div class="repo-meta">
-              {repo.primaryLanguage && (
-                <span class="repo-lang">
-                  <span
-                    class="lang-dot"
-                    style={`background-color: ${repo.primaryLanguage.color}`}
-                    aria-hidden="true"
-                  />
-                  {repo.primaryLanguage.name}
-                </span>
-              )}
-              <span class="repo-stats">
-                {repo.stargazerCount > 0 && (
-                  <span title="Stars" class="repo-stars">
-                    <Icon
-                      name="mdi:star-outline"
-                      size={13}
-                      aria-hidden="true"
-                    />
-                    {repo.stargazerCount}
-                  </span>
-                )}
-                <time datetime={repo.pushedAt}>
-                  {formatDate(repo.pushedAt)}
-                </time>
-              </span>
-            </div>
-          </a>
-        </li>
-      ))
-    }
-  </ul>
   <a
     class="view-all"
     href={`https://github.com/${GITHUB_USER}`}
@@ -151,7 +26,227 @@ function formatDate(dateStr: string) {
   >
     View all on GitHub →</a
   >
+
+  <!-- Rendered at build time so it carries Astro's scoped-style attribute;
+       cloned per repo in the script below (same pattern as BlueskyFeed). -->
+  <template class="repo-template">
+    <li class="repo-card">
+      <a target="_blank" rel="noopener noreferrer" class="repo-link">
+        <p class="repo-name"></p>
+        <p class="repo-description" hidden></p>
+        <div class="repo-meta">
+          <span class="repo-lang" hidden>
+            <span class="lang-dot" aria-hidden="true"></span>
+            <span class="lang-name"></span>
+          </span>
+          <span class="repo-stats">
+            <span title="Stars" class="repo-stars" hidden>
+              <Icon name="mdi:star-outline" size={13} aria-hidden="true" />
+              <span class="star-count"></span>
+            </span>
+            <time></time>
+          </span>
+        </div>
+      </a>
+    </li>
+  </template>
 </section>
+
+<script>
+  // Client-side GitHub feed via the public, unauthenticated REST API (no token in
+  // the browser). One request per load; 60/hr per visitor IP — fine for a
+  // portfolio. Cards are cloned from the build-time <template> so scoped styles
+  // apply (createElement nodes would miss Astro's data-astro-cid attribute).
+
+  // REST's `language` is a name only, so map Linguist colors; gray fallback.
+  const LANG_COLORS: Record<string, string> = {
+    JavaScript: '#f1e05a',
+    TypeScript: '#3178c6',
+    HTML: '#e34c26',
+    CSS: '#563d7c',
+    SCSS: '#c6538c',
+    Less: '#1d365d',
+    Python: '#3572A5',
+    Astro: '#ff5a03',
+    Vue: '#41b883',
+    Svelte: '#ff3e00',
+    Shell: '#89e051',
+    Dockerfile: '#384d54',
+    Java: '#b07219',
+    Kotlin: '#A97BFF',
+    Go: '#00ADD8',
+    Rust: '#dea584',
+    Ruby: '#701516',
+    PHP: '#4F5D95',
+    'C#': '#178600',
+    'C++': '#f34b7d',
+    C: '#555555',
+    Swift: '#F05138',
+    MDX: '#fcb32c',
+    'Jupyter Notebook': '#DA5B0B',
+    Makefile: '#427819',
+  };
+
+  type Repo = {
+    name: string;
+    description: string | null;
+    html_url: string;
+    language: string | null;
+    stargazers_count: number;
+    pushed_at: string;
+    fork: boolean;
+    archived: boolean;
+  };
+
+  function formatDate(dateStr: string) {
+    return new Date(dateStr).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  }
+
+  function renderRepo(
+    template: HTMLTemplateElement,
+    repo: Repo,
+  ): HTMLLIElement {
+    const node = template.content.firstElementChild!.cloneNode(
+      true,
+    ) as HTMLLIElement;
+
+    (node.querySelector('.repo-link') as HTMLAnchorElement).href =
+      repo.html_url;
+    (node.querySelector('.repo-name') as HTMLElement).textContent = repo.name;
+
+    const desc = node.querySelector('.repo-description') as HTMLElement;
+    if (repo.description) {
+      desc.textContent = repo.description;
+      desc.hidden = false;
+    }
+
+    if (repo.language) {
+      const dot = node.querySelector('.lang-dot') as HTMLElement;
+      dot.style.backgroundColor = LANG_COLORS[repo.language] ?? '#8b8b8b';
+      (node.querySelector('.lang-name') as HTMLElement).textContent =
+        repo.language;
+      (node.querySelector('.repo-lang') as HTMLElement).hidden = false;
+    }
+
+    if (repo.stargazers_count > 0) {
+      (node.querySelector('.star-count') as HTMLElement).textContent = String(
+        repo.stargazers_count,
+      );
+      (node.querySelector('.repo-stars') as HTMLElement).hidden = false;
+    }
+
+    const time = node.querySelector('time') as HTMLTimeElement;
+    time.dateTime = repo.pushed_at;
+    time.textContent = formatDate(repo.pushed_at);
+
+    return node;
+  }
+
+  function showStatus(section: HTMLElement, message: string) {
+    const status = section.querySelector(
+      '[data-feed-status]',
+    ) as HTMLElement | null;
+    const grid = section.querySelector('.repo-grid') as HTMLElement | null;
+    if (grid) grid.hidden = true;
+    if (status) {
+      status.hidden = false;
+      status.textContent = message;
+    }
+  }
+
+  async function loadFeed(section: HTMLElement) {
+    if (
+      section.dataset.feedState === 'loading' ||
+      section.dataset.feedState === 'loaded'
+    ) {
+      return;
+    }
+    section.dataset.feedState = 'loading';
+
+    const grid = section.querySelector('.repo-grid') as HTMLUListElement;
+    const status = section.querySelector(
+      '[data-feed-status]',
+    ) as HTMLElement | null;
+    const template = section.querySelector(
+      '.repo-template',
+    ) as HTMLTemplateElement;
+    const user = section.dataset.githubUser ?? '';
+    const count = parseInt(section.dataset.repoCount ?? '5', 10);
+    const cacheKey = `gh-feed:${user}`;
+
+    const paint = (repos: Repo[]) => {
+      grid.replaceChildren();
+      repos.forEach((repo) => grid.appendChild(renderRepo(template, repo)));
+      grid.hidden = false;
+      if (status) status.hidden = true;
+    };
+
+    // Session cache so revisits (incl. View Transition navigations) are instant.
+    try {
+      const raw = sessionStorage.getItem(cacheKey);
+      if (raw) {
+        const cached = JSON.parse(raw) as { t: number; repos: Repo[] };
+        if (Date.now() - cached.t < 30 * 60 * 1000) {
+          paint(cached.repos);
+          section.dataset.feedState = 'loaded';
+          return;
+        }
+      }
+    } catch {
+      /* ignore malformed cache */
+    }
+
+    try {
+      const res = await fetch(
+        `https://api.github.com/users/${user}/repos?sort=pushed&direction=desc&type=owner&per_page=100`,
+        { headers: { Accept: 'application/vnd.github+json' } },
+      );
+      if (!res.ok) {
+        showStatus(section, 'Could not load repositories right now.');
+        section.dataset.feedState = '';
+        return;
+      }
+      const all = (await res.json()) as Repo[];
+      const repos = all.filter((r) => !r.fork && !r.archived).slice(0, count);
+
+      if (repos.length === 0) {
+        showStatus(section, 'No repositories found.');
+        section.dataset.feedState = 'loaded';
+        return;
+      }
+
+      try {
+        sessionStorage.setItem(
+          cacheKey,
+          JSON.stringify({ t: Date.now(), repos }),
+        );
+      } catch {
+        /* storage unavailable — fine */
+      }
+
+      paint(repos);
+      section.dataset.feedState = 'loaded';
+    } catch (err) {
+      console.warn('GitHubFeed: fetch failed', err);
+      showStatus(section, 'Could not load repositories right now.');
+      section.dataset.feedState = '';
+    }
+  }
+
+  function initFeeds() {
+    document
+      .querySelectorAll<HTMLElement>('.github-feed')
+      .forEach((section) => loadFeed(section));
+  }
+
+  // Homepage uses View Transitions — astro:page-load fires on first load and on
+  // every client-side navigation back to this page.
+  document.addEventListener('astro:page-load', initFeeds);
+</script>
 
 <style>
   .github-feed {
@@ -167,7 +262,7 @@ function formatDate(dateStr: string) {
     font-size: 1.5rem;
   }
 
-  .feed-error {
+  .feed-status {
     color: #c8e0d0;
     font-size: 0.9em;
   }

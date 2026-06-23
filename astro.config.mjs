@@ -14,9 +14,7 @@ import expressiveCode from 'astro-expressive-code';
 // https://astro.build/config
 export default defineConfig({
   env: {
-    schema: {
-      GITHUB_TOKEN: envField.string({ context: 'server', access: 'secret' }),
-    },
+    schema: {},
   },
   site: 'https://nathanpickard.com/',
 
@@ -96,7 +94,44 @@ export default defineConfig({
           'star-outline',
           'linkedin',
         ],
-        devicon: ['*'],
+        // Only the devicon icons actually referenced in src/ (workIconMap.ts,
+        // Nav/Footer, tests). Using ['*'] pulls the entire devicon set into the
+        // build — slower builds and more Netlify credits. Keep this list in sync
+        // when adding tech icons.
+        devicon: [
+          'amazonwebservices',
+          'angular',
+          'angularmaterial',
+          'ansible',
+          'bootstrap',
+          'css3',
+          'datadog',
+          'docker',
+          'firebase',
+          'github',
+          'html5',
+          'jasmine',
+          'javascript',
+          'karma',
+          'linkedin',
+          'mocha',
+          'mongodb',
+          'mysql',
+          'nginx',
+          'nodejs',
+          'pytest',
+          'python',
+          'python-wordmark',
+          'react',
+          'redux',
+          'sass',
+          'tailwindcss',
+          'twitter',
+          'typescript',
+          'vitest',
+          'vuejs',
+        ],
+
         local: ['src/icons'],
       },
     }),
@@ -119,10 +154,16 @@ export default defineConfig({
   vite: {
     plugins: [
       tailwindcss(),
-      visualizer({
-        emitFile: true,
-        filename: 'stats.html',
-      }),
+      // Bundle-size visualizer emits stats.html. Skip it on Netlify (NETLIFY=true
+      // in their build env) to keep CI builds lean; still runs locally.
+      ...(process.env.NETLIFY
+        ? []
+        : [
+            visualizer({
+              emitFile: true,
+              filename: 'stats.html',
+            }),
+          ]),
     ],
   },
 });
