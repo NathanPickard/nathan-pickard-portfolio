@@ -26,11 +26,11 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
           posts.map((post) => (
             <li class="post-row" data-reveal>
               <a href={`/blog/${post.id}/`} class="post-link">
-                <div class="post-media">
+                <div class="post-thumb">
                   {post.data.heroImage ? (
                     <Image
-                      width={1600}
-                      height={600}
+                      width={440}
+                      height={248}
                       src={post.data.heroImage}
                       alt=""
                       class="post-image"
@@ -39,7 +39,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
                     <div class="post-image post-image--placeholder" />
                   )}
                 </div>
-                <div class="post-content">
+                <div class="post-body">
                   <time class="post-date">
                     <FormattedDate date={post.data.pubDate} />
                   </time>
@@ -89,11 +89,17 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 45px;
   }
 
+  /* Each row pairs a fixed-width thumbnail with the post text. The thumbnail
+     sets the row height, so rows without a description stay balanced. */
   .post-link {
-    display: block;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 24px;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(247, 242, 228, 0.1);
     text-decoration: none;
     color: inherit;
   }
@@ -105,12 +111,11 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     transform: scale(1.015);
   }
 
-  .post-media {
+  .post-thumb {
     overflow: hidden;
-    border-radius: 6px;
-    aspect-ratio: 7 / 2;
+    border-radius: 5px;
+    aspect-ratio: 220 / 124;
     background: #162b1b;
-    margin-bottom: 20px;
   }
   .post-image {
     width: 100%;
@@ -123,11 +128,11 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     background: linear-gradient(135deg, #162b1b 0%, #1f3a26 100%);
   }
 
-  .post-content {
+  .post-body {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    max-width: 820px;
+    gap: 6px;
+    min-width: 0;
   }
   .post-date {
     font-family: var(--font-dm-sans);
@@ -141,8 +146,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     font-family: var(--font-eb-garamond);
     font-weight: 500;
     font-variation-settings: 'opsz' 72;
-    font-size: clamp(22px, 2.4vw, 30px);
-    line-height: 1.15;
+    font-size: clamp(20px, 2vw, 24px);
+    line-height: 1.2;
     letter-spacing: -0.01em;
     margin: 0;
     color: #f7f2e4;
@@ -173,8 +178,22 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     .blog-main {
       padding: 60px 24px;
     }
-    .post-list {
-      gap: 28px;
+    /* Keep the thumbnail alongside the text rather than stacking it — a
+       full-width image on a narrow screen is the weight problem all over again. */
+    .post-link {
+      grid-template-columns: 116px 1fr;
+      gap: 16px;
+      padding: 14px 0;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .post-link {
+      grid-template-columns: 92px 1fr;
+      gap: 14px;
+    }
+    .post-desc {
+      display: none;
     }
   }
 </style>
