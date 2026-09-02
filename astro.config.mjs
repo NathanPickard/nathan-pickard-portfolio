@@ -7,6 +7,7 @@ import icon from 'astro-icon';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
 import rehypeExternalLinks from 'rehype-external-links';
+import { unified } from '@astrojs/markdown-remark';
 import { visualizer } from 'rollup-plugin-visualizer';
 
 import expressiveCode from 'astro-expressive-code';
@@ -146,16 +147,23 @@ export default defineConfig({
   ],
 
   markdown: {
-    rehypePlugins: [
-      [
-        rehypeExternalLinks,
-        {
-          target: '_blank',
-          rel: ['noopener', 'noreferrer'],
-          // content: { type: 'text', value: ' 🔗' }
-        },
+    // Astro 7 made Sätteri the default Markdown processor. Stay on Unified: it
+    // is what this site's content has always been rendered with, and
+    // rehype-external-links is a rehype plugin with no Sätteri equivalent.
+    // The old top-level `rehypePlugins` key is deprecated and now throws,
+    // because @astrojs/mdx v8 dropped @astrojs/markdown-remark to a peer.
+    processor: unified({
+      rehypePlugins: [
+        [
+          rehypeExternalLinks,
+          {
+            target: '_blank',
+            rel: ['noopener', 'noreferrer'],
+            // content: { type: 'text', value: ' 🔗' }
+          },
+        ],
       ],
-    ],
+    }),
   },
 
   vite: {
