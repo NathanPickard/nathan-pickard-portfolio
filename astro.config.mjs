@@ -18,6 +18,13 @@ export default defineConfig({
   },
   site: 'https://nathanpickard.com/',
 
+  // Astro resolves the content-layer store as `isDev ? dotAstroDir : cacheDir`.
+  // With the default cacheDir (node_modules/.astro), `astro sync` writes the
+  // store where the dev-mode runtime — which is what Vitest uses — never reads
+  // it, so getCollection() returns nothing until a dev server or build has run.
+  // Pointing cacheDir at .astro collapses both branches to one directory.
+  cacheDir: './.astro',
+
   fonts: [
     {
       name: 'Cormorant Garamond',
