@@ -84,6 +84,14 @@ const work = [
   },
 ];
 
+/** The panel open on first load. Kellton has the richest shipped results, so it leads. */
+const DEFAULT_PANEL_COMPANY = 'Kellton';
+const defaultPanelIndex = Math.max(
+  0,
+  work.findIndex((w) => w.co === DEFAULT_PANEL_COMPANY),
+);
+const isDefaultPanel = (i: number): boolean => i === defaultPanelIndex;
+
 // Helper to find keywords by category name from resumeData.skills
 const getKeywords = (name: string): string[] =>
   resumeData.skills.find((s) => s.name === name)?.keywords ?? [];
@@ -187,13 +195,13 @@ const panelConfig = [
           {
             work.map((w, i) => (
               <button
-                class={`work-tab${i === 0 ? ' active' : ''}`}
+                class={`work-tab${isDefaultPanel(i) ? ' active' : ''}`}
                 role="tab"
-                aria-selected={i === 0 ? 'true' : 'false'}
+                aria-selected={isDefaultPanel(i) ? 'true' : 'false'}
                 aria-controls={`panel-${i}`}
                 id={`tab-${i}`}
                 data-index={i}
-                data-mobile-open={i === 0 ? 'true' : 'false'}
+                data-mobile-open={isDefaultPanel(i) ? 'true' : 'false'}
               >
                 <div class="tab-co">{w.co}</div>
                 <div class="tab-period">{w.period}</div>
@@ -208,7 +216,7 @@ const panelConfig = [
           {
             work.map((w, i) => (
               <div
-                class={`work-panel${i === 0 ? ' active' : ''}`}
+                class={`work-panel${isDefaultPanel(i) ? ' active' : ''}`}
                 role="tabpanel"
                 id={`panel-${i}`}
                 aria-labelledby={`tab-${i}`}
@@ -232,9 +240,9 @@ const panelConfig = [
           work.map((w, i) => (
             <div class="accordion-item">
               <button
-                class={`accordion-trigger${i === 0 ? ' active' : ''}`}
+                class={`accordion-trigger${isDefaultPanel(i) ? ' active' : ''}`}
                 data-accordion-index={i}
-                aria-expanded={i === 0 ? 'true' : 'false'}
+                aria-expanded={isDefaultPanel(i) ? 'true' : 'false'}
                 aria-controls={`accordion-panel-${i}`}
                 id={`accordion-tab-${i}`}
               >
@@ -252,7 +260,7 @@ const panelConfig = [
                 </span>
               </button>
               <div
-                class={`accordion-panel${i === 0 ? ' open' : ''}`}
+                class={`accordion-panel${isDefaultPanel(i) ? ' open' : ''}`}
                 id={`accordion-panel-${i}`}
                 role="region"
                 aria-labelledby={`accordion-tab-${i}`}

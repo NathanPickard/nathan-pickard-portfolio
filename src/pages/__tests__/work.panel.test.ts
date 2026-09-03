@@ -7,6 +7,34 @@ async function renderWorkPage() {
   return container.renderToString(WorkPage);
 }
 
+describe('work.astro default panel', () => {
+  it('opens the Kellton panel by default on desktop tabs and mobile accordion', async () => {
+    const html = await renderWorkPage();
+
+    const kelltonIndex = 1;
+    const harborIndex = 0;
+
+    expect(html).toContain(
+      `class="work-tab active" role="tab" aria-selected="true" aria-controls="panel-${kelltonIndex}"`,
+    );
+    expect(html).toContain(
+      `class="work-tab" role="tab" aria-selected="false" aria-controls="panel-${harborIndex}"`,
+    );
+    expect(html).toContain(
+      `class="work-panel active" role="tabpanel" id="panel-${kelltonIndex}"`,
+    );
+    expect(html).toContain(
+      `class="accordion-trigger active" data-accordion-index="${kelltonIndex}" aria-expanded="true"`,
+    );
+    expect(html).toContain(
+      `class="accordion-panel open" id="accordion-panel-${kelltonIndex}"`,
+    );
+    expect(html).not.toContain(
+      `class="accordion-panel open" id="accordion-panel-${harborIndex}"`,
+    );
+  });
+});
+
 describe('work.astro skills panels', () => {
   it('renders expected skills section headings and panel labels', async () => {
     const html = await renderWorkPage();
