@@ -2,6 +2,7 @@
 title: "Hello!"
 pubDate: 'Oct. 15, 2017'
 heroImage: '../../../assets/blog-placeholder-willamette-valley.jpg'
+archived: true
 ---
 
 ![IMG_20171015_130131](./img_20171015_130131.jpg)
