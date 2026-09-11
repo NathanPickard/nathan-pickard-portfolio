@@ -102,6 +102,23 @@ describe('BaseLayout.astro scroll-reveal progressive enhancement', () => {
     expect(gutterStyle).toMatch(/html\s*\{[^}]*scrollbar-gutter:\s*stable/);
   });
 
+  /**
+   * The background texture is rendered at 9% opacity behind a color-matrix
+   * tint, so it needs very little fidelity. It ships as a heavily compressed
+   * WebP; the extension must say so, both for correctness and so the asset
+   * pipeline does not treat it as a PNG.
+   */
+  it('serves the background texture as a WebP', async () => {
+    const html = stripHtmlComments(await renderBaseLayout());
+    const textureHref = html.match(/<image[^>]*href="([^"]+)"/)?.[1];
+
+    expect(textureHref, 'no <image> href found for the site texture').toBeDefined();
+    // Dev-mode asset URLs append a query string (?origWidth=...); only the
+    // pathname's extension matters.
+    const texturePath = textureHref?.split('?')[0];
+    expect(texturePath).toMatch(/\.webp$/);
+  });
+
   it('only hides [data-reveal] content when the html.js class is present', async () => {
     const source = await readFile(LAYOUT_SOURCE_PATH, 'utf8');
     // Anchored to line start: the global block's tags sit at column 0, while any

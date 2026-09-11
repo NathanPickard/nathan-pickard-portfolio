@@ -53,6 +53,8 @@ const REPO_COUNT = 5;
 </section>
 
 <script>
+  import { readFeedCache, writeFeedCache } from '../utils/feedCache';
+
   // Client-side GitHub feed via the public, unauthenticated REST API (no token in
   // the browser). One request per load; 60/hr per visitor IP — fine for a
   // portfolio. Cards are cloned from the build-time <template> so scoped styles
@@ -186,18 +188,11 @@ const REPO_COUNT = 5;
     };
 
     // Session cache so revisits (incl. View Transition navigations) are instant.
-    try {
-      const raw = sessionStorage.getItem(cacheKey);
-      if (raw) {
-        const cached = JSON.parse(raw) as { t: number; repos: Repo[] };
-        if (Date.now() - cached.t < 30 * 60 * 1000) {
-          paint(cached.repos);
-          section.dataset.feedState = 'loaded';
-          return;
-        }
-      }
-    } catch {
-      /* ignore malformed cache */
+    const cached = readFeedCache<Repo[]>(cacheKey);
+    if (cached) {
+      paint(cached);
+      section.dataset.feedState = 'loaded';
+      return;
     }
 
     try {
@@ -219,15 +214,7 @@ const REPO_COUNT = 5;
         return;
       }
 
-      try {
-        sessionStorage.setItem(
-          cacheKey,
-          JSON.stringify({ t: Date.now(), repos }),
-        );
-      } catch {
-        /* storage unavailable — fine */
-      }
-
+      writeFeedCache(cacheKey, repos);
       paint(repos);
       section.dataset.feedState = 'loaded';
     } catch (err) {

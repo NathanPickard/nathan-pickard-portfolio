@@ -26,13 +26,18 @@ export default defineConfig({
   // Pointing cacheDir at .astro collapses both branches to one directory.
   cacheDir: './.astro',
 
+  // Google serves these as variable fonts, so each family/style pair is one
+  // file no matter how many weights are listed. Weights and styles are still
+  // trimmed to what src/ actually uses: every declared weight emits its own
+  // @font-face descriptor (plus a fallback one) inline in every page's <head>.
   fonts: [
     {
+      // Wordmark, footer name, and homepage display only.
       name: 'Cormorant Garamond',
       cssVariable: '--font-cormorant',
       provider: fontProviders.google(),
-      weights: [300, 400, 500, 600],
-      styles: ['normal', 'italic'],
+      weights: [500],
+      styles: ['normal'],
       subsets: ['latin'],
       fallbacks: ['serif'],
     },
@@ -49,16 +54,17 @@ export default defineConfig({
       name: 'EB Garamond',
       cssVariable: '--font-eb-garamond',
       provider: fontProviders.google(),
-      weights: [400, 500, 600, 700, 800],
+      weights: [400, 500, 600, 700],
       styles: ['normal', 'italic'],
       subsets: ['latin'],
       fallbacks: ['serif'],
     },
     {
+      // Blog prose body (400) and <strong> inside it (600).
       name: 'Inter',
       cssVariable: '--font-inter',
       provider: fontProviders.google(),
-      weights: [400, 500, 600, 700],
+      weights: [400, 600],
       styles: ['normal'],
       subsets: ['latin'],
       fallbacks: ['sans-serif'],

@@ -3,7 +3,9 @@ import type { ImageMetadata, TransitionDirectionalAnimations } from 'astro';
 import { Font } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 import FallbackImage from '../assets/blog-placeholder-2.jpg';
-import dougFirRings from '../assets/doug-fir-rings.png';
+// Rendered at 9% opacity behind a color-matrix tint, so a 512px, quality-40
+// WebP is indistinguishable from the original and a quarter of the size.
+import dougFirRings from '../assets/doug-fir-rings.webp';
 import { SITE_TITLE } from '../consts';
 
 interface Props {

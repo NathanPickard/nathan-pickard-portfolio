@@ -35,7 +35,13 @@ describe('work.astro default panel', () => {
   });
 });
 
-describe('work.astro skills panels', () => {
+/**
+ * The "tools I reach for" skills section is temporarily commented out in
+ * work.astro. Astro keeps HTML comments in its output, so the heading text
+ * still appears but the panel loop inside never runs. Un-skip this block when
+ * the section is restored; the assertions are still correct for it.
+ */
+describe.skip('work.astro skills panels', () => {
   it('renders expected skills section headings and panel labels', async () => {
     const html = await renderWorkPage();
 
