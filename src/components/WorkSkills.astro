@@ -1,0 +1,263 @@
+---
+/**
+ * "The tools I reach for" skills section: one row per category, tiles built
+ * from the resume's skill keywords. Currently not rendered on the work page
+ * (its usage there is commented out); kept intact so it can return as-is.
+ */
+import { Icon } from 'astro-icon/components';
+import resumeData from '../data/resume.json';
+import {
+  iconMap,
+  labelOverrides,
+  skipTiles,
+  devopsKeywords,
+  movedToBackend,
+} from '../data/workIconMap';
+
+// Helper to find keywords by category name from resumeData.skills
+const getKeywords = (name: string): string[] =>
+  resumeData.skills.find((s) => s.name === name)?.keywords ?? [];
+
+const toolsKeywords = getKeywords('Tools/Infrastructure');
+const backendKeywords = [
+  // Node.js and Django pulled from Languages/Frameworks
+  ...getKeywords('Languages/Frameworks').filter((kw) => movedToBackend.has(kw)),
+  // Tools/Infrastructure minus devops keywords
+  ...toolsKeywords.filter(
+    (kw) => !devopsKeywords.has(kw) && !skipTiles.has(kw),
+  ),
+];
+const devopsFilteredKeywords = toolsKeywords.filter(
+  (kw) => devopsKeywords.has(kw) && !skipTiles.has(kw),
+);
+
+// Accent values are data (they become inline `--accent` custom properties), so
+// they stay literal rather than pointing at the theme tokens.
+const panelConfig = [
+  {
+    id: 'frontend',
+    label: 'Frontend',
+    accent: '#d4af37',
+    type: 'icon',
+    keywords: getKeywords('Languages/Frameworks').filter(
+      (kw) => !skipTiles.has(kw) && !movedToBackend.has(kw),
+    ),
+  },
+  {
+    id: 'backend',
+    label: 'Backend',
+    accent: '#d4af37',
+    type: 'icon',
+    keywords: backendKeywords,
+  },
+  {
+    id: 'devops',
+    label: 'DevOps & Infrastructure',
+    accent: '#b07fd4',
+    type: 'icon',
+    keywords: devopsFilteredKeywords,
+  },
+  {
+    id: 'testing',
+    label: 'Testing',
+    accent: '#f06292',
+    type: 'icon',
+    keywords: getKeywords('Testing & Quality').filter(
+      (kw) => !skipTiles.has(kw),
+    ),
+  },
+  {
+    id: 'specializations',
+    label: 'Specializations',
+    accent: '#d4af37',
+    type: 'tag',
+    keywords: getKeywords('Specializations'),
+  },
+  {
+    id: 'ai-tools',
+    label: 'AI & Tools',
+    accent: '#b07fd4',
+    type: 'tag',
+    keywords: getKeywords('AI Models & Tools'),
+  },
+];
+---
+
+<section class="skills-section" aria-labelledby="skills-heading">
+  <h2 class="skills-h2" id="skills-heading" data-reveal>
+    The tools I reach for
+  </h2>
+  <div class="tools-card" data-reveal-stagger>
+    {
+      panelConfig.map((panel) => (
+        <section
+          class="tools-row"
+          data-panel-id={panel.id}
+          style={`--accent: ${panel.accent}`}
+          data-reveal
+        >
+          <header class="tools-row-h">
+            <span class="tools-dot" aria-hidden="true" />
+            <h3 class="tools-row-label">{panel.label}</h3>
+          </header>
+          <div class="tools-items">
+            {panel.type === 'icon'
+              ? panel.keywords.map((kw) => {
+                  const icon = iconMap[kw];
+                  return (
+                    <div class="tools-tile">
+                      {icon ? (
+                        <Icon
+                          name={icon}
+                          size={20}
+                          aria-hidden="true"
+                          class="tools-tile-icon"
+                        />
+                      ) : (
+                        <span class="tools-tile-fallback" aria-hidden="true">
+                          ✦
+                        </span>
+                      )}
+                      <span class="tools-tile-label">
+                        {labelOverrides[kw] ?? kw}
+                      </span>
+                    </div>
+                  );
+                })
+              : panel.keywords.map((kw) => (
+                  <div class="tools-tile tools-tile--tag">
+                    <span class="tools-tile-bullet" aria-hidden="true" />
+                    <span class="tools-tile-label">{kw}</span>
+                  </div>
+                ))}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .skills-section {
+    margin-top: 64px;
+    padding-top: 64px;
+    border-top: 1px solid var(--color-border);
+  }
+  .skills-h2 {
+    font-family: var(--font-eb-garamond);
+    font-weight: 400;
+    font-variation-settings: 'opsz' 72;
+    font-size: clamp(24px, 3vw, 36px);
+    line-height: 1.05;
+    letter-spacing: var(--tracking-sub);
+    margin: 0 0 40px;
+    color: var(--color-text-heading);
+  }
+  .tools-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 32px;
+  }
+  .tools-row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 32px;
+    padding: 28px 32px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .tools-row:last-child {
+    border-bottom: 0;
+  }
+  .tools-row-h {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 4px;
+  }
+  .tools-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .tools-row-label {
+    font-family: var(--font-vollkorn);
+    font-feature-settings:
+      'smcp' 1,
+      'c2sc' 1;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--color-text-heading);
+    margin: 0;
+    line-height: 1.4;
+  }
+  .tools-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tools-tile {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px 8px 10px;
+    background: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    transition:
+      border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .tools-tile:hover {
+    background: #d8d2c0;
+    border-color: var(--accent);
+    transform: translateY(-1px);
+  }
+  .tools-tile--tag {
+    padding: 8px 12px;
+  }
+  .tools-tile-icon {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+  }
+  .tools-tile-fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    font-family: var(--font-dm-sans);
+    font-size: 13px;
+    color: var(--color-text-muted);
+  }
+  .tools-tile-bullet {
+    width: 4px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--accent);
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+  .tools-tile-label {
+    font-family: var(--font-dm-sans);
+    font-size: 14px;
+    color: #1a2e1f;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  /* Stack the label above the chips on narrow viewports */
+  @media (max-width: 700px) {
+    .tools-row {
+      grid-template-columns: 1fr;
+      gap: 14px;
+      padding: 22px 20px;
+    }
+  }
+</style>

@@ -1,0 +1,325 @@
+---
+/**
+ * Work history: a tabbed grid on desktop and an accordion on mobile, both
+ * rendered from the same data so the markup stays in sync. Only one of the two
+ * is displayed at any viewport width.
+ */
+import WorkCardContent from './WorkCardContent.astro';
+import { DEFAULT_PANEL_COMPANY, work } from '../data/work';
+
+const defaultPanelIndex = Math.max(
+  0,
+  work.findIndex((w) => w.co === DEFAULT_PANEL_COMPANY),
+);
+const isDefaultPanel = (i: number): boolean => i === defaultPanelIndex;
+---
+
+<div class="work-grid" id="work-grid" data-reveal>
+  <!-- Desktop tabs sidebar -->
+  <div class="work-tabs" role="tablist" aria-label="Work history">
+    {
+      work.map((w, i) => (
+        <button
+          class={`work-tab${isDefaultPanel(i) ? ' active' : ''}`}
+          role="tab"
+          aria-selected={isDefaultPanel(i) ? 'true' : 'false'}
+          aria-controls={`panel-${i}`}
+          id={`tab-${i}`}
+          data-index={i}
+          data-mobile-open={isDefaultPanel(i) ? 'true' : 'false'}
+        >
+          <div class="tab-co">{w.co}</div>
+          <div class="tab-period">{w.period}</div>
+          <div class="tab-role">{w.role}</div>
+        </button>
+      ))
+    }
+  </div>
+
+  <!-- Desktop panels -->
+  <div class="work-panels">
+    {
+      work.map((w, i) => (
+        <div
+          class={`work-panel${isDefaultPanel(i) ? ' active' : ''}`}
+          role="tabpanel"
+          id={`panel-${i}`}
+          aria-labelledby={`tab-${i}`}
+        >
+          <WorkCardContent
+            role={w.role}
+            client={w.client || undefined}
+            blurb={w.blurb}
+            wins={w.wins}
+            stack={w.stack}
+          />
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<!-- Mobile accordion (hidden on desktop) -->
+<div class="work-accordion" aria-label="Work history" data-reveal>
+  {
+    work.map((w, i) => (
+      <div class="accordion-item">
+        <button
+          class={`accordion-trigger${isDefaultPanel(i) ? ' active' : ''}`}
+          data-accordion-index={i}
+          aria-expanded={isDefaultPanel(i) ? 'true' : 'false'}
+          aria-controls={`accordion-panel-${i}`}
+          id={`accordion-tab-${i}`}
+        >
+          <div class="accordion-header">
+            <div class="accordion-co">{w.co}</div>
+            <div class="accordion-meta">
+              <span class="accordion-period">{w.period}</span>
+              {w.client && <span class="accordion-client">{w.client}</span>}
+            </div>
+          </div>
+          <span class="accordion-chevron" aria-hidden="true">
+            ›
+          </span>
+        </button>
+        <div
+          class={`accordion-panel${isDefaultPanel(i) ? ' open' : ''}`}
+          id={`accordion-panel-${i}`}
+          role="region"
+          aria-labelledby={`accordion-tab-${i}`}
+        >
+          <div class="accordion-content">
+            <WorkCardContent
+              role={w.role}
+              blurb={w.blurb}
+              wins={w.wins}
+              stack={w.stack}
+            />
+          </div>
+        </div>
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  function initTabs() {
+    const tabs = document.querySelectorAll<HTMLButtonElement>('.work-tab');
+    const panels = document.querySelectorAll<HTMLDivElement>('.work-panel');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const idx = Number(tab.dataset.index);
+        tabs.forEach((t, i) => {
+          t.classList.toggle('active', i === idx);
+          t.setAttribute('aria-selected', String(i === idx));
+        });
+        panels.forEach((p, i) => p.classList.toggle('active', i === idx));
+      });
+    });
+  }
+
+  function initAccordion() {
+    const triggers =
+      document.querySelectorAll<HTMLButtonElement>('.accordion-trigger');
+    const panels =
+      document.querySelectorAll<HTMLDivElement>('.accordion-panel');
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const idx = Number(trigger.dataset.accordionIndex);
+        const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+
+        triggers.forEach((t) => {
+          t.classList.remove('active');
+          t.setAttribute('aria-expanded', 'false');
+        });
+        panels.forEach((p) => p.classList.remove('open'));
+
+        if (!isOpen) {
+          trigger.classList.add('active');
+          trigger.setAttribute('aria-expanded', 'true');
+          panels[idx].classList.add('open');
+        }
+      });
+    });
+  }
+
+  function initWork() {
+    initTabs();
+    initAccordion();
+  }
+
+  document.addEventListener('astro:page-load', initWork);
+</script>
+
+<style>
+  .work-grid {
+    display: none;
+    grid-template-columns: 240px 1fr;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: fit-content;
+  }
+  @media (min-width: 700px) {
+    .work-grid {
+      display: grid;
+    }
+    .work-accordion {
+      display: none;
+    }
+  }
+  .work-tabs {
+    border-right: 1px solid var(--color-border);
+  }
+  .work-tab {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-left: 3px solid transparent;
+    border-bottom: 1px solid var(--color-border);
+    padding: 20px 24px;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      border-left-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--color-text);
+  }
+  .work-tab:last-child {
+    border-bottom: 0;
+  }
+  .work-tab:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+  .work-tab.active {
+    background: var(--color-card);
+    border-left-color: var(--color-accent);
+  }
+  .tab-co {
+    font-family: var(--font-eb-garamond);
+    font-weight: 500;
+    font-variation-settings: 'opsz' 72;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+  }
+  .tab-period {
+    font-size: 14px;
+    font-family: var(--font-dm-sans);
+    color: var(--color-green-light);
+    margin-top: 4px;
+  }
+  .tab-role {
+    display: none;
+  }
+
+  .work-panels {
+    background: var(--color-card);
+  }
+  .work-panel {
+    display: none;
+    padding: 36px;
+  }
+  .work-panel.active {
+    display: block;
+  }
+
+  /* Mobile accordion — hidden on desktop */
+  .work-accordion {
+    display: block;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  @media (min-width: 700px) {
+    .work-accordion {
+      display: none !important;
+    }
+  }
+  .accordion-item {
+    border-bottom: 1px solid var(--color-border);
+  }
+  .accordion-item:last-child {
+    border-bottom: 0;
+  }
+  .accordion-trigger {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    padding: 20px 24px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--color-text);
+    transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .accordion-trigger:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+  .accordion-trigger.active {
+    background: var(--color-card);
+    border-left: 3px solid var(--color-accent);
+  }
+  .accordion-header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+  .accordion-co {
+    font-family: var(--font-eb-garamond);
+    font-weight: 500;
+    font-variation-settings: 'opsz' 72;
+    font-size: 26px;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+  }
+  .accordion-meta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .accordion-period {
+    font-size: 14px;
+    font-family: var(--font-dm-sans);
+    color: var(--color-green-light);
+  }
+  .accordion-client {
+    font-size: 11px;
+    font-family: var(--font-dm-sans);
+    color: var(--color-green-light);
+  }
+  .accordion-client::before {
+    content: '·';
+    margin-right: 10px;
+  }
+  .accordion-chevron {
+    font-size: 22px;
+    color: var(--color-green-light);
+    flex-shrink: 0;
+    transition: transform 0.2s;
+    line-height: 1;
+  }
+  .accordion-trigger.active .accordion-chevron {
+    transform: rotate(90deg);
+  }
+  .accordion-panel {
+    display: none;
+    background: var(--color-card);
+  }
+  .accordion-panel.open {
+    display: block;
+  }
+  .accordion-content {
+    padding: 20px 24px 28px;
+  }
+  .accordion-content :global(.detail-role) {
+    margin-bottom: 12px;
+  }
+</style>

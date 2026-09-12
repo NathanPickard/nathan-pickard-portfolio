@@ -79,10 +79,10 @@ const posts = (
     line-height: 1.1;
     letter-spacing: var(--tracking-heading);
     margin: 0;
-    color: #e2ede6;
+    color: var(--color-text-heading);
   }
   .empty {
-    color: #8aae97;
+    color: var(--color-green);
     font-size: 16px;
   }
   .post-list {
@@ -97,13 +97,13 @@ const posts = (
     gap: 24px;
     align-items: center;
     padding: 20px 0;
-    border-top: 1px solid rgba(137, 174, 151, 0.2);
+    border-top: 1px solid var(--color-border);
     text-decoration: none;
     color: inherit;
     transition: opacity 0.2s;
   }
   .post-row:last-child {
-    border-bottom: 1px solid rgba(137, 174, 151, 0.2);
+    border-bottom: 1px solid var(--color-border);
   }
   .post-row:hover {
     opacity: 0.75;
@@ -114,14 +114,14 @@ const posts = (
     object-fit: cover;
     border-radius: 6px;
     display: block;
-    border: 1px solid rgba(137, 174, 151, 0.2);
+    border: 1px solid var(--color-border);
   }
   .post-date {
     font-family: var(--font-dm-sans);
     font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #e2ede6;
+    color: var(--color-text-heading);
     margin-bottom: 6px;
   }
   .post-title {
@@ -131,10 +131,10 @@ const posts = (
     font-size: 20px;
     letter-spacing: -0.01em;
     line-height: 1.25;
-    color: #ede8d8;
+    color: var(--color-text);
   }
   .post-arrow {
-    color: #d4af37;
+    color: var(--color-accent);
     font-size: 18px;
     transition: transform 0.2s;
   }
@@ -145,7 +145,7 @@ const posts = (
   .back-link {
     display: inline-block;
     font-size: 20px;
-    color: #d4af37;
+    color: var(--color-accent);
     text-decoration: none;
     transition: opacity 0.2s;
   }

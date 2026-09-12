@@ -3,6 +3,7 @@ import { Icon } from 'astro-icon/components';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Button from '../components/Button.astro';
 ---
 
 <BaseLayout
@@ -36,8 +37,8 @@ import Footer from '../components/Footer.astro';
             morning and usually over a very good cup of pour-over.
           </p>
           <div class="about-ctas">
-            <a href="/resume" class="btn-primary">View Resume →</a>
-            <a href="/work" class="btn-ghost">See my work</a>
+            <Button href="/resume" arrow>View Resume</Button>
+            <Button href="/work" variant="ghost">See my work</Button>
           </div>
         </div>
 
@@ -89,7 +90,7 @@ import Footer from '../components/Footer.astro';
     line-height: 1.05;
     letter-spacing: var(--tracking-heading);
     margin: 0;
-    color: #e2ede6;
+    color: var(--color-text-heading);
   }
 
   /* Bio + card side by side */
@@ -114,38 +115,10 @@ import Footer from '../components/Footer.astro';
     flex-wrap: wrap;
     margin-top: 32px;
   }
-  .btn-primary {
-    display: inline-block;
-    padding: 13px 26px;
-    background: #d4af37;
-    color: #0d1c10;
-    border-radius: 4px;
-    font-weight: 600;
-    font-size: 16px;
-    text-decoration: none;
-    transition: opacity 0.2s;
-  }
-  .btn-primary:hover {
-    opacity: 0.85;
-  }
-  .btn-ghost {
-    display: inline-block;
-    padding: 13px 26px;
-    border: 1px solid rgba(137, 174, 151, 0.2);
-    color: #ede8d8;
-    border-radius: 4px;
-    font-size: 16px;
-    text-decoration: none;
-    transition: border-color 0.2s;
-  }
-  .btn-ghost:hover {
-    border-color: #8aae97;
-  }
-
   /* PNW card */
   .pnw-card {
-    background: #162b1b;
-    border: 1px solid rgba(137, 174, 151, 0.2);
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
     border-radius: 8px;
     padding: 20px;
   }
@@ -153,7 +126,7 @@ import Footer from '../components/Footer.astro';
     font-size: 17px;
     /* text-transform: uppercase; */
     letter-spacing: 0.1em;
-    color: #e2ede6;
+    color: var(--color-text-heading);
     /* font-family: var(--font-dm-sans); */
     margin-bottom: 14px;
     font-weight: 500;
@@ -162,16 +135,16 @@ import Footer from '../components/Footer.astro';
     display: flex;
     gap: 12px;
     padding: 8px 0;
-    border-bottom: 1px solid rgba(137, 174, 151, 0.2);
+    border-bottom: 1px solid var(--color-border);
     font-size: 15px;
-    color: #e2ede6;
+    color: var(--color-text-heading);
     align-items: center;
   }
   .pnw-item:last-child {
     border-bottom: 0;
   }
   .pnw-icon {
-    color: #8aae97;
+    color: var(--color-green);
     flex-shrink: 0;
   }
 

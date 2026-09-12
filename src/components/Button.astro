@@ -1,0 +1,64 @@
+---
+/**
+ * Site-wide link button. `primary` is the filled accent button, `ghost` the
+ * outlined one. Pass `arrow` for the animated trailing arrow used on
+ * calls-to-action.
+ */
+interface Props {
+  href: string;
+  variant?: 'primary' | 'ghost';
+  arrow?: boolean;
+}
+
+const { href, variant = 'primary', arrow = false } = Astro.props;
+---
+
+<a href={href} class={`btn btn--${variant}`}>
+  <slot />
+  {arrow && <span class="arrow" aria-hidden="true">→</span>}
+</a>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    border-radius: 4px;
+    font-family: var(--font-vollkorn);
+    font-size: 15px;
+    text-decoration: none;
+    transition:
+      opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn--primary {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    font-weight: 700;
+  }
+  .btn--primary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  .btn--ghost {
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+  }
+  .btn--ghost:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .arrow {
+    display: inline-block;
+    transition: transform 0.2s;
+  }
+  .btn:hover .arrow {
+    transform: translateX(3px);
+  }
+</style>

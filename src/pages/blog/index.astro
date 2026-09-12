@@ -80,7 +80,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     line-height: 1.05;
     letter-spacing: var(--tracking-heading);
     margin: 0;
-    color: #f7f2e4;
+    color: var(--color-text-bright);
   }
 
   .post-list {
@@ -105,7 +105,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
   }
   .post-link:hover .post-title,
   .post-link:hover .post-desc {
-    color: #d4af37;
+    color: var(--color-accent);
   }
   .post-link:hover .post-image {
     transform: scale(1.015);
@@ -115,7 +115,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     overflow: hidden;
     border-radius: 5px;
     aspect-ratio: 220 / 124;
-    background: #162b1b;
+    background: var(--color-card);
   }
   .post-image {
     width: 100%;
@@ -125,7 +125,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .post-image--placeholder {
-    background: linear-gradient(135deg, #162b1b 0%, #1f3a26 100%);
+    background: linear-gradient(135deg, var(--color-card) 0%, #1f3a26 100%);
   }
 
   .post-body {
@@ -139,7 +139,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     font-size: 14px;
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
-    color: #f7f2e4;
+    color: var(--color-text-bright);
     opacity: 0.7;
   }
   .post-title {
@@ -150,14 +150,14 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     line-height: 1.2;
     letter-spacing: -0.01em;
     margin: 0;
-    color: #f7f2e4;
+    color: var(--color-text-bright);
     transition: color 0.2s ease;
   }
   .post-desc {
     font-family: var(--font-inter);
     font-size: 16px;
     line-height: 1.6;
-    color: #f7f2e4;
+    color: var(--color-text-bright);
     opacity: 0.85;
     margin: 0;
     transition: color 0.2s ease;
@@ -166,7 +166,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     display: inline-block;
     margin-top: 64px;
     font-size: 18px;
-    color: #d4af37;
+    color: var(--color-accent);
     text-decoration: none;
     transition: opacity 0.2s;
   }

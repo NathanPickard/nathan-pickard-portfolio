@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Button from '../components/Button.astro';
 import BlueskyFeed from '../components/BlueskyFeed.astro';
 import GitHubFeed from '../components/GitHubFeed.astro';
 import profilePhoto from '../assets/nathan-pickard-profile.jpg';
@@ -35,10 +36,8 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
           need them.
         </p>
         <div class="ctas">
-          <a href="/resume" class="btn-primary"
-            >View Resume <span class="arrow">→</span></a
-          >
-          <a href="/blog" class="btn-ghost">Read Blog</a>
+          <Button href="/resume" arrow>View Resume</Button>
+          <Button href="/blog" variant="ghost">Read Blog</Button>
         </div>
       </div>
     </div>
@@ -179,51 +178,6 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     gap: 14px;
     flex-wrap: wrap;
   }
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 28px;
-    background: var(--color-accent);
-    color: var(--color-bg);
-    border-radius: 4px;
-    font-family: var(--font-vollkorn);
-    font-weight: 700;
-    font-size: 15px;
-    text-decoration: none;
-    transition:
-      opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-      transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .btn-primary:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-  }
-  .btn-primary .arrow {
-    display: inline-block;
-    transition: transform 0.2s;
-  }
-  .btn-primary:hover .arrow {
-    transform: translateX(3px);
-  }
-  .btn-ghost {
-    display: inline-block;
-    padding: 14px 28px;
-    border: 1px solid var(--color-border);
-    color: #ede8d8;
-    border-radius: 4px;
-    font-family: var(--font-vollkorn);
-    font-size: 15px;
-    text-decoration: none;
-    transition:
-      border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-      color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .btn-ghost:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-  }
-
   /* ── Feeds ── */
   .feeds-section {
     padding: 50px 60px;
@@ -267,20 +221,20 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
   }
   :global(.bluesky-feed .feed-heading),
   :global(.github-feed .feed-heading) {
-    color: #e2ede6;
+    color: var(--color-text-heading);
   }
   :global(.github-feed .feed-heading svg) {
     filter: invert(1);
   }
   :global(.bluesky-feed .post),
   :global(.github-feed .repo-card) {
-    background: #162b1b !important;
-    border-color: rgba(137, 174, 151, 0.2) !important;
+    background: var(--color-card) !important;
+    border-color: var(--color-border) !important;
     box-shadow: none !important;
   }
   :global(.bluesky-feed .post:hover),
   :global(.github-feed .repo-card:hover) {
-    border-color: #d4af37 !important;
+    border-color: var(--color-accent) !important;
     box-shadow: 0 4px 20px rgba(212, 175, 55, 0.1) !important;
     transform: translateY(-1px);
   }
@@ -289,24 +243,24 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     color: #ffffff !important;
   }
   :global(.bluesky-feed .post-text) {
-    color: #ede8d8 !important;
+    color: var(--color-text) !important;
   }
   :global(.bluesky-feed .post-meta),
   :global(.github-feed .repo-meta) {
-    color: #c8e0d0 !important;
+    color: var(--color-text-muted) !important;
   }
   :global(.bluesky-feed .post-date) {
-    color: #c8e0d0 !important;
+    color: var(--color-text-muted) !important;
   }
   :global(.github-feed .repo-name) {
-    color: #d4af37 !important;
+    color: var(--color-accent) !important;
   }
   :global(.github-feed .repo-description) {
-    color: #e2ede6 !important;
+    color: var(--color-text-heading) !important;
   }
   :global(.bluesky-feed .view-all),
   :global(.github-feed .view-all) {
-    color: #d4af37 !important;
+    color: var(--color-accent) !important;
   }
   :global(.bluesky-feed .feed-scroll) {
     scrollbar-color: rgba(137, 174, 151, 0.3) transparent !important;
@@ -314,7 +268,7 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
   :global(.bluesky-feed .stat-reply),
   :global(.bluesky-feed .stat-repost),
   :global(.bluesky-feed .stat-like) {
-    color: #c8e0d0 !important;
+    color: var(--color-text-muted) !important;
   }
 
   /* ── Responsive ── */

@@ -147,7 +147,7 @@ import { Icon } from 'astro-icon/components';
     align-items: flex-start;
     gap: 24px;
     padding-bottom: 40px;
-    border-bottom: 1px solid rgba(137, 174, 151, 0.2);
+    border-bottom: 1px solid var(--color-border);
     margin-bottom: 48px;
   }
   .resume-name {
@@ -157,18 +157,18 @@ import { Icon } from 'astro-icon/components';
     font-size: clamp(28px, 3.6vw, 44px);
     line-height: 1;
     letter-spacing: var(--tracking-heading);
-    color: #e2ede6;
+    color: var(--color-text-heading);
     margin: 0 0 8px;
   }
   .resume-label {
     font-size: 18px;
-    color: #e2ede6;
+    color: var(--color-text-heading);
     margin: 0 0 10px;
   }
   .resume-contact {
     font-family: var(--font-dm-sans);
     font-size: 14px;
-    color: #c8e0d0;
+    color: var(--color-text-muted);
     margin: 0;
     display: flex;
     flex-wrap: wrap;
@@ -176,7 +176,7 @@ import { Icon } from 'astro-icon/components';
     align-items: center;
   }
   .resume-contact a {
-    color: #d4af37;
+    color: var(--color-accent);
     text-decoration: none;
     transition: opacity 0.2s;
   }
@@ -192,8 +192,8 @@ import { Icon } from 'astro-icon/components';
     align-items: center;
     gap: 8px;
     padding: 12px 22px;
-    background: #d4af37;
-    color: #0d1c10;
+    background: var(--color-accent);
+    color: var(--color-bg);
     border-radius: 4px;
     font-weight: 600;
     font-size: 16px;
@@ -210,7 +210,7 @@ import { Icon } from 'astro-icon/components';
   .resume-section {
     margin-bottom: 48px;
     padding-bottom: 48px;
-    border-bottom: 1px solid rgba(137, 174, 151, 0.2);
+    border-bottom: 1px solid var(--color-border);
   }
   .resume-section:last-child {
     border-bottom: none;
@@ -223,7 +223,7 @@ import { Icon } from 'astro-icon/components';
     font-variation-settings: 'opsz' 72;
     font-size: 26px;
     letter-spacing: -0.01em;
-    color: #ede8d8;
+    color: var(--color-text);
     margin: 0 0 20px;
   }
 
@@ -231,7 +231,7 @@ import { Icon } from 'astro-icon/components';
   .summary-text {
     font-size: 17px;
     line-height: 1.75;
-    color: #e2ede6;
+    color: var(--color-text-heading);
     margin: 0;
   }
 
@@ -251,12 +251,12 @@ import { Icon } from 'astro-icon/components';
   .skill-name {
     font-family: var(--font-dm-sans);
     font-size: 13px;
-    color: #e2ede6;
+    color: var(--color-text-heading);
     font-weight: 500;
     padding-top: 1px;
   }
   .skill-keywords {
-    color: #ede8d8;
+    color: var(--color-text);
   }
 
   /* Education */
@@ -268,11 +268,11 @@ import { Icon } from 'astro-icon/components';
   .edu-institution {
     font-size: 17px;
     font-weight: 600;
-    color: #ede8d8;
+    color: var(--color-text);
   }
   .edu-degree {
     font-size: 16px;
-    color: #e2ede6;
+    color: var(--color-text-heading);
   }
 
   /* Experience */
@@ -307,22 +307,22 @@ import { Icon } from 'astro-icon/components';
     font-variation-settings: 'opsz' 72;
     font-size: 20px;
     letter-spacing: -0.01em;
-    color: #e2ede6;
+    color: var(--color-text-heading);
   }
   .work-position {
     font-size: 16px;
     font-weight: 600;
-    color: #e2ede6;
+    color: var(--color-text-heading);
   }
   .work-desc {
     font-size: 14px;
     font-family: var(--font-dm-sans);
-    color: #c8e0d0;
+    color: var(--color-text-muted);
   }
   .work-dates {
     font-family: var(--font-dm-sans);
     font-size: 13px;
-    color: #c8e0d0;
+    color: var(--color-text-muted);
     white-space: nowrap;
     flex-shrink: 0;
   }
@@ -337,7 +337,7 @@ import { Icon } from 'astro-icon/components';
   .work-highlights li {
     font-size: 16px;
     line-height: 1.65;
-    color: #e2ede6;
+    color: var(--color-text-heading);
     padding-left: 16px;
     position: relative;
   }
@@ -345,7 +345,7 @@ import { Icon } from 'astro-icon/components';
     content: '·';
     position: absolute;
     left: 0;
-    color: #d4af37;
+    color: var(--color-accent);
     font-weight: 700;
   }
 
@@ -358,7 +358,7 @@ import { Icon } from 'astro-icon/components';
   .activities-list li {
     font-size: 16px;
     line-height: 1.65;
-    color: #e2ede6;
+    color: var(--color-text-heading);
     padding-left: 16px;
     position: relative;
   }
@@ -366,7 +366,7 @@ import { Icon } from 'astro-icon/components';
     content: '·';
     position: absolute;
     left: 0;
-    color: #d4af37;
+    color: var(--color-accent);
     font-weight: 700;
   }
 
