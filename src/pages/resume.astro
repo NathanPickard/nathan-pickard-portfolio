@@ -4,6 +4,7 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import resume from '../data/resume.json';
 import { Icon } from 'astro-icon/components';
+import { RESUME_PDF_FILENAME } from '../utils/resume';
 ---
 
 <BaseLayout
@@ -37,7 +38,7 @@ import { Icon } from 'astro-icon/components';
             >
           </p>
         </div>
-        <a href="/resume.pdf" class="download-btn">
+        <a href="/resume.pdf" download={RESUME_PDF_FILENAME} class="download-btn">
           <Icon name="mdi:download" size={16} aria-hidden="true" />
           Download PDF
         </a>

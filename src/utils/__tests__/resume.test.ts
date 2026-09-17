@@ -2,6 +2,8 @@
  * Tests for resume data utilities.
  */
 
+import { readFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
 import { describe, it, expect } from 'vitest';
 import {
   getEmailLink,
@@ -10,6 +12,7 @@ import {
   isValidResume,
   countWorkExperience,
   getCompletedPositions,
+  RESUME_PDF_FILENAME,
   type Resume,
   type WorkEntry,
 } from '../resume';
@@ -17,6 +20,11 @@ import {
 // ---------------------------------------------------------------------------
 // Fixtures
 // ---------------------------------------------------------------------------
+
+// .astro files and Astro endpoints cannot be imported in a plain Node test
+// environment, so the download wiring is asserted against their source text.
+const RESUME_PAGE_SOURCE_PATH = fileURLToPath(new URL('../../pages/resume.astro', import.meta.url));
+const PDF_ENDPOINT_SOURCE_PATH = fileURLToPath(new URL('../../pages/resume.pdf.ts', import.meta.url));
 
 const validResume: Resume = {
   basics: {
@@ -265,6 +273,25 @@ describe('resume utilities', () => {
       const result = getCompletedPositions(work);
       expect(result).toHaveLength(1);
       expect(result[0].company).toBe('C');
+    });
+  });
+
+  describe('RESUME_PDF_FILENAME', () => {
+    it('names the downloaded file "Nathan Pickard - Resume.pdf"', () => {
+      expect(RESUME_PDF_FILENAME).toBe('Nathan Pickard - Resume.pdf');
+    });
+
+    // The site builds statically, so the endpoint's Content-Disposition header
+    // is dropped — the download attribute on the link is the only thing that
+    // renames the saved file.
+    it('is applied as the download attribute on the resume page link', async () => {
+      const source = await readFile(RESUME_PAGE_SOURCE_PATH, 'utf-8');
+      expect(source).toContain('href="/resume.pdf" download={RESUME_PDF_FILENAME}');
+    });
+
+    it('is used for the PDF endpoint Content-Disposition filename', async () => {
+      const source = await readFile(PDF_ENDPOINT_SOURCE_PATH, 'utf-8');
+      expect(source).toContain('attachment; filename="${RESUME_PDF_FILENAME}"');
     });
   });
 });

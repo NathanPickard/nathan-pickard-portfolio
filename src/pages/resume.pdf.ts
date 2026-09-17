@@ -5,6 +5,7 @@ import { createElement } from 'react';
 import type { ReactElement } from 'react';
 import { ResumePDF } from '../components/ResumePDF';
 import resume from '../data/resume.json';
+import { RESUME_PDF_FILENAME } from '../utils/resume';
 
 export const prerender = true;
 
@@ -14,7 +15,7 @@ export const GET: APIRoute = async () => {
   return new Response(new Uint8Array(buffer), {
     headers: {
       'Content-Type': 'application/pdf',
-      'Content-Disposition': 'attachment; filename="Nathan Pickard Resume.pdf"',
+      'Content-Disposition': `attachment; filename="${RESUME_PDF_FILENAME}"`,
     },
   });
 };

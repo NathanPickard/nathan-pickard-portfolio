@@ -2,6 +2,17 @@
  * Resume data utilities and types.
  */
 
+/**
+ * Filename the resume PDF is saved as when a visitor downloads it.
+ *
+ * The site builds statically, so the `Content-Disposition` header set by
+ * src/pages/resume.pdf.ts never reaches the browser — the endpoint is
+ * prerendered to dist/resume.pdf and served as a plain file. The `download`
+ * attribute on the link in resume.astro is what actually names the saved file;
+ * the header is kept in sync for any future SSR adapter.
+ */
+export const RESUME_PDF_FILENAME = 'Nathan Pickard - Resume.pdf';
+
 export interface ResumeBasics {
   name: string;
   label: string;

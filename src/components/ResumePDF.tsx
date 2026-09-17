@@ -161,8 +161,10 @@ const styles = StyleSheet.create({
 });
 
 export function ResumePDF({ resume }: { resume: any }) {
+  // `title` drives the document name shown in PDF viewers and browser tabs; the
+  // saved filename comes from RESUME_PDF_FILENAME.
   return (
-    <Document>
+    <Document title="Nathan Pickard - Resume" author={resume.basics.name}>
       <Page size="LETTER" style={styles.page}>
 
         {/* ── Header ── */}
