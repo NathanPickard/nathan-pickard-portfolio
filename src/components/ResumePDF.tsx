@@ -160,7 +160,17 @@ const styles = StyleSheet.create({
   },
 });
 
+/** Profile URLs print without their scheme, e.g. "github.com/user". */
+const stripScheme = (url: string): string => url.replace(/^https?:\/\//, '');
+
 export function ResumePDF({ resume }: { resume: any }) {
+  const contactLine = [
+    resume.basics.location,
+    resume.basics.phone,
+    resume.basics.email,
+    ...(resume.basics.profiles ?? []).map((p: { url: string }) => stripScheme(p.url)),
+  ].join(' | ');
+
   // `title` drives the document name shown in PDF viewers and browser tabs; the
   // saved filename comes from RESUME_PDF_FILENAME.
   return (
@@ -170,9 +180,7 @@ export function ResumePDF({ resume }: { resume: any }) {
         {/* ── Header ── */}
         <Text style={styles.name}>{resume.basics.name}</Text>
         <Text style={styles.label}>{resume.basics.label}</Text>
-        <Text style={styles.contactLine}>
-          {resume.basics.location} | {resume.basics.phone} | {resume.basics.email} | linkedin.com/in/nathanpickard | github.com/NathanPickard
-        </Text>
+        <Text style={styles.contactLine}>{contactLine}</Text>
 
         {/* ── Career Summary ── */}
         <Text style={styles.sectionHeader}>Career Summary</Text>

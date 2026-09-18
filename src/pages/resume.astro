@@ -24,18 +24,16 @@ import { RESUME_PDF_FILENAME } from '../utils/resume';
             {resume.basics.location}
             <span class="sep" aria-hidden="true">·</span>
             <a href={`mailto:${resume.basics.email}`}>{resume.basics.email}</a>
-            <span class="sep" aria-hidden="true">·</span>
-            <a
-              href="https://linkedin.com/in/nathanpickard"
-              target="_blank"
-              rel="noopener noreferrer">LinkedIn</a
-            >
-            <span class="sep" aria-hidden="true">·</span>
-            <a
-              href="https://github.com/nathanpickard"
-              target="_blank"
-              rel="noopener noreferrer">GitHub</a
-            >
+            {
+              resume.basics.profiles.map((profile) => (
+                <>
+                  <span class="sep" aria-hidden="true">·</span>
+                  <a href={profile.url} target="_blank" rel="noopener noreferrer">
+                    {profile.network}
+                  </a>
+                </>
+              ))
+            }
           </p>
         </div>
         <a href="/resume.pdf" download={RESUME_PDF_FILENAME} class="download-btn">

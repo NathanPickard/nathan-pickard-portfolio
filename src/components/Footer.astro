@@ -1,49 +1,10 @@
 ---
 import { Icon } from 'astro-icon/components';
+import SocialLinks from './SocialLinks.astro';
+import { EMAIL_LINK, SOCIAL_PROFILES } from '../data/socials';
 
 const year = new Date().getFullYear();
-
-interface Social {
-  label: string;
-  href: string;
-  icon: string;
-  hoverIcon?: string;
-  invert: boolean;
-}
-
-const socials: Social[] = [
-  {
-    label: 'GitHub',
-    href: 'https://github.com/nathanpickard',
-    icon: 'devicon:github',
-    invert: true,
-  },
-  {
-    label: 'LinkedIn',
-    href: 'https://www.linkedin.com/in/nathanpickard/',
-    icon: 'mdi:linkedin',
-    hoverIcon: 'devicon:linkedin',
-    invert: false,
-  },
-  {
-    label: 'Bluesky',
-    href: 'https://bsky.app/profile/nathanpickard.bsky.social',
-    icon: 'bluesky',
-    invert: false,
-  },
-  {
-    label: 'X / Twitter',
-    href: 'https://x.com/NathanPickard',
-    icon: 'devicon:twitter',
-    invert: true,
-  },
-  {
-    label: 'Email',
-    href: 'mailto:nathanppickard@gmail.com',
-    icon: 'mdi:email-outline',
-    invert: false,
-  },
-];
+const socials = [...SOCIAL_PROFILES, EMAIL_LINK];
 ---
 
 <footer class="dark-footer">
@@ -60,25 +21,7 @@ const socials: Social[] = [
         />
       </div>
     </div>
-    <div class="dark-footer-links">
-      {
-        socials.map((s) => (
-          <a
-            href={s.href}
-            target={s.href.startsWith('http') ? '_blank' : undefined}
-            rel={s.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-            aria-label={s.label}
-            class="social-link"
-            data-invert={s.invert ? 'true' : undefined}
-          >
-            <Icon name={s.icon} size={24} aria-hidden="true" class="icon-default" />
-            {s.hoverIcon && (
-              <Icon name={s.hoverIcon} size={24} aria-hidden="true" class="icon-hover" />
-            )}
-          </a>
-        ))
-      }
-    </div>
+    <SocialLinks socials={socials} class="dark-footer-links" />
     <div class="dark-footer-copy">© {year}</div>
   </div>
 </footer>
@@ -117,75 +60,7 @@ const socials: Social[] = [
     color: var(--color-green);
   }
   .dark-footer-links {
-    display: flex;
-    gap: 10px;
     justify-content: center;
-    align-items: center;
-  }
-  .social-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 7px;
-    border-radius: 6px;
-    color: var(--color-text-heading);
-    text-decoration: none;
-    transition:
-      background 0.2s,
-      color 0.2s;
-  }
-  .social-link:hover {
-    background: rgba(212, 175, 55, 0.15);
-    color: var(--color-text);
-  }
-  .social-link :global(svg) {
-    transition:
-      filter 0.25s,
-      transform 0.2s;
-  }
-  .social-link:hover :global(svg) {
-    transform: translateY(-1px);
-  }
-  .social-link[data-invert='true'] :global(svg) {
-    filter: brightness(0) invert(1);
-  }
-  /* LinkedIn — white square with transparent "in" default, brand on hover */
-  .social-link[aria-label='LinkedIn'] {
-    position: relative;
-  }
-  .social-link[aria-label='LinkedIn'] :global(.icon-default) {
-    filter: brightness(0) invert(1);
-    transition: opacity 0.2s;
-  }
-  .social-link :global(.icon-hover) {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s;
-  }
-  .social-link[aria-label='LinkedIn']:hover :global(.icon-default) {
-    opacity: 0;
-  }
-  .social-link[aria-label='LinkedIn']:hover :global(.icon-hover) {
-    opacity: 1;
-    transform: translate(-50%, calc(-50% - 1px));
-  }
-  .social-link[aria-label='LinkedIn']:hover {
-    background: transparent;
-  }
-  /* Bluesky — white by default, brand color on hover */
-  .social-link[aria-label='Bluesky'] :global(svg) {
-    filter: brightness(0) invert(1);
-  }
-  .social-link[aria-label='Bluesky']:hover :global(svg) {
-    filter: none;
-  }
-  /* Email — force white to match other icons */
-  .social-link[aria-label='Email'] :global(svg) {
-    filter: brightness(0) invert(1);
   }
   .dark-footer-copy {
     font-family: var(--font-body);
