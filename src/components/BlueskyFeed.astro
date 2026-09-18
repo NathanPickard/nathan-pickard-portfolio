@@ -1,6 +1,6 @@
 ---
-import { Icon } from "astro-icon/components";
-const BLUESKY_HANDLE = "nathanpickard.bsky.social";
+import { Icon } from 'astro-icon/components';
+const BLUESKY_HANDLE = 'nathanpickard.bsky.social';
 const FEED_LIMIT = 10;
 ---
 
@@ -17,7 +17,7 @@ const FEED_LIMIT = 10;
   <p class="feed-error" role="status" data-feed-status>Loading posts…</p>
 
   <div class="feed-scroll">
-    <ul class="posts" hidden></ul>
+    <ul class="posts" data-feed-list hidden></ul>
 
     <div class="feed-sentinel" aria-hidden="true"></div>
     <p class="feed-loading" hidden>Loading…</p>
@@ -73,12 +73,16 @@ const FEED_LIMIT = 10;
 </section>
 
 <script>
-  import { readFeedCache, writeFeedCache } from "../utils/feedCache";
+  import {
+    formatShortDate,
+    registerFeed,
+    showFeedList,
+  } from '../utils/clientFeed';
 
-  // Client-side Bluesky feed via the public, unauthenticated AppView API (same
-  // pattern as GitHubFeed): one request per load, session-cached, so the feed
-  // never goes stale between Netlify builds. Posts are cloned from the
-  // build-time <template>s so Astro's scoped styles apply.
+  // Client-side Bluesky feed via the public, unauthenticated AppView API. The
+  // shared lifecycle in clientFeed.ts handles caching and status messages;
+  // this script owns fetching, rendering, and infinite scroll. Posts are
+  // cloned from the build-time <template>s so Astro's scoped styles apply.
 
   type EmbedImage = {
     thumb: string;
@@ -104,8 +108,6 @@ const FEED_LIMIT = 10;
   type FeedPage = { feed: FeedItem[]; cursor: string };
 
   type FeedElements = {
-    section: HTMLElement;
-    status: HTMLElement | null;
     scroll: HTMLElement;
     list: HTMLUListElement;
     sentinel: HTMLElement;
@@ -118,20 +120,20 @@ const FEED_LIMIT = 10;
   };
 
   const API_URL =
-    "https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed";
+    'https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed';
   const MAX_IMAGES = 4;
-  const SCROLL_ROOT_MARGIN = "200px";
+  const SCROLL_ROOT_MARGIN = '200px';
 
-  function getElements(section: HTMLElement): FeedElements | null {
+  function getElements(section: HTMLElement): FeedElements {
     const q = <T extends Element>(sel: string) =>
       section.querySelector<T>(sel);
-    const scroll = q<HTMLElement>(".feed-scroll");
-    const list = q<HTMLUListElement>(".posts");
-    const sentinel = q<HTMLElement>(".feed-sentinel");
-    const loading = q<HTMLElement>(".feed-loading");
-    const end = q<HTMLElement>(".feed-end");
-    const postTemplate = q<HTMLTemplateElement>(".post-template");
-    const imageTemplate = q<HTMLTemplateElement>(".post-image-template");
+    const scroll = q<HTMLElement>('.feed-scroll');
+    const list = q<HTMLUListElement>('.posts');
+    const sentinel = q<HTMLElement>('.feed-sentinel');
+    const loading = q<HTMLElement>('.feed-loading');
+    const end = q<HTMLElement>('.feed-end');
+    const postTemplate = q<HTMLTemplateElement>('.post-template');
+    const imageTemplate = q<HTMLTemplateElement>('.post-image-template');
     const handle = section.dataset.blueskyHandle;
     const limit = section.dataset.feedLimit;
 
@@ -139,12 +141,10 @@ const FEED_LIMIT = 10;
       !scroll || !list || !sentinel || !loading || !end ||
       !postTemplate || !imageTemplate || !handle || !limit
     ) {
-      return null;
+      throw new Error('BlueskyFeed: section is missing required markup');
     }
 
     return {
-      section,
-      status: q<HTMLElement>("[data-feed-status]"),
       scroll,
       list,
       sentinel,
@@ -157,29 +157,21 @@ const FEED_LIMIT = 10;
     };
   }
 
-  function formatDate(dateStr: string) {
-    return new Date(dateStr).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-  }
-
   function postUrl(handle: string, uri: string) {
-    const rkey = uri.split("/").pop();
+    const rkey = uri.split('/').pop();
     return `https://bsky.app/profile/${handle}/post/${rkey}`;
   }
 
   function renderEmbed(els: FeedElements, node: HTMLElement, embed?: Embed) {
     const images =
-      embed?.$type === "app.bsky.embed.images#view" ? (embed.images ?? []) : [];
+      embed?.$type === 'app.bsky.embed.images#view' ? (embed.images ?? []) : [];
     const externalThumb =
-      embed?.$type === "app.bsky.embed.external#view" && embed.external?.thumb
+      embed?.$type === 'app.bsky.embed.external#view' && embed.external?.thumb
         ? embed.external.thumb
         : null;
 
     if (images.length > 0) {
-      const grid = node.querySelector(".post-images") as HTMLDivElement;
+      const grid = node.querySelector('.post-images') as HTMLDivElement;
       grid.hidden = false;
       grid.classList.add(`count-${Math.min(images.length, MAX_IMAGES)}`);
       images.slice(0, MAX_IMAGES).forEach((img) => {
@@ -197,11 +189,11 @@ const FEED_LIMIT = 10;
         grid.appendChild(imgEl);
       });
     } else if (externalThumb) {
-      const ext = node.querySelector(".post-external-thumb") as HTMLDivElement;
+      const ext = node.querySelector('.post-external-thumb') as HTMLDivElement;
       ext.hidden = false;
-      const img = ext.querySelector("img") as HTMLImageElement;
+      const img = ext.querySelector('img') as HTMLImageElement;
       img.src = externalThumb;
-      img.alt = embed?.external?.title ?? "";
+      img.alt = embed?.external?.title ?? '';
     }
   }
 
@@ -210,14 +202,14 @@ const FEED_LIMIT = 10;
       true,
     ) as HTMLLIElement;
 
-    const link = node.querySelector(".post-link") as HTMLAnchorElement;
+    const link = node.querySelector('.post-link') as HTMLAnchorElement;
     link.href = postUrl(els.handle, item.post.uri);
 
-    const time = node.querySelector(".post-date time") as HTMLTimeElement;
+    const time = node.querySelector('.post-date time') as HTMLTimeElement;
     time.dateTime = item.post.record.createdAt;
-    time.textContent = formatDate(item.post.record.createdAt);
+    time.textContent = formatShortDate(item.post.record.createdAt);
 
-    (node.querySelector(".post-text") as HTMLElement).textContent =
+    (node.querySelector('.post-text') as HTMLElement).textContent =
       item.post.record.text;
 
     renderEmbed(els, node, item.post.embed);
@@ -225,15 +217,15 @@ const FEED_LIMIT = 10;
     const setStat = (selector: string, count: number | undefined) => {
       const el = node.querySelector(selector) as HTMLSpanElement;
       if (count != null) {
-        (el.querySelector(".stat-count") as HTMLElement).textContent =
+        (el.querySelector('.stat-count') as HTMLElement).textContent =
           String(count);
       } else {
         el.hidden = true;
       }
     };
-    setStat(".stat-reply", item.post.replyCount);
-    setStat(".stat-repost", item.post.repostCount);
-    setStat(".stat-like", item.post.likeCount);
+    setStat('.stat-reply', item.post.replyCount);
+    setStat('.stat-repost', item.post.repostCount);
+    setStat('.stat-like', item.post.likeCount);
 
     return node;
   }
@@ -241,14 +233,14 @@ const FEED_LIMIT = 10;
   async function fetchPage(
     handle: string,
     limit: string,
-    cursor = "",
+    cursor = '',
   ): Promise<FeedPage> {
     const params = new URLSearchParams({
       actor: handle,
       limit,
-      filter: "posts_no_replies",
+      filter: 'posts_no_replies',
     });
-    if (cursor) params.set("cursor", cursor);
+    if (cursor) params.set('cursor', cursor);
 
     const res = await fetch(`${API_URL}?${params}`);
     if (!res.ok) throw new Error(`Bluesky API responded ${res.status}`);
@@ -257,16 +249,8 @@ const FEED_LIMIT = 10;
     return {
       // Exclude reposts.
       feed: (data.feed ?? []).filter((item) => !item.reason),
-      cursor: data.cursor ?? "",
+      cursor: data.cursor ?? '',
     };
-  }
-
-  function showStatus(els: FeedElements, message: string) {
-    els.list.hidden = true;
-    if (els.status) {
-      els.status.hidden = false;
-      els.status.textContent = message;
-    }
   }
 
   function startInfiniteScroll(els: FeedElements, initialCursor: string) {
@@ -296,8 +280,8 @@ const FEED_LIMIT = 10;
       } catch (err) {
         // Posts already shown stay visible; say why no more are coming instead
         // of leaving the list to end with no explanation.
-        console.warn("BlueskyFeed: loading more posts failed", err);
-        els.end.textContent = "Could not load more posts right now.";
+        console.warn('BlueskyFeed: loading more posts failed', err);
+        els.end.textContent = 'Could not load more posts right now.';
         els.end.hidden = false;
         observer.disconnect();
       } finally {
@@ -315,62 +299,28 @@ const FEED_LIMIT = 10;
     observer.observe(els.sentinel);
   }
 
-  function paintFirstPage(els: FeedElements, page: FeedPage) {
+  function paintFirstPage(section: HTMLElement, page: FeedPage) {
+    const els = getElements(section);
     els.list.replaceChildren(
       ...page.feed.map((item) => renderPost(els, item)),
     );
-    els.list.hidden = false;
-    if (els.status) els.status.hidden = true;
+    showFeedList(section);
     startInfiniteScroll(els, page.cursor);
   }
 
-  async function loadFeed(section: HTMLElement) {
-    if (
-      section.dataset.feedState === "loading" ||
-      section.dataset.feedState === "loaded"
-    ) {
-      return;
-    }
-    const els = getElements(section);
-    if (!els) return;
-
-    section.dataset.feedState = "loading";
-    const cacheKey = `bsky-feed:${els.handle}`;
-
-    // Session cache so revisits (incl. View Transition navigations) are instant.
-    const cached = readFeedCache<FeedPage>(cacheKey);
-    if (cached) {
-      paintFirstPage(els, cached);
-      section.dataset.feedState = "loaded";
-      return;
-    }
-
-    try {
-      const page = await fetchPage(els.handle, els.limit);
-      if (page.feed.length === 0) {
-        showStatus(els, "No posts found.");
-        section.dataset.feedState = "loaded";
-        return;
-      }
-      writeFeedCache(cacheKey, page);
-      paintFirstPage(els, page);
-      section.dataset.feedState = "loaded";
-    } catch (err) {
-      console.warn("BlueskyFeed: fetch failed", err);
-      showStatus(els, "Could not load posts right now.");
-      section.dataset.feedState = "";
-    }
-  }
-
-  function initFeeds() {
-    document
-      .querySelectorAll<HTMLElement>(".bluesky-feed")
-      .forEach((section) => loadFeed(section));
-  }
-
-  // Homepage uses View Transitions — astro:page-load fires on first load and on
-  // every client-side navigation back to this page.
-  document.addEventListener("astro:page-load", initFeeds);
+  registerFeed<FeedPage>({
+    selector: '.bluesky-feed',
+    name: 'BlueskyFeed',
+    cacheKey: (section) => `bsky-feed:${section.dataset.blueskyHandle}`,
+    fetchFirstPage: (section) => {
+      const { handle, limit } = getElements(section);
+      return fetchPage(handle, limit);
+    },
+    isEmpty: (page) => page.feed.length === 0,
+    paint: paintFirstPage,
+    emptyMessage: 'No posts found.',
+    errorMessage: 'Could not load posts right now.',
+  });
 </script>
 
 <style>
