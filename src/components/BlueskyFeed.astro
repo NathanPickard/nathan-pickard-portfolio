@@ -324,7 +324,11 @@ const FEED_LIMIT = 10;
 </script>
 
 <style>
+  /* Post markup is cloned from the build-time <template> above, so it carries
+     this component's scoped-style attribute and plain selectors apply. */
   .bluesky-feed {
+    display: flex;
+    flex-direction: column;
     min-width: 0;
     flex: 1;
   }
@@ -339,6 +343,7 @@ const FEED_LIMIT = 10;
     font-family: var(--font-heading);
     font-size: 1.5rem;
     font-weight: 600;
+    color: var(--color-text-heading);
   }
 
   .feed-error {
@@ -363,7 +368,7 @@ const FEED_LIMIT = 10;
     scrollbar-color: rgba(137, 174, 151, 0.3) transparent;
   }
 
-  :global(.posts) {
+  .posts {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -373,39 +378,41 @@ const FEED_LIMIT = 10;
     gap: 0.85rem;
   }
 
-  :global(.post) {
+  .post {
     width: 100%;
-    border: 1px solid #e8e6e0;
+    border: 1px solid var(--color-border);
     border-radius: 10px;
-    background: #fff;
-    box-shadow: 0 1px 4px rgba(42, 125, 79, 0.06);
+    background: var(--color-card);
     transition:
+      border-color 0.15s ease,
       box-shadow 0.15s ease,
       transform 0.1s ease;
   }
 
-  :global(.post:hover) {
+  .post:hover {
+    border-color: var(--color-accent);
     box-shadow: 0 4px 20px rgba(212, 175, 55, 0.1);
     transform: translateY(-1px);
   }
 
-  :global(.post-link) {
+  .post-link {
     display: block;
     padding: 1rem 1.25rem;
     text-decoration: none;
     color: inherit;
   }
 
-  :global(.post-text) {
+  .post-text {
     margin: 0 0 0.5rem 0;
     font-size: 1.05em;
     line-height: 1.55;
     white-space: pre-wrap;
     /* Long URLs in posts would otherwise overflow the card. */
     overflow-wrap: anywhere;
+    color: var(--color-text);
   }
 
-  :global(.post-images) {
+  .post-images {
     display: grid;
     gap: 4px;
     margin: 0.5rem 0;
@@ -413,28 +420,28 @@ const FEED_LIMIT = 10;
     overflow: hidden;
   }
 
-  :global(.post-images.count-1) {
+  .post-images.count-1 {
     grid-template-columns: 1fr;
   }
 
-  :global(.post-images.count-2) {
+  .post-images.count-2 {
     grid-template-columns: 1fr 1fr;
   }
 
-  :global(.post-images.count-3) {
+  .post-images.count-3 {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto auto;
   }
 
-  :global(.post-images.count-3 .post-img:first-child) {
+  .post-images.count-3 .post-img:first-child {
     grid-column: 1 / -1;
   }
 
-  :global(.post-images.count-4) {
+  .post-images.count-4 {
     grid-template-columns: 1fr 1fr;
   }
 
-  :global(.post-img) {
+  .post-img {
     width: 100%;
     height: 220px;
     object-fit: cover;
@@ -443,67 +450,53 @@ const FEED_LIMIT = 10;
     margin: 0;
   }
 
-  :global(.post-images.count-1 .post-img) {
+  .post-images.count-1 .post-img {
     max-height: 400px;
     height: auto;
   }
 
-  :global(.post-external-thumb) {
+  .post-external-thumb {
     margin: 0.5rem 0;
     border-radius: 6px;
     overflow: hidden;
   }
 
-  :global(.post-external-thumb .post-img) {
+  .post-external-thumb .post-img {
     height: 180px;
   }
 
-  :global(.post-meta) {
+  .post-meta {
     display: flex;
     align-items: center;
     font-size: 0.8em;
     color: var(--color-text-muted);
   }
 
-  :global(.post-date) {
+  .post-date {
     margin: 0 0 0.4rem 0;
     font-family: var(--font-ui);
     font-size: 1em;
     color: var(--color-text-muted);
   }
 
-  :global(.post-stats) {
+  .post-stats {
     display: flex;
     gap: 0.75rem;
     font-size: 1rem;
   }
 
-  :global(.stat) {
+  .stat {
     display: flex;
     align-items: center;
     gap: 0.25rem;
-  }
-
-  :global(.stat-icon) {
-    display: inline-block;
-    vertical-align: middle;
-    flex-shrink: 0;
-  }
-
-  :global(.stat-reply) {
-    color: var(--color-green);
-  }
-  :global(.stat-repost) {
-    color: var(--color-green);
-  }
-  :global(.stat-like) {
-    color: var(--color-green);
+    color: var(--color-text-muted);
   }
 
   .view-all {
     display: inline-block;
     margin-top: 1.25rem;
     font-size: 1rem;
+    color: var(--color-accent);
   }
 
   @media (max-width: 720px) {
