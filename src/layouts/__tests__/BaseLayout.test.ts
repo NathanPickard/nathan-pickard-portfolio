@@ -8,10 +8,10 @@ const LAYOUT_SOURCE_PATH = fileURLToPath(
   new URL('../BaseLayout.astro', import.meta.url),
 );
 
-async function renderBaseLayout() {
+async function renderBaseLayout(props: Record<string, unknown> = {}) {
   const container = await AstroContainer.create();
   return container.renderToString(BaseLayout, {
-    props: { title: 'Test page' },
+    props: { title: 'Test page', ...props },
     slots: { default: '<main data-reveal>Hidden until revealed</main>' },
   });
 }
@@ -103,20 +103,21 @@ describe('BaseLayout.astro scroll-reveal progressive enhancement', () => {
   });
 
   /**
-   * The background texture is rendered at 9% opacity behind a color-matrix
-   * tint, so it needs very little fidelity. It ships as a heavily compressed
-   * WebP; the extension must say so, both for correctness and so the asset
-   * pipeline does not treat it as a PNG.
+   * The background texture is rendered at low opacity behind a color-matrix
+   * tint, so it needs very little fidelity. The JPEG source is converted to a
+   * heavily compressed WebP at build time; the served URL must say so.
    */
   it('serves the background texture as a WebP', async () => {
     const html = stripHtmlComments(await renderBaseLayout());
     const textureHref = html.match(/<image[^>]*href="([^"]+)"/)?.[1];
 
     expect(textureHref, 'no <image> href found for the site texture').toBeDefined();
-    // Dev-mode asset URLs append a query string (?origWidth=...); only the
-    // pathname's extension matters.
-    const texturePath = textureHref?.split('?')[0];
-    expect(texturePath).toMatch(/\.webp$/);
+    // Builds emit a hashed `.webp` file; dev and test render through the
+    // on-demand `/_image` endpoint, which carries the format as `f=webp`.
+    const textureUrl = new URL(textureHref!.replaceAll('&amp;', '&'), 'http://localhost');
+    const isWebp =
+      textureUrl.pathname.endsWith('.webp') || textureUrl.searchParams.get('f') === 'webp';
+    expect(isWebp, `texture is not served as WebP: ${textureHref}`).toBe(true);
   });
 
   it('only hides [data-reveal] content when the html.js class is present', async () => {
@@ -134,5 +135,25 @@ describe('BaseLayout.astro scroll-reveal progressive enhancement', () => {
     for (const selector of hideRules) {
       expect(selector).toMatch(/^html\.js\s+\[data-reveal\]/);
     }
+  });
+});
+
+describe('BaseLayout.astro background tree', () => {
+  function treeClasses(html: string): string[] {
+    const svgTag = html.match(/<svg[^>]*class="([^"]*site-topo[^"]*)"/)?.[1] ?? '';
+    return svgTag.split(/\s+/);
+  }
+
+  it('lets a page with narrow content pull the tree closer to the text', async () => {
+    const html = await renderBaseLayout({ narrowContent: true });
+
+    expect(treeClasses(html)).toContain('is-beside-narrow-content');
+  });
+
+  it('keeps the tree beside the full reading width by default', async () => {
+    const html = await renderBaseLayout();
+
+    expect(treeClasses(html)).toContain('site-topo');
+    expect(treeClasses(html)).not.toContain('is-beside-narrow-content');
   });
 });

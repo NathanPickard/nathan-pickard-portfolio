@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import Nav from '../components/Nav.astro';
@@ -11,24 +10,10 @@ type Props = CollectionEntry<'blog'>['data'];
 const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description} image={heroImage}>
+<BaseLayout title={title} description={description} image={heroImage} narrowContent>
   <Nav />
 
   <main class="post-main">
-    {
-      heroImage && (
-        <div class="hero-image">
-          <Image
-            width={1240}
-            height={560}
-            src={heroImage}
-            alt=""
-            class="hero-img"
-          />
-        </div>
-      )
-    }
-
     <div class="post-inner">
       <div class="post-header" data-reveal>
         <h1 class="post-title">{title}</h1>
@@ -58,25 +43,70 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
   <Footer />
 </BaseLayout>
 
+<script>
+  // Draws the <pre class="mermaid"> blocks produced by remarkMermaid as SVG.
+  // Mermaid is large, so it is only downloaded on pages that have a diagram.
+  // Colors come from the site's CSS tokens so diagrams match the theme.
+
+  // Below this width diagram labels get too small to read, so on narrow
+  // screens the diagram stops shrinking and its card scrolls sideways instead.
+  const MIN_READABLE_WIDTH = 560;
+
+  function cssVar(name: string): string {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  async function renderDiagrams() {
+    const nodes = [
+      ...document.querySelectorAll<HTMLElement>('.prose pre.mermaid:not([data-processed])'),
+    ];
+    if (nodes.length === 0) return;
+
+    try {
+      const { default: mermaid } = await import('mermaid');
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'base',
+        themeVariables: {
+          darkMode: true,
+          fontFamily: cssVar('--font-dm-sans'),
+          background: cssVar('--color-card'),
+          primaryColor: cssVar('--color-bg'),
+          primaryBorderColor: cssVar('--color-green'),
+          primaryTextColor: cssVar('--color-text-bright'),
+          textColor: cssVar('--color-text-bright'),
+          lineColor: cssVar('--color-green-light'),
+        },
+      });
+      await mermaid.run({ nodes });
+
+      for (const node of nodes) {
+        const svg = node.querySelector('svg');
+        if (!svg) continue;
+        const naturalWidth = svg.viewBox.baseVal.width;
+        svg.style.minWidth = `${Math.min(naturalWidth, MIN_READABLE_WIDTH)}px`;
+      }
+    } catch (error) {
+      // The diagram source stays visible, so the post still reads sensibly.
+      console.error('Mermaid diagram failed to render', error);
+    }
+  }
+
+  document.addEventListener('astro:page-load', renderDiagrams);
+</script>
+
 <style>
   .post-main {
+    /* Narrower than --reading-width so a line of prose stays around 75–80
+       characters, the upper end of the comfortable range for long-form reading. */
+    --post-width: 760px;
     max-width: 100%;
-  }
-  .hero-image {
-    width: 100%;
-    overflow: hidden;
-  }
-  .hero-img {
-    width: 100%;
-    height: clamp(150px, 20vw, 260px);
-    object-fit: cover;
-    display: block;
-    border-radius: 0;
-    margin: 0;
-    filter: brightness(0.85);
+    /* Light text on a dark background renders heavy with subpixel smoothing. */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   .post-inner {
-    max-width: 760px;
+    max-width: var(--post-width);
     margin: 0 auto;
     padding: 60px 24px 80px;
   }
@@ -98,7 +128,6 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
   .post-title {
     font-family: var(--font-eb-garamond);
     font-weight: 400;
-    font-variation-settings: 'opsz' 144;
     font-size: var(--text-h1);
     line-height: 1.05;
     letter-spacing: var(--tracking-heading);
@@ -109,6 +138,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     font-size: 18px;
     line-height: 1.6;
     color: var(--color-text-bright);
+    /* color: yellow; */
     margin: 0 0 24px;
   }
   .post-divider {
@@ -119,15 +149,15 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 
   /* Prose styles */
   .prose {
-    font-family: var(--font-inter);
-    font-size: 17px;
-    line-height: 1.8;
+    font-family: var(--font-literata);
+    font-size: 19px;
+    line-height: 1.65;
     color: var(--color-text-bright);
+    /* color: yellow; */
   }
   .prose :global(h2) {
     font-family: var(--font-eb-garamond);
     font-weight: 500;
-    font-variation-settings: 'opsz' 72;
     font-size: 28px;
     letter-spacing: -0.02em;
     color: var(--color-text-bright);
@@ -136,7 +166,6 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
   .prose :global(h3) {
     font-family: var(--font-eb-garamond);
     font-weight: 500;
-    font-variation-settings: 'opsz' 72;
     font-size: 22px;
     color: var(--color-text-bright);
     margin: 1.75em 0 0.5em;
@@ -173,6 +202,14 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     overflow-x: auto;
     margin: 0 0 1.4em;
   }
+  /* Mermaid diagrams: the source shows until the script swaps in the SVG. */
+  .prose :global(pre.mermaid) {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-green) transparent;
+  }
+  .prose :global(pre.mermaid[data-processed]) {
+    text-align: center;
+  }
   .prose :global(pre code) {
     background: none;
     border: none;
@@ -185,6 +222,48 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     margin: 0 0 1.4em;
     color: var(--color-text-bright);
     font-style: italic;
+  }
+
+  /* GitHub-style alerts (`> [!NOTE]` etc.), rendered by
+     remark-github-blockquote-alert. Each type sets --alert-color. */
+  .prose :global(.markdown-alert) {
+    --alert-color: #9dbdd4;
+    margin: 0 0 1.4em;
+    padding: 16px 20px;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--alert-color);
+    border-radius: 0 8px 8px 0;
+  }
+  .prose :global(.markdown-alert-tip) {
+    --alert-color: var(--color-green-light);
+  }
+  .prose :global(.markdown-alert-important) {
+    --alert-color: #bba6d9;
+  }
+  .prose :global(.markdown-alert-warning) {
+    --alert-color: var(--color-accent);
+  }
+  .prose :global(.markdown-alert-caution) {
+    --alert-color: #e08a74;
+  }
+  .prose :global(.markdown-alert-title) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 8px;
+    font-family: var(--font-dm-sans);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--alert-color);
+  }
+  .prose :global(.markdown-alert-title svg) {
+    flex: none;
+    fill: currentColor;
+  }
+  .prose :global(.markdown-alert > :last-child) {
+    margin-bottom: 0;
   }
   .prose :global(ul),
   .prose :global(ol) {

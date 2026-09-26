@@ -54,7 +54,7 @@ describe('BlogPost.astro', () => {
     expect(withoutUpdate).not.toContain('Updated');
   });
 
-  it('renders hero image wrapper only when heroImage prop exists', async () => {
+  it('does not render the hero image on the post page', async () => {
     const withHero = await renderBlogPost({
       title: 'With Hero',
       description: 'Desc',
@@ -62,13 +62,7 @@ describe('BlogPost.astro', () => {
       heroImage: HeroImage,
     });
 
-    const withoutHero = await renderBlogPost({
-      title: 'Without Hero',
-      description: 'Desc',
-      pubDate: new Date('2026-01-01T12:00:00Z'),
-    });
-
-    expect(withHero).toContain('class="hero-image"');
-    expect(withoutHero).not.toContain('class="hero-image"');
+    expect(withHero).not.toContain('hero-image');
+    expect(withHero).not.toContain('hero-img');
   });
 });

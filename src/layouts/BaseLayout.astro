@@ -1,23 +1,31 @@
 ---
 import type { ImageMetadata, TransitionDirectionalAnimations } from 'astro';
-import { Font } from 'astro:assets';
+import { Font, getImage } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 import FallbackImage from '../assets/blog-placeholder-2.jpg';
-// Rendered at 9% opacity behind a color-matrix tint, so a 512px, quality-40
-// WebP is indistinguishable from the original and a quarter of the size.
-import dougFirRings from '../assets/doug-fir-rings.webp';
+import dougFir from '../assets/doug-fir.jpeg';
 import { SITE_TITLE } from '../consts';
 
 interface Props {
   title: string;
   description?: string;
   image?: ImageMetadata;
+  /** The page's text stays inside the narrow blog column, so the background
+      tree can sit closer to it and still show on medium-width screens. */
+  narrowContent?: boolean;
 }
 const {
   title,
   description = "Senior Full-Stack Engineer based in Portland, OR.",
   image = FallbackImage,
+  narrowContent = false,
 } = Astro.props;
+
+// Rendered at low opacity behind a color-matrix tint, so a quality-40 WebP is
+// indistinguishable from the source JPEG at a fraction of the size.
+const TEXTURE_QUALITY = 40;
+const siteTexture = await getImage({ src: dougFir, format: 'webp', quality: TEXTURE_QUALITY });
+const { width: textureWidth, height: textureHeight } = dougFir;
 
 const PAGE_EXIT_MS = 90;
 const PAGE_ENTER_MS = 150;
@@ -77,7 +85,7 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
     <Font cssVariable="--font-cormorant" />
     <Font cssVariable="--font-vollkorn" />
     <Font cssVariable="--font-eb-garamond" />
-    <Font cssVariable="--font-inter" />
+    <Font cssVariable="--font-literata" />
     <Font cssVariable="--font-dm-sans" />
 
     <!--
@@ -130,10 +138,11 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
   </head>
   <body>
     <svg
-      class="site-topo"
+      class:list={['site-topo', { 'is-beside-narrow-content': narrowContent }]}
       aria-hidden="true"
-      viewBox="0 0 768 1024"
-      preserveAspectRatio="xMidYMid meet"
+      viewBox={`0 0 ${textureWidth} ${textureHeight}`}
+      preserveAspectRatio="xMaxYMax meet"
+      style={`--texture-aspect: ${textureWidth} / ${textureHeight}`}
     >
       <defs>
         <filter id="site-topo-green-tint" color-interpolation-filters="sRGB">
@@ -147,12 +156,11 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
         </filter>
       </defs>
       <image
-        href={dougFirRings.src}
-        width="768"
-        height="1024"
+        href={siteTexture.src}
+        width={textureWidth}
+        height={textureHeight}
         preserveAspectRatio="xMidYMid slice"
         filter="url(#site-topo-green-tint)"
-        opacity="0.09"
       />
     </svg>
     <div class="page-wrapper">
@@ -165,7 +173,7 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
   :root {
     /* ── Type scale ── */
     --text-display: clamp(56px, 6.2vw, 96px);
-    --text-h1: clamp(32px, 4.5vw, 56px);
+    --text-h1: clamp(28px, 3.4vw, 42px);
     --text-h2: clamp(38px, 4.4vw, 60px);
     --text-h3: 22px;
     /* ── Letter-spacing ── */
@@ -187,6 +195,8 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
     /* ── Spacing ── */
     --pad-v: 80px;
     --pad-h: 60px;
+    /* ── Layout ── */
+    --reading-width: 850px;
   }
 
   *, *::before, *::after { box-sizing: border-box; }
@@ -206,22 +216,56 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
     position: relative;
     z-index: 0;
   }
+  /* The tree fills most of the viewport height and its silhouette starts just
+     right of the centered reading column, so it never sits behind the text. The
+     source image has blank margin on its left (--topo-blank-left, measured as a
+     fraction of image width), so the box is pulled left by that much to put the
+     visible branches, not the image edge, at the gap. The tree is wider than the
+     gutter on most screens, so its right side runs off the viewport edge;
+     fixed-position overflow does not add horizontal scroll. */
   .site-topo {
+    --topo-gap: 32px;
+    --topo-height: 90vh;
+    --topo-blank-left: 0.17;
+    --topo-opacity: 0.05;
+    /* Distance from the viewport center to the right edge of the page's text. */
+    --topo-content-half: calc(var(--reading-width) / 2);
     position: fixed;
-    top: -160px;
-    right: 200px;
-    height: 1700px;
-    aspect-ratio: 768 / 1024;
+    left: calc(
+      50vw + var(--topo-content-half) + var(--topo-gap)
+      - var(--topo-height) * var(--texture-aspect) * var(--topo-blank-left)
+    );
+    bottom: 0;
+    height: var(--topo-height);
+    aspect-ratio: var(--texture-aspect);
     pointer-events: none;
     z-index: -1;
   }
-  @media (max-width: 900px) {
+  .site-topo image {
+    opacity: var(--topo-opacity);
+  }
+  /* On laptop widths only the tree's left edge fits in the gutter, which reads
+     as faint at the large-screen opacity, so it is raised a little. */
+  @media (max-width: 1600px) {
     .site-topo {
-      top: 50%;
-      left: 50%;
-      right: auto;
-      height: 100vh;
-      transform: translate(-50%, -50%);
+      --topo-opacity: 0.05;
+    }
+  }
+  /* Below this width the gutter shows too thin a sliver of the tree to read as
+     one. 1360px ≈ --reading-width + two ~255px gutters; media queries cannot
+     read custom properties. */
+  @media (max-width: 1360px) {
+    .site-topo {
+      display: none;
+    }
+  }
+  /* Blog text ends about 355px right of center (the blog list's rows reach
+     400px), so on blog pages the tree moves in to clear the rows and keeps
+     showing down to 1000px. */
+  @media (min-width: 1000px) and (max-width: 1360px) {
+    .site-topo.is-beside-narrow-content {
+      --topo-content-half: 370px;
+      display: block;
     }
   }
   .page-wrapper > main {

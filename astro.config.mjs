@@ -7,6 +7,8 @@ import icon from 'astro-icon';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
 import rehypeExternalLinks from 'rehype-external-links';
+import { remarkAlert } from 'remark-github-blockquote-alert';
+import { remarkMermaid } from './src/utils/remarkMermaid';
 import { unified } from '@astrojs/markdown-remark';
 import { visualizer } from 'rollup-plugin-visualizer';
 
@@ -60,14 +62,15 @@ export default defineConfig({
       fallbacks: ['serif'],
     },
     {
-      // Blog prose body (400) and <strong> inside it (600).
-      name: 'Inter',
-      cssVariable: '--font-inter',
+      // Blog prose body (400) and <strong> inside it (600). Italic covers
+      // <em> and blockquotes so the browser never synthesizes a fake slant.
+      name: 'Literata',
+      cssVariable: '--font-literata',
       provider: fontProviders.google(),
       weights: [400, 600],
-      styles: ['normal'],
+      styles: ['normal', 'italic'],
       subsets: ['latin'],
-      fallbacks: ['sans-serif'],
+      fallbacks: ['serif'],
     },
     {
       name: 'DM Sans',
@@ -159,6 +162,11 @@ export default defineConfig({
     // The old top-level `rehypePlugins` key is deprecated and now throws,
     // because @astrojs/mdx v8 dropped @astrojs/markdown-remark to a peer.
     processor: unified({
+      // GitHub-style alerts: `> [!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`,
+      // `[!CAUTION]`. Styled under `.prose .markdown-alert` in BlogPost.astro.
+      // ```mermaid fences become <pre class="mermaid">, drawn client-side by the
+      // script in BlogPost.astro.
+      remarkPlugins: [remarkAlert, remarkMermaid],
       rehypePlugins: [
         [
           rehypeExternalLinks,
