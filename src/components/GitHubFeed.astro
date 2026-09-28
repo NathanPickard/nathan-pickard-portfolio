@@ -43,6 +43,7 @@ const REPO_COUNT = 5;
             <span title="Stars" class="repo-stars" hidden>
               <Icon name="mdi:star-outline" size={13} aria-hidden="true" />
               <span class="star-count"></span>
+              <span class="visually-hidden">stars</span>
             </span>
             <time></time>
           </span>
@@ -296,6 +297,8 @@ const REPO_COUNT = 5;
     font-size: 1.1em;
     font-weight: 600;
     color: var(--color-accent);
+    /* Repo names have no spaces to break on. */
+    overflow-wrap: anywhere;
   }
 
   .repo-description {

@@ -18,12 +18,12 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
   <main class="blog-main" id="main-content">
     <div class="blog-inner">
       <header class="blog-header" data-reveal>
-        <h1 class="blog-h1">What I'm thinking and building</h1>
+        <h1 class="blog-h1">What I’m thinking and building</h1>
       </header>
 
       <ul class="post-list" data-reveal-stagger>
         {
-          posts.map((post) => (
+          posts.map((post, index) => (
             <li class="post-row" data-reveal>
               <a href={`/blog/${post.id}/`} class="post-link">
                 <div class="post-thumb">
@@ -34,15 +34,16 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
                       src={post.data.heroImage}
                       alt=""
                       class="post-image"
+                      loading={index === 0 ? 'eager' : 'lazy'}
                     />
                   ) : (
                     <div class="post-image post-image--placeholder" />
                   )}
                 </div>
                 <div class="post-body">
-                  <time class="post-date">
+                  <div class="post-date">
                     <FormattedDate date={post.data.pubDate} />
-                  </time>
+                  </div>
                   <h2 class="post-title">{post.data.title}</h2>
                   {post.data.description && (
                     <p class="post-desc">{post.data.description}</p>
@@ -168,10 +169,10 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     font-size: 18px;
     color: var(--color-accent);
     text-decoration: none;
-    transition: opacity 0.2s;
+    transition: color 0.2s;
   }
   .archived-link:hover {
-    opacity: 0.8;
+    color: var(--color-accent-bright);
   }
 
   @media (max-width: 900px) {

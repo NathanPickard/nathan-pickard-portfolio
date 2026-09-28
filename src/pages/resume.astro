@@ -22,15 +22,15 @@ import { RESUME_PDF_FILENAME } from '../utils/resume';
           <p class="resume-label">{resume.basics.label}</p>
           <p class="resume-contact">
             {resume.basics.location}
-            <span class="sep">·</span>
+            <span class="sep" aria-hidden="true">·</span>
             <a href={`mailto:${resume.basics.email}`}>{resume.basics.email}</a>
-            <span class="sep">·</span>
+            <span class="sep" aria-hidden="true">·</span>
             <a
               href="https://linkedin.com/in/nathanpickard"
               target="_blank"
               rel="noopener noreferrer">LinkedIn</a
             >
-            <span class="sep">·</span>
+            <span class="sep" aria-hidden="true">·</span>
             <a
               href="https://github.com/nathanpickard"
               target="_blank"
@@ -92,7 +92,7 @@ import { RESUME_PDF_FILENAME } from '../utils/resume';
               <div class="work-item">
                 <div class="work-header">
                   <div class="work-header-left">
-                    <span class="work-company">{job.company}</span>
+                    <h3 class="work-company">{job.company}</h3>
                     <span class="work-position">{job.position}</span>
                     {job.description && (
                       <span class="work-desc">{job.description}</span>
@@ -179,10 +179,10 @@ import { RESUME_PDF_FILENAME } from '../utils/resume';
   .resume-contact a {
     color: var(--color-accent);
     text-decoration: none;
-    transition: opacity 0.2s;
+    transition: color 0.2s;
   }
   .resume-contact a:hover {
-    opacity: 0.8;
+    color: var(--color-accent-bright);
   }
   .sep {
     color: rgba(137, 174, 151, 0.4);
@@ -201,10 +201,10 @@ import { RESUME_PDF_FILENAME } from '../utils/resume';
     text-decoration: none;
     white-space: nowrap;
     flex-shrink: 0;
-    transition: opacity 0.2s;
+    transition: background-color 0.2s;
   }
   .download-btn:hover {
-    opacity: 0.85;
+    background: var(--color-accent-bright);
   }
 
   /* Sections */
@@ -303,6 +303,7 @@ import { RESUME_PDF_FILENAME } from '../utils/resume';
     gap: 3px;
   }
   .work-company {
+    margin: 0;
     font-family: var(--font-eb-garamond);
     font-weight: 600;
     font-variation-settings: 'opsz' 72;

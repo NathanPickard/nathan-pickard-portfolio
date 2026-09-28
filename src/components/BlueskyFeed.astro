@@ -21,7 +21,7 @@ const FEED_LIMIT = 10;
 
     <div class="feed-sentinel" aria-hidden="true"></div>
     <p class="feed-loading" hidden>Loading…</p>
-    <p class="feed-end" hidden>You're all caught up.</p>
+    <p class="feed-end" role="status" hidden>You’re all caught up.</p>
   </div>
 
   <a
@@ -49,14 +49,17 @@ const FEED_LIMIT = 10;
             <span title="Replies" class="stat stat-reply">
               <Icon name="mdi:message-outline" size={18} aria-hidden="true" />
               <span class="stat-count"></span>
+              <span class="visually-hidden">replies</span>
             </span>
             <span title="Reposts" class="stat stat-repost">
               <Icon name="mdi:repeat" size={18} aria-hidden="true" />
               <span class="stat-count"></span>
+              <span class="visually-hidden">reposts</span>
             </span>
             <span title="Likes" class="stat stat-like">
               <Icon name="mdi:heart-outline" size={18} aria-hidden="true" />
               <span class="stat-count"></span>
+              <span class="visually-hidden">likes</span>
             </span>
           </span>
         </div>
@@ -77,7 +80,11 @@ const FEED_LIMIT = 10;
   // never goes stale between Netlify builds. Posts are cloned from the
   // build-time <template>s so Astro's scoped styles apply.
 
-  type EmbedImage = { thumb: string; alt: string };
+  type EmbedImage = {
+    thumb: string;
+    alt: string;
+    aspectRatio?: { width: number; height: number };
+  };
   type Embed = {
     $type: string;
     images?: EmbedImage[];
@@ -181,6 +188,12 @@ const FEED_LIMIT = 10;
         ) as HTMLImageElement;
         imgEl.src = img.thumb;
         imgEl.alt = img.alt;
+        // Lets the browser reserve the image's box before it loads, so posts
+        // below don't jump. CSS still sizes it (width: 100%; height: auto).
+        if (img.aspectRatio) {
+          imgEl.width = img.aspectRatio.width;
+          imgEl.height = img.aspectRatio.height;
+        }
         grid.appendChild(imgEl);
       });
     } else if (externalThumb) {
@@ -280,8 +293,13 @@ const FEED_LIMIT = 10;
           els.end.hidden = false;
           observer.disconnect();
         }
-      } catch {
-        // Silently fail — posts already shown remain visible.
+      } catch (err) {
+        // Posts already shown stay visible; say why no more are coming instead
+        // of leaving the list to end with no explanation.
+        console.warn("BlueskyFeed: loading more posts failed", err);
+        els.end.textContent = "Could not load more posts right now.";
+        els.end.hidden = false;
+        observer.disconnect();
       } finally {
         loading = false;
         els.loading.hidden = true;
@@ -431,6 +449,8 @@ const FEED_LIMIT = 10;
     font-size: 1.05em;
     line-height: 1.55;
     white-space: pre-wrap;
+    /* Long URLs in posts would otherwise overflow the card. */
+    overflow-wrap: anywhere;
   }
 
   :global(.post-images) {

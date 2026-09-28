@@ -86,7 +86,11 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
     )}
 
     <Font cssVariable="--font-cormorant" />
-    <Font cssVariable="--font-vollkorn" />
+    <!-- Body and nav face on every page, so it is the one font worth preloading. -->
+    <Font
+      cssVariable="--font-vollkorn"
+      preload={[{ weight: 400, style: 'normal', subset: 'latin' }]}
+    />
     <Font cssVariable="--font-eb-garamond" />
     <Font cssVariable="--font-source-serif" />
     <Font cssVariable="--font-dm-sans" />
@@ -192,6 +196,8 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
     --color-text-muted: #c8e0d0;
     --color-text-heading: #E2EDE6;
     --color-accent: #d4af37;
+    /* Hover state for accent text and fills: lighter, so contrast goes up. */
+    --color-accent-bright: #e6c55a;
     --color-border: rgba(137, 174, 151, 0.2);
     --color-card: #162b1b;
     --color-green: #8aae97;
@@ -248,13 +254,6 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
   .site-topo image {
     opacity: var(--topo-opacity);
   }
-  /* On laptop widths only the tree's left edge fits in the gutter, which reads
-     as faint at the large-screen opacity, so it is raised a little. */
-  @media (max-width: 1600px) {
-    .site-topo {
-      --topo-opacity: 0.05;
-    }
-  }
   /* Below this width the gutter shows too thin a sliver of the tree to read as
      one. 1360px ≈ --reading-width + two ~255px gutters; media queries cannot
      read custom properties. */
@@ -277,6 +276,10 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
   }
   a { color: inherit; }
   img { max-width: 100%; height: auto; }
+  /* Even line lengths in multi-line headings instead of a lone last word. */
+  h1, h2, h3 { text-wrap: balance; }
+  /* No double-tap-to-zoom wait on taps. */
+  a, button { touch-action: manipulation; }
 
   /* Scroll reveal system — scoped to html.js so content is never hidden
      when the reveal script can't run (no JS, reader mode, print, crawlers). */
@@ -288,6 +291,19 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
     html.js [data-reveal].is-visible {
       opacity: 1;
     }
+  }
+
+  /* Text for screen readers only, e.g. the label after a bare count. */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
   }
 
   /* Off-screen until a keyboard user tabs to it, then pinned top-left. Every

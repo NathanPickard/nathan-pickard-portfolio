@@ -47,6 +47,29 @@ describe('archived posts layout', () => {
     }
   });
 
+  it('marks up the posts as a list', async () => {
+    const html = await renderArchived();
+
+    expect(html).toMatch(/<ul[^>]*class="post-list"/);
+    expect(html.match(/<li[^>]*>\s*<a [^>]*class="post-row"/g)).toHaveLength(2);
+  });
+
+  it('makes each post title a heading', async () => {
+    const html = await renderArchived();
+
+    expect(html.match(/<h2[^>]*class="post-title"/g)).toHaveLength(2);
+  });
+
+  it('hides the decorative arrow from screen readers', async () => {
+    const html = await renderArchived();
+    const arrows = html.match(/<span[^>]*class="post-arrow"[^>]*>/g) ?? [];
+
+    expect(arrows).toHaveLength(2);
+    for (const tag of arrows) {
+      expect(tag).toContain('aria-hidden="true"');
+    }
+  });
+
   it('uses a placeholder, not an image, when a post has no hero image', async () => {
     const html = await renderArchived();
     const withoutHero = rows(html).find((row) => row.includes('Without hero'));

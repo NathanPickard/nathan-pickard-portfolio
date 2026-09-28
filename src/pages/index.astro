@@ -23,8 +23,8 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
             class="portrait"
             loading="eager"
             fetchpriority="high"
-            widths={[280, 560]}
-            sizes="280px"
+            widths={[240, 480]}
+            sizes="(max-width: 640px) 200px, 240px"
           />
         </div>
         <div class="hero-text">
@@ -48,7 +48,7 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     <section class="feeds-section">
       <div class="feeds-inner">
         <div class="feeds-header" data-reveal>
-          <h2 class="feeds-h2">What I've been up to</h2>
+          <h2 class="feeds-h2">What I’ve been up to</h2>
         </div>
         <div class="feeds-grid" data-reveal-stagger>
           <div data-reveal><BlueskyFeed /></div>
@@ -70,7 +70,7 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
   }
   .hero-inner {
     display: grid;
-    grid-template-columns: 280px auto;
+    grid-template-columns: 240px auto;
     gap: 60px;
     align-items: center;
     max-width: 920px;
@@ -92,7 +92,7 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
   }
   .portrait-frame {
     position: relative;
-    width: 280px;
+    width: 240px;
   }
   /* .portrait-frame::before {
     content: "";
@@ -293,6 +293,14 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
     .feeds-grid {
       grid-template-columns: 1fr;
       gap: 28px;
+    }
+  }
+
+  /* Phones (the mobile-nav breakpoint): a smaller portrait keeps the name and
+     intro closer to the top of the screen. */
+  @media (max-width: 640px) {
+    .portrait-frame {
+      max-width: 200px;
     }
   }
 </style>

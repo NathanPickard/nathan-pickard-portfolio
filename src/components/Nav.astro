@@ -2,6 +2,7 @@
 import { Icon } from 'astro-icon/components';
 
 const currentPath = Astro.url.pathname;
+const isCurrent = (href: string): boolean => currentPath.startsWith(href);
 const links = [
   { href: '/work', label: 'Work' },
   { href: '/blog', label: 'Blog' },
@@ -52,7 +53,7 @@ const socials: Social[] = [
       href="/"
       class:list={['dark-wordmark', { 'is-home': currentPath === '/' }]}
       transition:name="wordmark"
-      aria-label="Nathan Pickard — home">NP</a>
+      aria-label="NP — Nathan Pickard, home">NP</a>
 
     <!-- Desktop nav -->
     <nav class="dark-nav" aria-label="Main navigation">
@@ -60,7 +61,8 @@ const socials: Social[] = [
         links.map((l) => (
           <a
             href={l.href}
-            class={currentPath.startsWith(l.href) ? 'active' : ''}
+            class={isCurrent(l.href) ? 'active' : ''}
+            aria-current={isCurrent(l.href) ? 'page' : undefined}
           >
             {l.label}
           </a>
@@ -119,7 +121,8 @@ const socials: Social[] = [
         links.map((l) => (
           <a
             href={l.href}
-            class={currentPath.startsWith(l.href) ? 'active' : ''}
+            class={isCurrent(l.href) ? 'active' : ''}
+            aria-current={isCurrent(l.href) ? 'page' : undefined}
           >
             {l.label}
           </a>
@@ -163,21 +166,29 @@ const socials: Social[] = [
     const btn = document.querySelector('.hamburger') as HTMLButtonElement;
     const menu = document.querySelector('.mobile-menu') as HTMLDivElement;
 
-    if (btn && menu) {
-      btn.addEventListener('click', () => {
-        const isOpen = menu.classList.toggle('open');
-        btn.setAttribute('aria-expanded', String(isOpen));
-        menu.inert = !isOpen;
-      });
+    if (!btn || !menu) return;
 
-      menu.querySelectorAll('a').forEach((link) => {
-        link.addEventListener('click', () => {
-          menu.classList.remove('open');
-          btn.setAttribute('aria-expanded', 'false');
-          menu.inert = true;
-        });
+    const setOpen = (isOpen: boolean) => {
+      menu.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', String(isOpen));
+      menu.inert = !isOpen;
+    };
+
+    btn.addEventListener('click', () => setOpen(!menu.classList.contains('open')));
+
+    menu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => setOpen(false));
+    });
+
+    // Escape from the button or anywhere in the menu closes it and puts focus
+    // back on the button, so keyboard users aren't stranded in a hidden menu.
+    [btn, menu].forEach((el) => {
+      el.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape' || !menu.classList.contains('open')) return;
+        setOpen(false);
+        btn.focus();
       });
-    }
+    });
   }
 
   document.addEventListener('astro:page-load', initHamburger);
@@ -246,7 +257,11 @@ const socials: Social[] = [
     height: 1px;
     background: var(--color-accent);
     transform-origin: left;
-    animation: underlineGrow 0.3s ease-out both;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .dark-nav a.active::after {
+      animation: underlineGrow 0.3s ease-out both;
+    }
   }
   @keyframes underlineGrow {
     from { transform: scaleX(0); }
@@ -327,7 +342,8 @@ const socials: Social[] = [
     background: none;
     border: none;
     cursor: pointer;
-    padding: 6px;
+    /* 24px icon + 2 × 10px = 44px touch target. */
+    padding: 10px;
     color: var(--color-text);
     align-items: center;
     justify-content: center;
@@ -356,9 +372,13 @@ const socials: Social[] = [
     padding: 0;
     overflow: hidden;
     max-height: 0;
-    transition:
-      max-height 0.25s ease,
-      padding 0.25s ease;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .mobile-menu {
+      transition:
+        max-height 0.25s ease,
+        padding 0.25s ease;
+    }
   }
   .mobile-menu.open {
     max-height: 400px;

@@ -46,6 +46,25 @@ describe('BlueskyFeed.astro client-side loading', () => {
     expect(html).not.toContain('Loading...');
   });
 
+  it('uses a typographic apostrophe in the end-of-feed message', async () => {
+    const html = await renderBlueskyFeed();
+
+    expect(html).toContain('You’re all caught up.');
+  });
+
+  // The icons are aria-hidden and `title` is not reliably announced, so without
+  // a text label a screen reader reads bare numbers ("12 4 30").
+  it.each([
+    ['stat-reply', 'replies'],
+    ['stat-repost', 'reposts'],
+    ['stat-like', 'likes'],
+  ])('labels the %s count for screen readers as "%s"', async (statClass, label) => {
+    const html = await renderBlueskyFeed();
+    const stat = html.match(new RegExp(`class="stat ${statClass}"[\\s\\S]*?</span>\\s*</span>`))?.[0] ?? '';
+
+    expect(stat).toMatch(new RegExp(`class="visually-hidden"[^>]*>${label}<`));
+  });
+
   it('exposes the handle and page size for the client script', async () => {
     const html = await renderBlueskyFeed();
 

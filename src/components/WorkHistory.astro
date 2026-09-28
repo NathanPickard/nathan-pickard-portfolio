@@ -27,10 +27,11 @@ const isDefaultPanel = (i: number): boolean => i === defaultPanelIndex;
           id={`tab-${i}`}
           data-index={i}
           data-mobile-open={isDefaultPanel(i) ? 'true' : 'false'}
+          tabindex={isDefaultPanel(i) ? undefined : '-1'}
         >
-          <div class="tab-co">{w.co}</div>
-          <div class="tab-period">{w.period}</div>
-          <div class="tab-role">{w.role}</div>
+          <span class="tab-co">{w.co}</span>
+          <span class="tab-period">{w.period}</span>
+          <span class="tab-role">{w.role}</span>
         </button>
       ))
     }
@@ -60,7 +61,7 @@ const isDefaultPanel = (i: number): boolean => i === defaultPanelIndex;
 </div>
 
 <!-- Mobile accordion (hidden on desktop) -->
-<div class="work-accordion" aria-label="Work history" data-reveal>
+<div class="work-accordion" role="group" aria-label="Work history" data-reveal>
   {
     work.map((w, i) => (
       <div class="accordion-item">
@@ -71,13 +72,13 @@ const isDefaultPanel = (i: number): boolean => i === defaultPanelIndex;
           aria-controls={`accordion-panel-${i}`}
           id={`accordion-tab-${i}`}
         >
-          <div class="accordion-header">
-            <div class="accordion-co">{w.co}</div>
-            <div class="accordion-meta">
+          <span class="accordion-header">
+            <span class="accordion-co">{w.co}</span>
+            <span class="accordion-meta">
               <span class="accordion-period">{w.period}</span>
               {w.client && <span class="accordion-client">{w.client}</span>}
-            </div>
-          </div>
+            </span>
+          </span>
           <span class="accordion-chevron" aria-hidden="true">
             ›
           </span>
@@ -103,18 +104,41 @@ const isDefaultPanel = (i: number): boolean => i === defaultPanelIndex;
 </div>
 
 <script>
+  // Keys that move between tabs, as an offset from the current tab or (for
+  // Home/End) an absolute position. Selection follows focus.
+  const TAB_KEY_MOVES: Record<string, (current: number, count: number) => number> = {
+    ArrowDown: (current, count) => (current + 1) % count,
+    ArrowRight: (current, count) => (current + 1) % count,
+    ArrowUp: (current, count) => (current - 1 + count) % count,
+    ArrowLeft: (current, count) => (current - 1 + count) % count,
+    Home: () => 0,
+    End: (_current, count) => count - 1,
+  };
+
   function initTabs() {
-    const tabs = document.querySelectorAll<HTMLButtonElement>('.work-tab');
+    const tabs = [...document.querySelectorAll<HTMLButtonElement>('.work-tab')];
     const panels = document.querySelectorAll<HTMLDivElement>('.work-panel');
 
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        const idx = Number(tab.dataset.index);
-        tabs.forEach((t, i) => {
-          t.classList.toggle('active', i === idx);
-          t.setAttribute('aria-selected', String(i === idx));
-        });
-        panels.forEach((p, i) => p.classList.toggle('active', i === idx));
+    // Roving tabindex: only the selected tab is in the tab order.
+    const selectTab = (idx: number) => {
+      tabs.forEach((t, i) => {
+        const isSelected = i === idx;
+        t.classList.toggle('active', isSelected);
+        t.setAttribute('aria-selected', String(isSelected));
+        t.tabIndex = isSelected ? 0 : -1;
+      });
+      panels.forEach((p, i) => p.classList.toggle('active', i === idx));
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => selectTab(i));
+      tab.addEventListener('keydown', (event) => {
+        const move = TAB_KEY_MOVES[event.key];
+        if (!move) return;
+        event.preventDefault();
+        const next = move(i, tabs.length);
+        selectTab(next);
+        tabs[next].focus();
       });
     });
   }
@@ -196,6 +220,11 @@ const isDefaultPanel = (i: number): boolean => i === defaultPanelIndex;
   .work-tab.active {
     background: var(--color-card);
     border-left-color: var(--color-accent);
+  }
+  .tab-co,
+  .tab-period,
+  .accordion-co {
+    display: block;
   }
   .tab-co {
     font-family: var(--font-eb-garamond);

@@ -29,30 +29,32 @@ const posts = (
         posts.length === 0 ? (
           <p class="empty">No archived posts yet.</p>
         ) : (
-          <div class="post-list">
+          <ul class="post-list">
             {posts.map((post) => (
-              <a href={`/blog/${post.id}/`} class="post-row">
-                {post.data.heroImage ? (
-                  <Image
-                    width={120}
-                    height={80}
-                    src={post.data.heroImage}
-                    alt=""
-                    class="post-thumb"
-                  />
-                ) : (
-                  <div class="post-thumb post-thumb--placeholder" />
-                )}
-                <div class="post-info">
-                  <div class="post-date">
-                    <FormattedDate date={post.data.pubDate} />
+              <li>
+                <a href={`/blog/${post.id}/`} class="post-row">
+                  {post.data.heroImage ? (
+                    <Image
+                      width={120}
+                      height={80}
+                      src={post.data.heroImage}
+                      alt=""
+                      class="post-thumb"
+                    />
+                  ) : (
+                    <div class="post-thumb post-thumb--placeholder" />
+                  )}
+                  <div class="post-info">
+                    <div class="post-date">
+                      <FormattedDate date={post.data.pubDate} />
+                    </div>
+                    <h2 class="post-title">{post.data.title}</h2>
                   </div>
-                  <div class="post-title">{post.data.title}</div>
-                </div>
-                <span class="post-arrow">→</span>
-              </a>
+                  <span class="post-arrow" aria-hidden="true">→</span>
+                </a>
+              </li>
             ))}
-          </div>
+          </ul>
         )
       }
 
@@ -91,7 +93,9 @@ const posts = (
   .post-list {
     display: flex;
     flex-direction: column;
-    margin-bottom: 40px;
+    margin: 0 0 40px;
+    padding: 0;
+    list-style: none;
     max-width: 700px;
   }
   .post-row {
@@ -103,13 +107,14 @@ const posts = (
     border-top: 1px solid var(--color-border);
     text-decoration: none;
     color: inherit;
-    transition: opacity 0.2s;
   }
-  .post-row:last-child {
+  /* Each row is the only child of its <li>, so the last row is found by item. */
+  .post-list li:last-child .post-row {
     border-bottom: 1px solid var(--color-border);
   }
-  .post-row:hover {
-    opacity: 0.75;
+  /* Same hover as the blog index: the title takes the accent color. */
+  .post-row:hover .post-title {
+    color: var(--color-accent);
   }
   .post-thumb {
     width: 120px;
@@ -133,6 +138,7 @@ const posts = (
     margin-bottom: 6px;
   }
   .post-title {
+    margin: 0;
     font-family: var(--font-eb-garamond);
     font-weight: 500;
     font-variation-settings: 'opsz' 72;
@@ -140,6 +146,7 @@ const posts = (
     letter-spacing: -0.01em;
     line-height: 1.25;
     color: var(--color-text);
+    transition: color 0.2s ease;
   }
   .post-arrow {
     color: var(--color-accent);
@@ -155,10 +162,10 @@ const posts = (
     font-size: 20px;
     color: var(--color-accent);
     text-decoration: none;
-    transition: opacity 0.2s;
+    transition: color 0.2s;
   }
   .back-link:hover {
-    opacity: 0.8;
+    color: var(--color-accent-bright);
   }
 
   @media (max-width: 900px) {

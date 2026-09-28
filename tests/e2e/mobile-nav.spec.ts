@@ -23,4 +23,17 @@ test.describe('mobile nav', () => {
     await page.keyboard.press('Tab');
     await expect(menuLinks.first()).toBeFocused();
   });
+
+  test('Escape closes the open menu and returns focus to the menu button', async ({ page }) => {
+    await page.goto('/about');
+    const menuButton = page.getByRole('button', { name: /open menu/i });
+
+    await menuButton.click();
+    await page.keyboard.press('Tab');
+    await expect(page.locator('#mobile-menu a').first()).toBeFocused();
+
+    await page.keyboard.press('Escape');
+    await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+    await expect(menuButton).toBeFocused();
+  });
 });

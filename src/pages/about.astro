@@ -17,7 +17,7 @@ import Button from '../components/Button.astro';
       <!-- Header: full width -->
       <div class="about-header" data-reveal>
         <h1 class="about-h1">
-          Craft, curiosity, and coffee<br />- A bit about me
+          Craft, curiosity, and coffee<br />— A bit about me
         </h1>
       </div>
 
@@ -43,24 +43,26 @@ import Button from '../components/Button.astro';
         </div>
 
         <div class="pnw-card" data-reveal data-reveal-delay="120">
-          <div class="pnw-title">Life outside the IDE</div>
-          {
-            [
-              ['mdi:coffee', 'Coffee aficionado'],
-              ['mdi:hiking', 'Hiking/Exploring'],
-              ['mdi:pot-steam', 'Home cook, BBQ enthusiast'],
-            ].map(([icon, text]) => (
-              <div class="pnw-item">
-                <Icon
-                  name={icon}
-                  size={25}
-                  aria-hidden="true"
-                  class="pnw-icon"
-                />
-                <span>{text}</span>
-              </div>
-            ))
-          }
+          <h2 class="pnw-title">Life outside the IDE</h2>
+          <ul class="pnw-list">
+            {
+              [
+                ['mdi:coffee', 'Coffee aficionado'],
+                ['mdi:hiking', 'Hiking/Exploring'],
+                ['mdi:pot-steam', 'Home cook, BBQ enthusiast'],
+              ].map(([icon, text]) => (
+                <li class="pnw-item">
+                  <Icon
+                    name={icon}
+                    size={25}
+                    aria-hidden="true"
+                    class="pnw-icon"
+                  />
+                  <span>{text}</span>
+                </li>
+              ))
+            }
+          </ul>
         </div>
       </div>
     </div>
@@ -124,12 +126,15 @@ import Button from '../components/Button.astro';
   }
   .pnw-title {
     font-size: 17px;
-    /* text-transform: uppercase; */
     letter-spacing: 0.1em;
     color: var(--color-text-heading);
-    /* font-family: var(--font-dm-sans); */
-    margin-bottom: 14px;
+    margin: 0 0 14px;
     font-weight: 500;
+  }
+  .pnw-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
   .pnw-item {
     display: flex;
@@ -158,7 +163,8 @@ import Button from '../components/Button.astro';
     }
     .pnw-card {
       width: fit-content;
-      min-width: 280px;
+      /* Capped at 100% so the card fits a 320px screen (272px of content). */
+      min-width: min(280px, 100%);
     }
   }
 </style>

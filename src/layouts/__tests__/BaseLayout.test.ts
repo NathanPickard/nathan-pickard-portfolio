@@ -171,6 +171,17 @@ describe('BaseLayout.astro dark theme hints', () => {
   });
 });
 
+describe('BaseLayout.astro font loading', () => {
+  // Preload only the body face used on every page; preloading every family
+  // would compete with the page's own critical requests.
+  it('preloads exactly one font file', async () => {
+    const html = await renderBaseLayout();
+    const head = stripHtmlComments(html.slice(0, html.indexOf('</head>')));
+
+    expect(head.match(/<link[^>]*rel="preload"[^>]*as="font"[^>]*>/g)).toHaveLength(1);
+  });
+});
+
 describe('BaseLayout.astro background tree', () => {
   function treeClasses(html: string): string[] {
     const svgTag = html.match(/<svg[^>]*class="([^"]*site-topo[^"]*)"/)?.[1] ?? '';

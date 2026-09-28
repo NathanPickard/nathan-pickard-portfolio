@@ -145,7 +145,6 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
     font-size: 18px;
     line-height: 1.6;
     color: var(--color-text-bright);
-    /* color: yellow; */
     margin: 0 0 24px;
   }
   .post-divider {
@@ -162,7 +161,6 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
     font-size: 20px;
     line-height: 1.65;
     color: var(--color-text-bright);
-    /* color: yellow; */
   }
   /* Space above a heading when a table-of-contents link jumps to it. */
   .prose :global(h2),
@@ -193,7 +191,7 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
     text-underline-offset: 3px;
   }
   .prose :global(a:hover) {
-    opacity: 0.8;
+    color: var(--color-accent-bright);
   }
   .prose :global(strong) {
     color: var(--color-text-bright);
@@ -388,10 +386,10 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
     font-size: 20px;
     color: var(--color-accent);
     text-decoration: none;
-    transition: opacity 0.2s;
+    transition: color 0.2s;
   }
   .back-link:hover {
-    opacity: 0.8;
+    color: var(--color-accent-bright);
   }
 
   @media (max-width: 720px) {
