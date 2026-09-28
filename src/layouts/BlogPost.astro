@@ -167,11 +167,15 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
   .prose :global(h3) {
     scroll-margin-top: 32px;
   }
-  /* 600 so headings stand clear of the 20px body text. */
+  /* EB Garamond's lowercase is much shorter than Source Serif 4's, so a
+     heading needs far more font-size than the 20px body to look larger. Each
+     level is about 1.2x the one below; the clamps grow with the title
+     (--text-h1), so title > h2 > h3 > body holds at every width. */
   .prose :global(h2) {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 28px;
+    font-size: clamp(28px, 2.75vw, 34px);
+    line-height: 1.2;
     letter-spacing: -0.02em;
     color: var(--color-text-bright);
     margin: 2em 0 0.75em;
@@ -179,7 +183,8 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
   .prose :global(h3) {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 22px;
+    font-size: clamp(24px, 2.27vw, 28px);
+    line-height: 1.2;
     color: var(--color-text-bright);
     margin: 1.75em 0 0.5em;
   }

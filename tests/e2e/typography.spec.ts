@@ -61,6 +61,35 @@ async function expectRoleTypography(page: Page, path: string): Promise<void> {
   expect.soft(tooSmall, `text smaller than ${MIN_TEXT_PX}px`).toEqual([]);
 }
 
+/** Newest post that has both section headings and subheadings to compare. */
+async function postWithSubheadings(page: Page): Promise<string> {
+  await page.goto('/blog');
+  const hrefs = await page.locator('.post-link').evaluateAll((links) =>
+    links.map((a) => a.getAttribute('href') ?? ''),
+  );
+  for (const href of hrefs) {
+    await page.goto(href);
+    if ((await page.locator('.prose h2').count()) > 0 && (await page.locator('.prose h3').count()) > 0) {
+      return href;
+    }
+  }
+  throw new Error('No blog post has both h2 and h3 headings');
+}
+
+/**
+ * Rendered height of a lowercase "x". Heading and body faces differ a lot in
+ * x-height, so font-size alone says little about how big text looks.
+ */
+async function xHeight(page: Page, selector: string): Promise<number> {
+  return page.locator(selector).first().evaluate((el) => {
+    const style = getComputedStyle(el);
+    const ctx = document.createElement('canvas').getContext('2d');
+    if (!ctx) throw new Error('No 2D canvas context');
+    ctx.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+    return ctx.measureText('x').actualBoundingBoxAscent;
+  });
+}
+
 for (const [viewportName, viewport] of Object.entries(VIEWPORTS)) {
   test.describe(`typography on ${viewportName}`, () => {
     test.use({ viewport });
@@ -73,6 +102,20 @@ for (const [viewportName, viewport] of Object.entries(VIEWPORTS)) {
 
     test(`newest blog post sets all text in a role font at ${MIN_TEXT_PX}px or larger`, async ({ page }) => {
       await expectRoleTypography(page, await newestPostPath(page));
+    });
+
+    test('blog post title, section headings, subheadings, and body text step down in size', async ({ page }) => {
+      await page.goto(await postWithSubheadings(page));
+      await page.evaluate(() => document.fonts.ready);
+
+      const title = await xHeight(page, 'h1');
+      const sectionHeading = await xHeight(page, '.prose h2');
+      const subheading = await xHeight(page, '.prose h3');
+      const body = await xHeight(page, '.prose p');
+
+      expect.soft(title, 'title vs section heading').toBeGreaterThan(sectionHeading);
+      expect.soft(sectionHeading, 'section heading vs subheading').toBeGreaterThan(subheading);
+      expect.soft(subheading, 'subheading vs body text').toBeGreaterThan(body);
     });
   });
 }

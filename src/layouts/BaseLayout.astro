@@ -179,7 +179,8 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
   :root {
     /* ── Type scale ── */
     --text-display: clamp(56px, 6.2vw, 96px);
-    --text-h1: clamp(28px, 3.4vw, 42px);
+    /* Blog post title. The 34px floor keeps it above section headings on phones. */
+    --text-h1: clamp(34px, 3.4vw, 42px);
     --text-h2: clamp(38px, 4.4vw, 60px);
     --text-h3: 22px;
     /* ── Font roles ── --font-heading, --font-body, and --font-ui come from
