@@ -1,0 +1,105 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+interface Section {
+  heading: MarkdownHeading;
+  children: MarkdownHeading[];
+}
+
+// Groups each h3 under the h2 before it. Deeper headings and any h3 that comes
+// before the first h2 are left out, keeping the list to two scannable levels.
+function toSections(headings: MarkdownHeading[]): Section[] {
+  return headings.reduce<Section[]>((sections, heading) => {
+    if (heading.depth === 2) {
+      return [...sections, { heading, children: [] }];
+    }
+    const last = sections.at(-1);
+    if (heading.depth !== 3 || !last) {
+      return sections;
+    }
+    return [...sections.slice(0, -1), { ...last, children: [...last.children, heading] }];
+  }, []);
+}
+
+const sections = toSections(Astro.props.headings);
+---
+
+{
+  sections.length > 0 && (
+    <nav class="toc" aria-label="Table of contents">
+      <p class="toc-label">Contents</p>
+      <ul class="toc-list">
+        {sections.map(({ heading, children }) => (
+          <li>
+            <a href={`#${heading.slug}`}>{heading.text}</a>
+            {children.length > 0 && (
+              <ul class="toc-sublist">
+                {children.map((child) => (
+                  <li>
+                    <a href={`#${child.slug}`}>{child.text}</a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+<style>
+  .toc {
+    margin: 0 0 40px;
+    padding: 18px 22px;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
+    border-radius: 0 8px 8px 0;
+    font-family: var(--font-dm-sans);
+  }
+  .toc-label {
+    margin: 0 0 10px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+  .toc-list,
+  .toc-sublist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .toc-sublist {
+    margin: 4px 0 2px;
+    padding-left: 16px;
+    border-left: 1px solid var(--color-border);
+  }
+  .toc li {
+    margin: 0;
+  }
+  .toc a {
+    display: inline-block;
+    padding: 3px 0;
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--color-text-bright);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+  .toc-sublist a {
+    font-size: 15px;
+    opacity: 0.85;
+  }
+  .toc a:hover,
+  .toc a:focus-visible {
+    color: var(--color-accent);
+    opacity: 1;
+  }
+</style>

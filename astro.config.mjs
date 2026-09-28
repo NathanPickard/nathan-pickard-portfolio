@@ -64,8 +64,8 @@ export default defineConfig({
     {
       // Blog prose body (400) and <strong> inside it (600). Italic covers
       // <em> and blockquotes so the browser never synthesizes a fake slant.
-      name: 'Literata',
-      cssVariable: '--font-literata',
+      name: 'Source Serif 4',
+      cssVariable: '--font-source-serif',
       provider: fontProviders.google(),
       weights: [400, 600],
       styles: ['normal', 'italic'],

@@ -9,10 +9,20 @@ import { renderPostBody } from './helpers/renderPost';
  * must not claim the block, and SmartyPants must not turn `-->>` into dashes.
  */
 
-const MERMAID_FENCE = /^```mermaid[^\n]*\n([\s\S]*?)^```/gm;
+// Captures the fence's indent so fences nested inside list items match too.
+const MERMAID_FENCE = /^([ \t]*)```mermaid[^\n]*\n([\s\S]*?)^\1```/gm;
+
+function dedent(body: string, indent: string): string {
+  return body
+    .split('\n')
+    .map((line) => (line.startsWith(indent) ? line.slice(indent.length) : line))
+    .join('\n');
+}
 
 function fenceBodies(markdown: string): string[] {
-  return [...markdown.matchAll(MERMAID_FENCE)].map((match) => match[1].trim());
+  return [...markdown.matchAll(MERMAID_FENCE)].map(([, indent, body]) =>
+    dedent(body, indent).trim()
+  );
 }
 
 function decodeEntities(html: string): string {

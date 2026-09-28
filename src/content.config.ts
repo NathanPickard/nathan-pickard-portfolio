@@ -19,6 +19,8 @@ const blog = defineCollection({
 			updatedDate: z.coerce.date().optional(),
 			heroImage: image().optional(),
 			archived: z.boolean().optional(),
+			// Show a table of contents built from the post's h2/h3 headings.
+			toc: z.boolean().optional(),
 		}),
 });
 

@@ -1,0 +1,239 @@
+---
+title: 'Engineer-Led, AI-Assisted: A Practical Workflow for Building Software'
+description: 'An intentional workflow for building software with AI tools: planning, developing, testing, code review, and context management.'
+pubDate: 2026-9-27
+heroImage: '../../../assets/blog-placeholder-oregon-coast.jpg'
+toc: true
+---
+
+AI has influenced the way we approach and think about software development these days. There's no denying that its impact can be felt in nearly all facets of the software engineering landscape. From tooling, design, implementation, testing, etc., AI has influenced the way engineers can go about implementing solutions for end users.
+
+The industry as a whole is evolving at such a rapid pace that it can be difficult to know how to adopt these new tools and how best to utilize these promising new platforms that could possibly empower a developer with new capabilities. So, how are we supposed to go about adopting, or at least kicking the tires of, an AI-enabled software development paradigm?
+
+---
+
+## First, some thoughts
+
+One of the main tenets of building impactful and meaningful software that I've kept in mind over the years is to be systematic and intentional during development. Various AI models, agents, and platforms can create some pretty great results, but also not so great results. By being intentional and having clear goals with expected outcomes, your use of AI is much more likely to be effective and helpful in the software development lifecycle, rather than just pushing prompts through and grinding out mediocre results.
+
+With that in mind, knowing what to focus on and what needs your attention is crucial for working with AI effectively. Sure, you could prompt a given model that you want to start building the next feature in your project, but not having a clear roadmap can lead to spinning in circles, endless prompting that takes you further down the rabbit hole of figuring out why the models didn't quite build whatever you prompted them to build, accounting for things that simply do not matter, and the list goes on.
+
+It's imperative that your focus remains on the expected build outcomes and the AI model's adherence to the guardrails that you've set in place. This can be achieved in a variety of ways given the particular platform you're working with (I've listed a couple of modern methods below).
+
+More often than not though, the model/agents will construct something loosely resembling the intended output, but may have pieces missing, or have built it incorrectly, etc. So, it's our job as engineers to notice when code isn't constructed correctly and features aren't functioning as intended.
+
+On top of this, there is plenty of "AI slop" that just happens as a result of using AI in the first place. Simply not knowing enough of the subject matter (implementing some piece of a tech stack you don't know much about, for example) can lead to keeping extraneous and incorrect code that the models generated in your codebase that shouldn't be in there to begin with. For example, adding in unnecessary boilerplate code or referencing libraries that simply do not exist.
+
+While most folks can "vibe code" a seemingly straightforward web app and publish it to the internet, it still takes a skilled and experienced software engineer to navigate the use of AI effectively, productively, and with the proper amount of human-in-the-loop involvement and judgment.
+
+This judgment comes from actual experience with the tools and languages used, gained from having built real projects. I've developed my own engineering judgment and product sense from working on a wide array of projects throughout the years, some of which served millions of users. You don't need years of deep experience to craft something great, but I'd say having a solid foundation of general software development experience and sound engineering judgment is probably the most important part of using AI when building a software product.
+
+If you can't reason about what a model has generated for you, especially when it's wrong, then you can't understand how your project is built and why it was built that way. This understanding is essential for building quality software, and having a brittle understanding is not an ideal circumstance when you're shipping production software to end users.
+
+It requires a certain amount of mental rigor and know-how that you must apply and hone to build something that works, lasts, and solves problems effectively. This is the human element of the software development process that AI simply cannot replicate, and it's our job to never give up our understanding of how and why our projects work the way they do!
+
+> [!NOTE]
+> This can be a perfect opportunity to take what you don't understand and start learning something new! Step away from AI usage altogether, take a look at the docs, and build out a simple proof of concept of something new to you or something you're unsure about. Sure, AI can provide an answer for how a Django API endpoint works with an AI-generated example, but that doesn't really teach you about the subject effectively.
+>
+> Building small projects of your own without the use of models and applying what you've learned from previous projects or documentation is how you actually learn and understand. Applying your own problem solving capabilities to projects small and large, professional or personal, is where your experience as a software engineer truly expands.
+
+It's also important to note that AI models can't just reason about things all on their own. They more or less predict based on compressed human knowledge and fall short on the actual deep reasoning required for complex system design. While they can be great at following instructions and tool calling, it's essential to remember that, as the engineer, the responsibility of making software that is debuggable, maintainable, testable, and composable is solely on us!
+
+As of this writing, there is no industry standard for using AI, nor an agreed-upon set of "best practices." There is also no "industry defining framework for using AI," though platforms like Claude Code and Cursor are quite ubiquitous these days as the tools of choice. However, it is still the wild west, as the landscape is constantly changing and new ideas and platforms are popping up on a seemingly daily basis.
+
+The newest frontier models do have me pondering what could now be possible, what could be easier, and what new innovation could emerge within the AI and software engineering ecosystem. It is an exciting time to be a software engineer and figure out how we can best develop ways to harness (pun intended) this rapid evolution.
+
+---
+
+## My AI workflow
+
+Given everything above, I've found that having a plan of attack and a rather straightforward system you can rely on in the face of an ever-shifting, AI-enabled world of software development is essential for staying on top of things and doing your best work.
+
+My goal for this post is to provide a relatively simple and uncomplicated plan that gets you out of constant and unproductive prompting with a single model and into an easy workflow with sound principles that you can modify yourself and make your own. The following outline is what I use and what I've found to be helpful in developing projects (as of the time of this writing), and it isn't meant to be a set of bulletproof rules.
+
+In many ways, it's rather similar to how I'd build projects without the use of any AI and, if anything, I'm more or less applying general software development fundamentals and using AI models and platforms as the tools. However, I do often find myself not using any sort of AI tooling at all and just diving into the code myself and writing it by hand. Never be afraid to write code yourself! You are the software engineer after all, and you should always have the final say in how a project/product should be built.
+
+Using AI isn't always a requirement, either. Architect the foundation of a project yourself by writing the core code by hand and putting the right pieces and services in place. Then you can layer on features and functionality with the assistance of agents. In my experience, it always pays to have ownership of the code I write and the projects I work on. It is always up to you to compose a well-structured product for end users, your team, and fellow engineers. Building is what we do best after all!
+
+With that said, the idea behind the following ever-evolving guide is to get you thinking about your development process intentionally and to provide a general toolkit with the idea of yielding better results when using AI. Your tools and chosen platforms may be different from what I mention below, but the overall principles/guidelines can still apply. Modify and use whatever works for you and your team!
+
+### 1. Planning
+
+This first step is where you'll plan out and specify the purpose of your project, what it does, and why it should work the way it does before starting development. Like I stated above, being clear with your intentions here is essential for the models to know exactly what they're supposed to be focusing on and building. It's worth investing time here, as a clearer path yields better outcomes for you, the team, and for future model/agent use.
+
+- Decide what you intend to build, hone in on a clear purpose, and have a clear, expected outcome of what you're building. This can be outlined in a `spec (specification) file`, for example, which you would include in your project files (broadly and lightly outlined below). If you don't have a clear goal in mind and can't articulate exactly what it is you're building, then neither can the model! Ambiguity in leads to confident, but incorrect, code out. The intention here is that better planning should lead to better AI output.
+
+- If you're including the plan in a `spec file`, the general guidelines below are what I've found helpful in both small and large projects. The level of detail you would put in the `spec-file` largely depends on the level of complexity and depth of features you plan to have laid out in the project. It's helpful to be specific but concise here, while sharing examples with the model on how the project should behave. Also, since this is the planning phase of our AI workflow, it's fine to use your own discretion and outline only what you would need from the following guidelines:
+  - **Overview and Goals** - First, state what you want to build and why. Here is where you'd define the problem and the desired outcome. For example:
+
+    > I am building a personal library web application that lets users catalog the books they own or want to read. Users should be able to add, edit, and delete books, set a status on each one (to-read, reading, or finished), and log their reading progress as they go.
+
+    Using a broad but clear description should be sufficient here.
+
+  - **User stories and requirements** - The list of specific features from the user's point of view. Include functional requirements (what the app must do) and non-functional requirements (such as scale, security, etc.).
+  - **Architecture and Data Flow** - Describe how different parts of the system talk to each other. Include potential database schemas, planned API endpoints, and folder structures.
+  - **Edge Cases and Constraints** - List potential problems and things the model should _not_ do. For example: `Never run database migrations, I will run them myself`.
+  - **Step-by-step task breakdown** - Divide the project into small, logical phases or tasks that the AI can code one by one. A general example could be something like:
+    - `Phase 1: Database and data layer`
+    - `Phase 2: API backend development`
+    - `Phase 3: Frontend integration`
+
+- As mentioned above and worth restating again, if you can't clearly explain the purpose of what you're building and the expected outcome, then you aren't ready to hand AI a build plan to kick start development. Models can't build exactly what you specify, and you should anticipate iterating and refactoring things as development unfolds, similar to how a teammate might build something that fulfills the requirements of the feature but could use some improvements on implementation and code quality.
+
+- Sometimes a full `spec-file` may not be necessary. For these instances, provide the model with some sort of `PRD` (Product Requirements Document) file to align on what is being built and why. General requirements for the project should be sufficient here without going into implementation details. This can be used alongside or in lieu of a general `spec-file` for capturing specific yet concise product requirements that the model can reference throughout feature development.
+
+A couple of tools that I've found extremely helpful for the planning phase (at the time of this writing):
+
+- Matt Pocock's [grill-me](https://www.aihero.dev/skills-grill-me) and [grill-with-docs](https://www.aihero.dev/skills-grill-with-docs) skills for nailing down project goals and features
+- Jesse Vincent's extremely popular [superpowers](https://github.com/obra/superpowers) AI skills framework for planning, feature development, and general implementation of the software development lifecycle
+
+With the above laid out, we can move on to:
+
+### 2. Developing
+
+At this point you should be ready to start building! Here is where you will pass along your outlined plan / `spec file` to the model. Depending on your development platform of choice, you will usually do this in an "agents-window" or AI-chat type of feature. Let's take a look at some techniques to help make the development process go as efficiently as possible while keeping the models on proverbial rails.
+
+- Triage and delegate things to AI that can be easily replicated. This includes things like boilerplate code, initial project and generic tooling setup, test scaffolding, etc. Initial project setup can usually be taken from a library's docs or repo. This is something AI can read through and implement for you on its own rather effectively.
+
+- Write the intended behavior and edge cases before prompting the model to generate any code. This is where you would generally reference things like your `PRD.md` file, a `spec-file`, or project planning outline. For example:
+
+  > "Read SPEC.md and ARCHITECTURE.md. We're on Phase 2 (API backend). Implement the POST /books and PATCH /books/:id endpoints per the schema in the spec. Books must belong to the authenticated user; return 403 if a user tries to edit another user's book. Do not touch the frontend or run migrations. Write failing tests for both endpoints first, then implement."
+
+- As mentioned above, you can use the `superpowers` skills for a whole slew of AI-enabled feature development (`subagent-driven-development`, `executing-plans`, `test-driven-development`, and others).
+
+- Depending on the size of the task or depth of an in-progress feature, turning on and using sub-agent development lets the agents tackle tasks much more efficiently and reliably. One agent could independently review code from the most recent commit while another agent starts work on a new feature.
+
+- Similar to sub-agent development, you can use [worktrees](https://code.claude.com/docs/en/worktrees) so that you can have multiple agents developing features in parallel on their own branches without affecting each other's work. For example, you could have one agent build out a user-facing bookshelf view while another agent is building out the API endpoints. Truly powerful stuff!
+
+- Platforms like [DevSwarm](https://devswarm.ai/) (an IDE focused on helping developers run multiple agents in parallel) and the [Agents window in VS Code](https://code.visualstudio.com/docs/agents/run/agents-window) for multiple, isolated chat prompts are other tools you can use to get multiple agents building out your plan in tandem.
+
+- During development, there will certainly be times when you need to prompt the models to go in a new direction or correct their work midway through progress on something. Capture the change in direction and/or corrections in the planning/requirements/spec files so that the models can reference them in future work.
+
+- Similarly, keep context between agents in files and not between different chats. Every agent reads the same spec and architecture markdown files at the start of its task, so agents working in parallel or sequentially should agree on the contract between them (for example: API schema, shared types, etc.). If you find yourself pasting one agent's chat into another, that's a sign something belongs in a file instead. More on this below.
+
+Now that the agent(s) have generated code, let's take a look at how we can go about testing what the models just built:
+
+### 3. Testing
+
+Testing is essential for quality code and a reliable product. It goes without saying that you should absolutely test anything AI has generated for you. A large part of these AI guidelines is to verify ourselves that the models built what was intended. We can't rely on the models to implement a perfectly tested, feature complete application, so it is our responsibility to thoroughly test what we're building. Here are some techniques to help with this:
+
+- Set up the project locally and run through happy path and edge case scenarios just like you would when testing your own or another engineer's hand-written code. This is where you get hands-on time with the project to make sure that the project and its features are working as expected. It helps to reference user stories here from the `spec-file` to cross-reference what was intended to be built and what was actually delivered.
+
+- Unit tests should be implemented to validate that the code's intended behavior is functioning as expected, just like in any other software project. End-to-end testing should also be in place to test that the entire project functions as expected with integrated systems and external dependencies.
+
+- In regards to unit and end-to-end testing, have the model write a set of failing tests first and confirm they fail for the reason you expect. Similar to how code generated by a model is error prone, often incorrect, and needs tending to, assume that any test generated by AI that passes on the first run is usually testing nothing!
+
+  For example, ask the agent for a test covering "`a book's progress percentage updates when a page is logged`" before the progress logic exists. It should produce something like:
+
+  ```typescript
+  test("progress percentage updates when a page is logged", () => {
+    const book = createBook({ pageCount: 300, currentPage: 90 });
+    logProgress(book, 150);
+    expect(book.percentComplete).toBe(50);
+  });
+  ```
+
+  Run it and it should fail with something like `logProgress is not a function`. That's good, because that's the failure you expect. If it passes, odds are it's asserting on the initial value you seeded and never actually calls the code you were about to write. Now have the agent implement it, and the test should pass.
+
+  Compare this to the version an agent will happily hand you if you don't ask for the failing run first:
+
+  ```typescript
+  test("progress percentage updates when a page is logged", () => {
+    const book = createBook({ pageCount: 300, currentPage: 90 });
+    expect(book.percentComplete).toBe(30);
+  });
+  ```
+
+  This "test" passes immediately, verifies nothing about logging progress, and adds absolutely nothing to the integrity of your codebase.
+
+- Use [Playwright](https://playwright.dev/) for automated UI testing and give the model access to the [Playwright MCP](https://playwright.dev/docs/getting-started-mcp). This is extremely helpful for grabbing screenshots of each visual state of the project and its UI. This tool alone has saved me a ton of time when clients ask me for a complete set of comprehensive screenshots.
+
+  For example, give the agent the `Playwright MCP` and ask it to capture the bookshelf in each state: 'empty', 'one book, not yet started', 'a book in progress', and 'a book marked finished'. You now have four screenshots to compare against the user stories in the spec, and the same set to hand a client who asks, "What does it look like when there's nothing there yet?"
+
+Next, let's move on to another extremely important step:
+
+### 4. Code Review
+
+Just like testing, it is vital to do proper code review! You've tested and utilized the techniques above, but you still need eyes on the code itself.
+
+- Human code review (looking at and reviewing the actual code) is essential for production-grade projects. AI certainly doesn't write perfect code, and its "taste," if you will, is rather limited. Merging without looking at the code yourself leaves you open to broken features, security issues, and unexpected bugs. Remember, you're the engineer and you have the final say in making a great product!
+
+- It's important to review the actual code diffs/pull requests themselves and not the previous chat prompt history between you and the model. Just because you prompted an AI agent to complete some task doesn't mean any of the resulting work ever made it into the actual project.
+
+  For example, you ask the agent to add an ownership check that returns `403` so users can't edit each other's books. The chat ends with "Done! Added authorization to the PATCH endpoint." You then open the PR and the check is there, but it's on `POST /books` instead, where every book already belongs to the requesting user. The endpoint that actually needed it is untouched. The chat said the right thing, but the change landed in the wrong place.
+
+- [GitHub Copilot](https://docs.github.com/en/copilot/concepts/agents/code-review) and [Claude Code](https://code.claude.com/docs/en/code-review) can be set to do code review automatically when a PR and subsequent commits are pushed up. Having a different model look over code changes can yield much better results than the same model you used to generate the code.
+
+- Keep PRs small enough to actually review. AI can whip together a 2,000 line diff in twenty minutes, and a code change that large is much more likely to get skimmed and not actually reviewed.
+
+- Use the [/code-review](https://github.com/affaan-m/ECC/blob/main/agents/code-reviewer.md) skill from the ECC (Everything Claude Code) AI framework for local code review and any open PRs. (ECC itself is an agent harness type of system that covers an entire toolset of AI skills and much more. I highly recommend giving it a look [here](https://github.com/affaan-m/ECC).)
+
+Finally, let's conclude this general guide with one last step:
+
+### 5. Documentation and Context Management
+
+It is important to document what you've just built, as it often serves as the foundation for the next feature you build. It's best practice to provide general documentation regardless of whether you're utilizing AI tools or not. Some of your favorite and most dependable libraries and frameworks most likely have fantastic and thorough documentation. That isn't by accident!
+
+- Documenting the "why" is important as your project grows, since AI tools need up-to-date context to remain helpful. Having this documented lets the model know why things are constructed the way they are without having to search the entire project and come up with its own (possibly incorrect) understanding. Providing a general outline of the decisions made, and specifically the why behind those decisions, can often be written up in an `ARCHITECTURE.md` type of file that states why features were built the way they were.
+
+  For example, providing something like the following could explain why a main feature was built the way it was:
+
+  > Do not allow AI summary analysis to run on datasets that have returned fewer than 10 results from webscraped data. Users expect to get more than ten results back, and running analysis on fewer than 10 results is a waste of tokens.
+
+  While that rule is a bit specific, having as much useful context as possible to help guide the models, while being as concise as possible, is what is going to return better and more reliable results. Having sets of different rules and the reasoning behind them is what can really keep the AI on the tracks, and it can only benefit your own understanding as an engineer.
+
+- The "how" is also important to document, as it shows engineers and the models how things are put together. Like documenting the "why," the "how" provides the blueprint of the project itself. Here, things like mermaid diagrams and flowcharts are beneficial, as models can generally read and follow them. Keep in mind that the models are less likely to reach for the correct tools and design patterns if they aren't documented.
+
+  For example, a short `ARCHITECTURE.md` entry for a personal library's progress-logging flow might look like:
+
+  ```mermaid
+  sequenceDiagram
+      Client->>API: POST /books/:id/progress { page }
+      API->>Auth: verify session, ownership
+      API->>ProgressService: update(book, page)
+      ProgressService->>DB: upsert ReadingLog, update status
+      API-->>Client: 200 { book, percentComplete }
+  ```
+
+  > All reading progress logic lives in ProgressService. Route handlers never compute progress or status directly. A book's status is derived from its progress: logging the final page marks it finished, and "finished" is never set by the client.
+
+  That's maybe ten lines, but it does a lot. The next agent that touches progress logging knows where the logic goes, knows not to inline it in the handler, and knows that status is derived rather than set. Without it, the model is guessing at all three.
+
+- Remember to treat context as a budget and not as a dumping ground for more prompting. A model's attention is finite, so every task carried out in a single implementation session cuts into that attention window, which can eventually lead to hallucinated code or otherwise bad results.
+
+  Good context management means giving agents exactly what the current task needs. This could be the spec sections it's implementing, the architecture rules that are enforced project-wide, and the files it will actually touch. Point agents at those files instead of letting them search the entire repo and build their own (possibly wrong) picture.
+
+- Keep your context files updated as necessary as the project grows and evolves. Each AI-relevant markdown file in your project should serve as the source of truth from which the agents build.
+
+  For example, `CLAUDE.md` should only hold the "always true" project conventions, `SPEC.md` and `ARCHITECTURE.md` should hold the design choices and the "why," and a `PRD.md` should outline the core purpose, target users, features, technical scope, etc. of the project.
+
+  > [!NOTE]
+  > As of this writing, if you are using Claude Code or working in a project that includes a `CLAUDE.md` file, that `CLAUDE.md` file should not be used for general documentation of your project. Keeping the `CLAUDE.md` file as slim and lean as possible is ideal to prevent token bloat and keep the models running efficiently. More on what you should and should not include can be found here: [https://code.claude.com/docs/en/best-practices#write-an-effective-claude-md](https://code.claude.com/docs/en/best-practices#write-an-effective-claude-md)
+
+- Start a fresh session/chat/worktree per task as necessary and within reason. A long, sprawling chat spanning many prompts with the agent degrades output.
+
+  For example, if we've finished the reading progress feature, we should not ask the same chat to begin implementing the recommendations feature. Everything it learned about reading progress is now context it does not need, and it will start reaching for reading-progress-related solutions to recommendation-related problems.
+
+Notable resources:
+
+- [AIHero.dev](https://www.aihero.dev/) from Matt Pocock
+- [ECC](https://github.com/affaan-m/ECC) (Everything Claude Code)
+- [GitHub Spec Kit](https://github.github.com/spec-kit/)
+
+---
+
+## Summary
+
+These general guidelines have helped me tackle project work much more effectively when using AI tools, and hopefully they can help you as well! Instead of just submitting prompt after prompt, getting mediocre results, and not coming up with solutions as fast as you'd like to, try implementing your own set of guidelines or framework for using AI that complements how you best like to tackle your projects. Be intentional with the tools, exercise discretion, apply sound software engineering judgment, and bring the appropriate amount of mental rigor to figure out the best way to successfully build solutions to the problems you're solving for.
+
+At the end of the day, I'm a software engineer, and building projects that make a difference, help users with what they need, and take businesses to the next level of success is what I love to do. With the tools and power of AI at my disposal as a daily part of my work, I've developed my own rather straightforward set of guidelines for how I work with it to build projects.
+
+Though the models and AI tech have been evolving rapidly, especially here in 2026, I've followed the general blueprint above with solid results and with full intention that it will evolve as the landscape shifts once more. The power to make an AI workflow that works for your needs and provides you with productivity and engineering benefits is up to you!
+
+To help craft or improve your own workflow, it might be helpful to ask yourself:
+
+- How exactly have I integrated AI into my day-to-day work?
+- What has proven effective and what hasn't?
+- How could I use these tools with better results?
+
+The AI landscape is vast and growing in ways we can't yet predict. Its influence on engineering tooling and platforms presents us with new opportunities and avenues for crafting software. With the right amount of intention, attention, and application of solid software development practices, AI can be used in ways that are effective and change the way we go about engineering things. It doesn't just build an excellent project on its own. That is, and should always be, up to you, the engineer!

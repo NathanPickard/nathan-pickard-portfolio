@@ -9,6 +9,7 @@ interface BlogPostProps {
   pubDate: Date;
   updatedDate?: Date;
   heroImage?: unknown;
+  headings?: { depth: number; slug: string; text: string }[];
 }
 
 async function renderBlogPost(props: BlogPostProps) {
@@ -64,5 +65,23 @@ describe('BlogPost.astro', () => {
 
     expect(withHero).not.toContain('hero-image');
     expect(withHero).not.toContain('hero-img');
+  });
+
+  it('renders a table of contents before the prose only when headings are passed', async () => {
+    const base = {
+      title: 'Toc Post',
+      description: 'Desc',
+      pubDate: new Date('2026-01-01T12:00:00Z'),
+    };
+
+    const withToc = await renderBlogPost({
+      ...base,
+      headings: [{ depth: 2, slug: 'summary', text: 'Summary' }],
+    });
+    const withoutToc = await renderBlogPost(base);
+
+    expect(withToc).toContain('aria-label="Table of contents"');
+    expect(withToc.indexOf('Table of contents')).toBeLessThan(withToc.indexOf('Post body content'));
+    expect(withoutToc).not.toContain('Table of contents');
   });
 });

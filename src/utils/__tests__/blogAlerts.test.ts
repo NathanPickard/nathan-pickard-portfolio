@@ -9,7 +9,8 @@ import { renderPostBody } from './helpers/renderPost';
  * and .mdx pipelines as configured, not the plugin in isolation.
  */
 
-const ALERT_MARKER = /^>\s*\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*$/gim;
+// Leading whitespace allows alerts nested inside list items.
+const ALERT_MARKER = /^[ \t]*>\s*\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*$/gim;
 
 function countAlerts(html: string): number {
   return (html.match(/class="markdown-alert markdown-alert-[a-z]+"/g) ?? []).length;
