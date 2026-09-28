@@ -386,7 +386,9 @@ const FEED_LIMIT = 10;
     /* Explicit so the spacing doesn't depend on the heading level's UA default. */
     margin-top: 1.33em;
     margin-bottom: 1.25rem;
+    font-family: var(--font-heading);
     font-size: 1.5rem;
+    font-weight: 600;
   }
 
   .feed-error {
@@ -515,6 +517,7 @@ const FEED_LIMIT = 10;
 
   :global(.post-date) {
     margin: 0 0 0.4rem 0;
+    font-family: var(--font-ui);
     font-size: 1em;
     color: var(--color-text-muted);
   }

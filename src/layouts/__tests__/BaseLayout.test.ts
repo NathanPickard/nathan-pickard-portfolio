@@ -180,6 +180,22 @@ describe('BaseLayout.astro font loading', () => {
 
     expect(head.match(/<link[^>]*rel="preload"[^>]*as="font"[^>]*>/g)).toHaveLength(1);
   });
+
+  it('preloads the regular upright body face, which renders on every page', async () => {
+    const html = await renderBaseLayout();
+    const head = stripHtmlComments(html.slice(0, html.indexOf('</head>')));
+    const preloadHref = head.match(/<link[^>]*rel="preload"[^>]*href="([^"]+)"[^>]*as="font"/)?.[1];
+
+    // The preload href is a hashed file name, so identify it by the @font-face
+    // rule that serves the same file.
+    const face = [...head.matchAll(/@font-face\s*\{([^}]*)\}/g)]
+      .map((m) => m[1])
+      .find((rule) => preloadHref !== undefined && rule.includes(preloadHref));
+
+    expect(face).toMatch(/font-family:\s*"?Source Serif 4/);
+    expect(face).toMatch(/font-weight:\s*400/);
+    expect(face).toMatch(/font-style:\s*normal/);
+  });
 });
 
 describe('BaseLayout.astro background tree', () => {

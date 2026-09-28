@@ -74,7 +74,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     margin-bottom: 48px;
   }
   .blog-h1 {
-    font-family: var(--font-eb-garamond);
+    font-family: var(--font-heading);
     font-weight: 400;
     font-variation-settings: 'opsz' 72;
     font-size: clamp(28px, 3.6vw, 44px);
@@ -136,7 +136,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     min-width: 0;
   }
   .post-date {
-    font-family: var(--font-dm-sans);
+    font-family: var(--font-ui);
     font-size: 14px;
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
@@ -144,7 +144,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     opacity: 0.7;
   }
   .post-title {
-    font-family: var(--font-eb-garamond);
+    font-family: var(--font-heading);
     font-weight: 500;
     font-variation-settings: 'opsz' 72;
     font-size: clamp(20px, 2vw, 24px);
@@ -155,7 +155,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
     transition: color 0.2s ease;
   }
   .post-desc {
-    font-family: var(--font-source-serif);
+    font-family: var(--font-body);
     font-size: 16px;
     line-height: 1.6;
     color: var(--color-text-bright);
