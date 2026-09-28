@@ -76,7 +76,7 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
         theme: 'base',
         themeVariables: {
           darkMode: true,
-          fontFamily: cssVar('--font-dm-sans'),
+          fontFamily: cssVar('--font-ui'),
           background: cssVar('--color-card'),
           primaryColor: cssVar('--color-bg'),
           primaryBorderColor: cssVar('--color-green'),
@@ -121,7 +121,7 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
     margin-bottom: 40px;
   }
   .post-date {
-    font-family: var(--font-dm-sans);
+    font-family: var(--font-ui);
     font-size: 14px;
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
@@ -133,7 +133,7 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
     color: #c8dccf;
   }
   .post-title {
-    font-family: var(--font-eb-garamond);
+    font-family: var(--font-heading);
     font-weight: 400;
     font-size: var(--text-h1);
     line-height: 1.05;
@@ -155,7 +155,7 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
 
   /* Prose styles */
   .prose {
-    font-family: var(--font-source-serif);
+    font-family: var(--font-body);
     /* Source Serif 4 has a smaller x-height than most text serifs, so 20px
        reads at the same size as a typical 19px body. */
     font-size: 20px;
@@ -167,17 +167,18 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
   .prose :global(h3) {
     scroll-margin-top: 32px;
   }
+  /* 600 so headings stand clear of the 20px body text. */
   .prose :global(h2) {
-    font-family: var(--font-eb-garamond);
-    font-weight: 500;
+    font-family: var(--font-heading);
+    font-weight: 600;
     font-size: 28px;
     letter-spacing: -0.02em;
     color: var(--color-text-bright);
     margin: 2em 0 0.75em;
   }
   .prose :global(h3) {
-    font-family: var(--font-eb-garamond);
-    font-weight: 500;
+    font-family: var(--font-heading);
+    font-weight: 600;
     font-size: 22px;
     color: var(--color-text-bright);
     margin: 1.75em 0 0.5em;
@@ -198,7 +199,7 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
     font-weight: 600;
   }
   .prose :global(code) {
-    font-family: Menlo, Monaco, 'Courier New', monospace;
+    font-family: var(--font-mono);
     font-size: 0.875em;
     background: rgba(137, 174, 151, 0.12);
     border: 1px solid var(--color-border);
@@ -264,7 +265,7 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
     align-items: center;
     gap: 8px;
     margin: 0 0 8px;
-    font-family: var(--font-dm-sans);
+    font-family: var(--font-ui);
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.04em;
@@ -372,7 +373,7 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
     display: block;
   }
   .prose :global(figcaption) {
-    font-family: var(--font-eb-garamond);
+    font-family: var(--font-heading);
     font-style: italic;
     font-size: 1em;
     color: var(--color-text-bright);
