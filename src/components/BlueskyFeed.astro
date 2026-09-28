@@ -9,18 +9,18 @@ const FEED_LIMIT = 10;
   data-bluesky-handle={BLUESKY_HANDLE}
   data-feed-limit={FEED_LIMIT}
 >
-  <h4 class="feed-heading">
+  <h3 class="feed-heading">
     <Icon name="bluesky" size={24} aria-hidden="true" />
     Bluesky
-  </h4>
+  </h3>
 
-  <p class="feed-error" data-feed-status>Loading posts…</p>
+  <p class="feed-error" role="status" data-feed-status>Loading posts…</p>
 
   <div class="feed-scroll">
     <ul class="posts" hidden></ul>
 
     <div class="feed-sentinel" aria-hidden="true"></div>
-    <p class="feed-loading" hidden>Loading...</p>
+    <p class="feed-loading" hidden>Loading…</p>
     <p class="feed-end" hidden>You're all caught up.</p>
   </div>
 
@@ -365,6 +365,8 @@ const FEED_LIMIT = 10;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    /* Explicit so the spacing doesn't depend on the heading level's UA default. */
+    margin-top: 1.33em;
     margin-bottom: 1.25rem;
     font-size: 1.5rem;
   }

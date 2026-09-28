@@ -12,49 +12,51 @@ import profilePhoto from '../assets/nathan-pickard-profile.jpg';
 <BaseLayout title="Nathan Pickard — Senior Software Engineer">
   <Nav />
 
-  <!-- Hero -->
-  <header class="hero">
-    <div class="hero-inner">
-      <div class="portrait-frame">
-        <Image
-          src={profilePhoto}
-          alt="Nathan Pickard"
-          class="portrait"
-          loading="eager"
-          fetchpriority="high"
-          widths={[280, 560]}
-          sizes="280px"
-        />
-      </div>
-      <div class="hero-text">
-        <h1 class="display">Nathan Pickard</h1>
-        <div class="eyebrow eyebrow--below eyebrow--norule">
-          Senior Software Engineer
+  <main id="main-content">
+    <!-- Hero -->
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="portrait-frame">
+          <Image
+            src={profilePhoto}
+            alt="Nathan Pickard"
+            class="portrait"
+            loading="eager"
+            fetchpriority="high"
+            widths={[280, 560]}
+            sizes="280px"
+          />
         </div>
-        <p class="hero-sub">
-          I build web experiences that connect great ideas to the people who
-          need them.
-        </p>
-        <div class="ctas">
-          <Button href="/resume" arrow>View Resume</Button>
-          <Button href="/blog" variant="ghost">Read Blog</Button>
+        <div class="hero-text">
+          <h1 class="display">Nathan Pickard</h1>
+          <div class="eyebrow eyebrow--below eyebrow--norule">
+            Senior Software Engineer
+          </div>
+          <p class="hero-sub">
+            I build web experiences that connect great ideas to the people who
+            need them.
+          </p>
+          <div class="ctas">
+            <Button href="/resume" arrow>View Resume</Button>
+            <Button href="/blog" variant="ghost">Read Blog</Button>
+          </div>
         </div>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <!-- Activity Feeds -->
-  <section class="feeds-section">
-    <div class="feeds-inner">
-      <div class="feeds-header" data-reveal>
-        <h2 class="feeds-h2">What I've been up to</h2>
+    <!-- Activity Feeds -->
+    <section class="feeds-section">
+      <div class="feeds-inner">
+        <div class="feeds-header" data-reveal>
+          <h2 class="feeds-h2">What I've been up to</h2>
+        </div>
+        <div class="feeds-grid" data-reveal-stagger>
+          <div data-reveal><BlueskyFeed /></div>
+          <div data-reveal><GitHubFeed /></div>
+        </div>
       </div>
-      <div class="feeds-grid" data-reveal-stagger>
-        <div data-reveal><BlueskyFeed /></div>
-        <div data-reveal><GitHubFeed /></div>
-      </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <Footer />
 </BaseLayout>

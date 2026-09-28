@@ -21,4 +21,18 @@ describe('FormattedDate.astro', () => {
 
     expect(html).toContain('Dec 31, 2026');
   });
+
+  // Frontmatter dates like `pubDate: 2018-09-02` parse as UTC midnight, so the
+  // UTC calendar day must be shown whatever time zone the build runs in.
+  it('shows the UTC calendar day for a date at the start of the UTC day', async () => {
+    const html = await renderFormattedDate(new Date('2018-09-02T00:00:00.000Z'));
+
+    expect(html).toContain('Sep 2, 2018');
+  });
+
+  it('shows the UTC calendar day for a date at the end of the UTC day', async () => {
+    const html = await renderFormattedDate(new Date('2018-09-02T23:59:00.000Z'));
+
+    expect(html).toContain('Sep 2, 2018');
+  });
 });

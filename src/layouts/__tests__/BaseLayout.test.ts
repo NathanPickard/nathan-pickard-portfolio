@@ -138,6 +138,39 @@ describe('BaseLayout.astro scroll-reveal progressive enhancement', () => {
   });
 });
 
+describe('BaseLayout.astro skip link', () => {
+  it('makes a skip link to the main content the first link in <body>', async () => {
+    const html = stripHtmlComments(await renderBaseLayout());
+    const body = html.slice(html.indexOf('<body'));
+    const firstLink = body.match(/<a\b[^>]*>[\s\S]*?<\/a>/)?.[0] ?? '';
+
+    expect(firstLink).toMatch(/href="#main-content"/);
+    expect(firstLink).toContain('Skip to content');
+  });
+});
+
+describe('BaseLayout.astro dark theme hints', () => {
+  function headOf(html: string): string {
+    return stripHtmlComments(html.slice(0, html.indexOf('</head>')));
+  }
+
+  it('declares a dark color scheme so native controls and scrollbars render dark', async () => {
+    const head = headOf(await renderBaseLayout());
+
+    expect(head).toMatch(/<meta name="color-scheme" content="dark"/);
+  });
+
+  it('sets theme-color to the page background token', async () => {
+    const head = headOf(await renderBaseLayout());
+    const source = await readFile(LAYOUT_SOURCE_PATH, 'utf8');
+    const background = source.match(/--color-bg:\s*(#[0-9a-fA-F]{6})/)?.[1];
+    const themeColor = head.match(/<meta name="theme-color" content="([^"]+)"/)?.[1];
+
+    expect(background, 'no --color-bg token found in BaseLayout.astro').toBeDefined();
+    expect(themeColor?.toLowerCase()).toBe(background!.toLowerCase());
+  });
+});
+
 describe('BaseLayout.astro background tree', () => {
   function treeClasses(html: string): string[] {
     const svgTag = html.match(/<svg[^>]*class="([^"]*site-topo[^"]*)"/)?.[1] ?? '';

@@ -34,6 +34,18 @@ describe('BlueskyFeed.astro client-side loading', () => {
     expect(html).not.toContain('class="post-link" href=');
   });
 
+  it('announces status changes (loading, error, empty) to screen readers', async () => {
+    const html = await renderBlueskyFeed();
+
+    expect(html).toMatch(/<p[^>]*role="status"[^>]*data-feed-status|<p[^>]*data-feed-status[^>]*role="status"/);
+  });
+
+  it('uses a real ellipsis in loading text', async () => {
+    const html = await renderBlueskyFeed();
+
+    expect(html).not.toContain('Loading...');
+  });
+
   it('exposes the handle and page size for the client script', async () => {
     const html = await renderBlueskyFeed();
 

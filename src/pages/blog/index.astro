@@ -15,7 +15,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.archived)).sort(
 <BaseLayout title={`${SITE_TITLE} — Blog`} description={SITE_DESCRIPTION} narrowContent>
   <Nav />
 
-  <main class="blog-main">
+  <main class="blog-main" id="main-content">
     <div class="blog-inner">
       <header class="blog-header" data-reveal>
         <h1 class="blog-h1">What I'm thinking and building</h1>

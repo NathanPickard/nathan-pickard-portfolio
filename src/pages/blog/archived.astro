@@ -19,7 +19,7 @@ const posts = (
 >
   <Nav />
 
-  <main class="archived-main">
+  <main class="archived-main" id="main-content">
     <div class="archived-inner">
       <div class="archived-header">
         <h1 class="archived-h1">Archived posts</h1>
@@ -32,7 +32,7 @@ const posts = (
           <div class="post-list">
             {posts.map((post) => (
               <a href={`/blog/${post.id}/`} class="post-row">
-                {post.data.heroImage && (
+                {post.data.heroImage ? (
                   <Image
                     width={120}
                     height={80}
@@ -40,6 +40,8 @@ const posts = (
                     alt=""
                     class="post-thumb"
                   />
+                ) : (
+                  <div class="post-thumb post-thumb--placeholder" />
                 )}
                 <div class="post-info">
                   <div class="post-date">
@@ -116,6 +118,11 @@ const posts = (
     border-radius: 6px;
     display: block;
     border: 1px solid var(--color-border);
+  }
+  /* Holds the thumbnail column for posts without a hero image, so the text and
+     arrow keep their columns. Same gradient as the blog index placeholder. */
+  .post-thumb--placeholder {
+    background: linear-gradient(135deg, var(--color-card) 0%, #1f3a26 100%);
   }
   .post-date {
     font-family: var(--font-dm-sans);

@@ -111,8 +111,9 @@ const socials: Social[] = [
     </button>
   </div>
 
-  <!-- Mobile menu -->
-  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <!-- Mobile menu. Inert while closed: max-height: 0 hides it visually but
+       would leave its links in the tab order and accessibility tree. -->
+  <div class="mobile-menu" id="mobile-menu" inert>
     <nav class="mobile-nav" aria-label="Mobile navigation">
       {
         links.map((l) => (
@@ -166,14 +167,14 @@ const socials: Social[] = [
       btn.addEventListener('click', () => {
         const isOpen = menu.classList.toggle('open');
         btn.setAttribute('aria-expanded', String(isOpen));
-        menu.setAttribute('aria-hidden', String(!isOpen));
+        menu.inert = !isOpen;
       });
 
       menu.querySelectorAll('a').forEach((link) => {
         link.addEventListener('click', () => {
           menu.classList.remove('open');
           btn.setAttribute('aria-expanded', 'false');
-          menu.setAttribute('aria-hidden', 'true');
+          menu.inert = true;
         });
       });
     }

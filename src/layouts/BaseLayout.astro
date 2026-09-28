@@ -65,6 +65,9 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+    <!-- Dark UI for native scrollbars and controls; browser chrome matches --color-bg. -->
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0D1C10" />
     <title>{title}</title>
     <meta name="description" content={description} />
 
@@ -137,6 +140,7 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
     )}
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
     <svg
       class:list={['site-topo', { 'is-beside-narrow-content': narrowContent }]}
       aria-hidden="true"
@@ -284,6 +288,27 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
     html.js [data-reveal].is-visible {
       opacity: 1;
     }
+  }
+
+  /* Off-screen until a keyboard user tabs to it, then pinned top-left. Every
+     page gives its <main> id="main-content". */
+  .skip-link {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 100;
+    padding: 10px 16px;
+    border-radius: 4px;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    font-family: var(--font-dm-sans);
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transform: translateY(calc(-100% - 24px));
+  }
+  .skip-link:focus {
+    transform: none;
   }
 
   /* Keyboard focus ring */
