@@ -9,6 +9,7 @@ import react from '@astrojs/react';
 import rehypeExternalLinks from 'rehype-external-links';
 import { remarkAlert } from 'remark-github-blockquote-alert';
 import { remarkMermaid } from './src/utils/remarkMermaid';
+import { remarkReadingTime } from './src/utils/readingTime';
 import { unified } from '@astrojs/markdown-remark';
 import { visualizer } from 'rollup-plugin-visualizer';
 
@@ -74,10 +75,36 @@ export default defineConfig({
   integrations: [
     expressiveCode({
       themes: ['one-dark-pro'],
+      // Wrap long lines instead of scrolling sideways, so on phones the end of
+      // a line (often the part the post is pointing at) stays visible. Wrapped
+      // lines keep their indentation.
+      defaultProps: { wrap: true },
       styleOverrides: {
         borderRadius: '0.5rem',
         // Defined once in BaseLayout's :root, shared with inline code.
         codeFontFamily: 'var(--font-mono)',
+        codeFontSize: '14px',
+        // Keep One Dark's token colors but sit the block on the site's green
+        // surfaces instead of One Dark's gray. Expressive Code's build-time
+        // contrast fix only knows the theme's own background, not these CSS
+        // variables, so recheck token contrast if either color changes.
+        codeBackground: 'var(--color-card)',
+        borderColor: 'var(--color-border)',
+        uiFontFamily: 'var(--font-ui)',
+        // Highlighted lines (`{3}` in a fence) use the site's gold accent
+        // instead of One Dark's blue. Literal colors, not CSS variables, so the
+        // plugin's contrast check can read them: the background is
+        // --color-accent blended at 16% over --color-card.
+        textMarkers: {
+          markBackground: '#34401f',
+          markBorderColor: '#d4af37',
+        },
+        frames: {
+          editorTabBarBackground: 'var(--color-bg)',
+          editorTabBarBorderBottomColor: 'var(--color-border)',
+          editorActiveTabBackground: 'var(--color-card)',
+          editorActiveTabIndicatorBottomColor: 'var(--color-accent)',
+        },
       },
     }),
     mdx(),
@@ -154,8 +181,9 @@ export default defineConfig({
       // GitHub-style alerts: `> [!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`,
       // `[!CAUTION]`. Styled under `.prose .markdown-alert` in BlogPost.astro.
       // ```mermaid fences become <pre class="mermaid">, drawn client-side by the
-      // script in BlogPost.astro.
-      remarkPlugins: [remarkAlert, remarkMermaid],
+      // script in BlogPost.astro. remarkReadingTime adds `minutesRead` to each
+      // post's remarkPluginFrontmatter.
+      remarkPlugins: [remarkAlert, remarkMermaid, remarkReadingTime],
       rehypePlugins: [
         [
           rehypeExternalLinks,

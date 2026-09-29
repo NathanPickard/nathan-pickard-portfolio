@@ -98,8 +98,91 @@ const sections = toSections(Astro.props.headings);
     opacity: 0.85;
   }
   .toc a:hover,
-  .toc a:focus-visible {
+  .toc a:focus-visible,
+  .toc a[aria-current] {
     color: var(--color-accent);
     opacity: 1;
   }
+
+  /* Side rail on wide screens. BlogPost.astro moves the list into the left
+     gutter at the same breakpoint; here it drops the card, pins below the top
+     of the viewport, and dims every link but the current section's. */
+  @media (min-width: 1360px) {
+    .toc {
+      position: sticky;
+      top: 32px;
+      max-height: calc(100vh - 64px);
+      overflow-y: auto;
+      margin: 0;
+      padding: 0;
+      background: none;
+      border: none;
+      border-radius: 0;
+    }
+    .toc a,
+    .toc-sublist a {
+      font-size: 14px;
+      opacity: 0.7;
+    }
+  }
 </style>
+
+<script>
+  // Marks the link for the section being read with aria-current, so the rail
+  // can highlight it. A section becomes current once its heading scrolls above
+  // this line, measured from the top of the viewport.
+  const CURRENT_LINE_PX = 120;
+
+  interface Section {
+    link: HTMLAnchorElement;
+    heading: HTMLElement;
+  }
+
+  let stopTracking: (() => void) | undefined;
+
+  function findSections(): Section[] {
+    const links = [...document.querySelectorAll<HTMLAnchorElement>('.toc a[href^="#"]')];
+    return links.flatMap((link) => {
+      const heading = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+      return heading ? [{ link, heading }] : [];
+    });
+  }
+
+  function markCurrent(sections: Section[]) {
+    const current = sections.findLast(
+      ({ heading }) => heading.getBoundingClientRect().top <= CURRENT_LINE_PX
+    );
+    for (const { link } of sections) {
+      if (link === current?.link) {
+        link.setAttribute('aria-current', 'true');
+      } else {
+        link.removeAttribute('aria-current');
+      }
+    }
+  }
+
+  function trackCurrentSection() {
+    stopTracking?.();
+    stopTracking = undefined;
+    const sections = findSections();
+    if (sections.length === 0) return;
+
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        markCurrent(sections);
+      });
+    };
+
+    markCurrent(sections);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    stopTracking = () => {
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }
+
+  document.addEventListener('astro:page-load', trackCurrentSection);
+</script>

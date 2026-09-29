@@ -1,7 +1,7 @@
 ---
 title: 'Engineer-Led, AI-Assisted: A Practical Workflow for Building Software'
 description: 'An intentional workflow for building software with AI tools: planning, developing, testing, code review, and context management.'
-pubDate: 2026-9-27
+pubDate: 2026-09-29
 heroImage: '../../../assets/blog-placeholder-oregon-coast.jpg'
 toc: true
 ---
@@ -61,14 +61,18 @@ With that said, the idea behind the following ever-evolving guide is to get you 
 
 This first step is where you'll plan out and specify the purpose of your project, what it does, and why it should work the way it does before starting development. Like I stated above, being clear with your intentions here is essential for the models to know exactly what they're supposed to be focusing on and building. It's worth investing time here, as a clearer path yields better outcomes for you, the team, and for future model/agent use.
 
-- Decide what you intend to build, hone in on a clear purpose, and have a clear, expected outcome of what you're building. This can be outlined in a `spec (specification) file`, for example, which you would include in your project files (broadly and lightly outlined below). If you don't have a clear goal in mind and can't articulate exactly what it is you're building, then neither can the model! Ambiguity in leads to confident, but incorrect, code out. The intention here is that better planning should lead to better AI output.
+- Decide what you intend to build, hone in on a clear purpose, and have a clear, expected outcome of what you're building. This can be outlined in a specification (spec) file, such as a `SPEC.md` file at your project's root, which you would include in your project files (broadly and lightly outlined below). If you don't have a clear goal in mind and can't articulate exactly what it is you're building, then neither can the model! Ambiguity in leads to confident, but incorrect, code out. The intention here is that better planning should lead to better AI output.
 
-- If you're including the plan in a `spec file`, the general guidelines below are what I've found helpful in both small and large projects. The level of detail you would put in the `spec-file` largely depends on the level of complexity and depth of features you plan to have laid out in the project. It's helpful to be specific but concise here, while sharing examples with the model on how the project should behave. Also, since this is the planning phase of our AI workflow, it's fine to use your own discretion and outline only what you would need from the following guidelines:
+- If you're including the plan in a spec file, the general guidelines below are what I've found helpful in both small and large projects. The level of detail you would put in the spec file largely depends on the level of complexity and depth of features you plan to have laid out in the project. It's helpful to be specific but concise here, while sharing examples with the model on how the project should behave. Also, since this is the planning phase of our AI workflow, it's fine to use your own discretion and outline only what you would need from the following guidelines:
   - **Overview and Goals** - First, state what you want to build and why. Here is where you'd define the problem and the desired outcome. For example:
 
-    > I am building a personal library web application that lets users catalog the books they own or want to read. Users should be able to add, edit, and delete books, set a status on each one (to-read, reading, or finished), and log their reading progress as they go.
+    ```md title="SPEC.md"
+    ## Overview and Goals
 
-    Using a broad but clear description should be sufficient here.
+    I am building a personal library web application that lets users catalog the books they own or want to read. Users should be able to add, edit, and delete books, set a status on each one (to-read, reading, or finished), and log their reading progress as they go.
+    ```
+
+    Using a relatively broad but clear description should be sufficient here.
 
   - **User stories and requirements** - The list of specific features from the user's point of view. Include functional requirements (what the app must do) and non-functional requirements (such as scale, security, etc.).
   - **Architecture and Data Flow** - Describe how different parts of the system talk to each other. Include potential database schemas, planned API endpoints, and folder structures.
@@ -80,7 +84,7 @@ This first step is where you'll plan out and specify the purpose of your project
 
 - As mentioned above and worth restating again, if you can't clearly explain the purpose of what you're building and the expected outcome, then you aren't ready to hand AI a build plan to kick start development. Models can't build exactly what you specify, and you should anticipate iterating and refactoring things as development unfolds, similar to how a teammate might build something that fulfills the requirements of the feature but could use some improvements on implementation and code quality.
 
-- Sometimes a full `spec-file` may not be necessary. For these instances, provide the model with some sort of `PRD` (Product Requirements Document) file to align on what is being built and why. General requirements for the project should be sufficient here without going into implementation details. This can be used alongside or in lieu of a general `spec-file` for capturing specific yet concise product requirements that the model can reference throughout feature development.
+- Sometimes a full spec file may not be necessary. For these instances, provide the model with some sort of product requirements document (PRD) file to align on what is being built and why. General requirements for the project should be sufficient here without going into implementation details. This can be used alongside or in lieu of a general spec file for capturing specific yet concise product requirements that the model can reference throughout feature development.
 
 A couple of tools that I've found extremely helpful for the planning phase (at the time of this writing):
 
@@ -91,13 +95,15 @@ With the above laid out, we can move on to:
 
 ### 2. Developing
 
-At this point you should be ready to start building! Here is where you will pass along your outlined plan / `spec file` to the model. Depending on your development platform of choice, you will usually do this in an "agents-window" or AI-chat type of feature. Let's take a look at some techniques to help make the development process go as efficiently as possible while keeping the models on proverbial rails.
+At this point you should be ready to start building! Here is where you will pass along your outlined plan/spec file to the model. Depending on your development platform of choice, you will usually do this in an "agents-window" or AI-chat type of feature. Let's take a look at some techniques to help make the development process go as efficiently as possible while keeping the models on proverbial rails.
 
 - Triage and delegate things to AI that can be easily replicated. This includes things like boilerplate code, initial project and generic tooling setup, test scaffolding, etc. Initial project setup can usually be taken from a library's docs or repo. This is something AI can read through and implement for you on its own rather effectively.
 
-- Write the intended behavior and edge cases before prompting the model to generate any code. This is where you would generally reference things like your `PRD.md` file, a `spec-file`, or project planning outline. For example:
+- Write the intended behavior and edge cases before prompting the model to generate any code. This is where you would generally reference things like your `PRD.md` file, a spec file, or project planning outline. For example:
 
-  > "Read SPEC.md and ARCHITECTURE.md. We're on Phase 2 (API backend). Implement the POST /books and PATCH /books/:id endpoints per the schema in the spec. Books must belong to the authenticated user; return 403 if a user tries to edit another user's book. Do not touch the frontend or run migrations. Write failing tests for both endpoints first, then implement."
+  ```text title="Prompt"
+  Read SPEC.md and ARCHITECTURE.md. We're on Phase 2 (API backend). Implement the POST /books and PATCH /books/:id endpoints per the schema in the spec. Books must belong to the authenticated user; return 403 if a user tries to edit another user's book. Do not touch the frontend or run migrations. Write failing tests for both endpoints first, then implement.
+  ```
 
 - As mentioned above, you can use the `superpowers` skills for a whole slew of AI-enabled feature development (`subagent-driven-development`, `executing-plans`, `test-driven-development`, and others).
 
@@ -117,7 +123,7 @@ Now that the agent(s) have generated code, let's take a look at how we can go ab
 
 Testing is essential for quality code and a reliable product. It goes without saying that you should absolutely test anything AI has generated for you. A large part of these AI guidelines is to verify ourselves that the models built what was intended. We can't rely on the models to implement a perfectly tested, feature complete application, so it is our responsibility to thoroughly test what we're building. Here are some techniques to help with this:
 
-- Set up the project locally and run through happy path and edge case scenarios just like you would when testing your own or another engineer's hand-written code. This is where you get hands-on time with the project to make sure that the project and its features are working as expected. It helps to reference user stories here from the `spec-file` to cross-reference what was intended to be built and what was actually delivered.
+- Set up the project locally and run through happy path and edge case scenarios just like you would when testing your own or another engineer's hand-written code. This is where you get hands-on time with the project to make sure that the project and its features are working as expected. It helps to reference user stories here from the spec file to cross-reference what was intended to be built and what was actually delivered.
 
 - Unit tests should be implemented to validate that the code's intended behavior is functioning as expected, just like in any other software project. End-to-end testing should also be in place to test that the entire project functions as expected with integrated systems and external dependencies.
 
@@ -125,7 +131,7 @@ Testing is essential for quality code and a reliable product. It goes without sa
 
   For example, ask the agent for a test covering "`a book's progress percentage updates when a page is logged`" before the progress logic exists. It should produce something like:
 
-  ```typescript
+  ```typescript title="progress.test.ts · tests the behavior" {3}
   test("progress percentage updates when a page is logged", () => {
     const book = createBook({ pageCount: 300, currentPage: 90 });
     logProgress(book, 150);
@@ -137,7 +143,7 @@ Testing is essential for quality code and a reliable product. It goes without sa
 
   Compare this to the version an agent will happily hand you if you don't ask for the failing run first:
 
-  ```typescript
+  ```typescript title="progress.test.ts · tests nothing" del={"✗":3}
   test("progress percentage updates when a page is logged", () => {
     const book = createBook({ pageCount: 300, currentPage: 90 });
     expect(book.percentComplete).toBe(30);
@@ -148,7 +154,7 @@ Testing is essential for quality code and a reliable product. It goes without sa
 
 - Use [Playwright](https://playwright.dev/) for automated UI testing and give the model access to the [Playwright MCP](https://playwright.dev/docs/getting-started-mcp). This is extremely helpful for grabbing screenshots of each visual state of the project and its UI. This tool alone has saved me a ton of time when clients ask me for a complete set of comprehensive screenshots.
 
-  For example, give the agent the `Playwright MCP` and ask it to capture the bookshelf in each state: 'empty', 'one book, not yet started', 'a book in progress', and 'a book marked finished'. You now have four screenshots to compare against the user stories in the spec, and the same set to hand a client who asks, "What does it look like when there's nothing there yet?"
+  For example, give the agent the Playwright MCP and ask it to capture the bookshelf in each state: 'empty', 'one book, not yet started', 'a book in progress', and 'a book marked finished'. You now have four screenshots to compare against the user stories in the spec, and the same set to hand a client who asks, "What does it look like when there's nothing there yet?"
 
 Next, let's move on to another extremely important step:
 
@@ -166,7 +172,7 @@ Just like testing, it is vital to do proper code review! You've tested and utili
 
 - Keep PRs small enough to actually review. AI can whip together a 2,000 line diff in twenty minutes, and a code change that large is much more likely to get skimmed and not actually reviewed.
 
-- Use the [/code-review](https://github.com/affaan-m/ECC/blob/main/agents/code-reviewer.md) skill from the ECC (Everything Claude Code) AI framework for local code review and any open PRs. (ECC itself is an agent harness type of system that covers an entire toolset of AI skills and much more. I highly recommend giving it a look [here](https://github.com/affaan-m/ECC).)
+- Use the [/code-review](https://github.com/affaan-m/ECC/blob/main/commands/code-review.md) skill from the ECC (Everything Claude Code) AI framework for local code review and any open PRs. (ECC itself is an agent harness type of system that covers an entire toolset of AI skills and much more. I highly recommend giving [the ECC repo](https://github.com/affaan-m/ECC) a look.)
 
 Finally, let's conclude this general guide with one last step:
 
@@ -178,24 +184,31 @@ It is important to document what you've just built, as it often serves as the fo
 
   For example, providing something like the following could explain why a main feature was built the way it was:
 
-  > Do not allow AI summary analysis to run on datasets that have returned fewer than 10 results from webscraped data. Users expect to get more than ten results back, and running analysis on fewer than 10 results is a waste of tokens.
+  ```md title="ARCHITECTURE.md"
+  Do not allow AI summary analysis to run on datasets that have returned fewer than 10 results from webscraped data. Users expect to get more than ten results back, and running analysis on fewer than 10 results is a waste of tokens.
+  ```
 
   While that rule is a bit specific, having as much useful context as possible to help guide the models, while being as concise as possible, is what is going to return better and more reliable results. Having sets of different rules and the reasoning behind them is what can really keep the AI on the tracks, and it can only benefit your own understanding as an engineer.
 
-- The "how" is also important to document, as it shows engineers and the models how things are put together. Like documenting the "why," the "how" provides the blueprint of the project itself. Here, things like mermaid diagrams and flowcharts are beneficial, as models can generally read and follow them. Keep in mind that the models are less likely to reach for the correct tools and design patterns if they aren't documented.
+- The "how" is also important to document, as it shows engineers and the models how things are put together. Like documenting the "why," the "how" provides the blueprint of the project itself. Here, things like mermaid diagrams and flowcharts are beneficial, as models can generally read and follow them. Keep in mind that the agents are less likely to reach for the correct tools and design patterns if they aren't documented.
 
   For example, a short `ARCHITECTURE.md` entry for a personal library's progress-logging flow might look like:
 
   ```mermaid
   sequenceDiagram
-      Client->>API: POST /books/:id/progress { page }
-      API->>Auth: verify session, ownership
+      autonumber
+      Client->>API: POST /books/:id/progress<br/>{ page }
+      API->>Auth: verify session,<br/>ownership
       API->>ProgressService: update(book, page)
-      ProgressService->>DB: upsert ReadingLog, update status
-      API-->>Client: 200 { book, percentComplete }
+      ProgressService->>DB: upsert ReadingLog,<br/>update status
+      API-->>Client: 200 { book,<br/>percentComplete }
   ```
 
-  > All reading progress logic lives in ProgressService. Route handlers never compute progress or status directly. A book's status is derived from its progress: logging the final page marks it finished, and "finished" is never set by the client.
+  ```md title="ARCHITECTURE.md"
+  ## Reading progress
+
+  All reading progress logic lives in ProgressService. Route handlers never compute progress or status directly. A book's status is derived from its progress: logging the final page marks it finished, and "finished" is never set by the client.
+  ```
 
   That's maybe ten lines, but it does a lot. The next agent that touches progress logging knows where the logic goes, knows not to inline it in the handler, and knows that status is derived rather than set. Without it, the model is guessing at all three.
 
@@ -208,7 +221,7 @@ It is important to document what you've just built, as it often serves as the fo
   For example, `CLAUDE.md` should only hold the "always true" project conventions, `SPEC.md` and `ARCHITECTURE.md` should hold the design choices and the "why," and a `PRD.md` should outline the core purpose, target users, features, technical scope, etc. of the project.
 
   > [!NOTE]
-  > As of this writing, if you are using Claude Code or working in a project that includes a `CLAUDE.md` file, that `CLAUDE.md` file should not be used for general documentation of your project. Keeping the `CLAUDE.md` file as slim and lean as possible is ideal to prevent token bloat and keep the models running efficiently. More on what you should and should not include can be found here: [https://code.claude.com/docs/en/best-practices#write-an-effective-claude-md](https://code.claude.com/docs/en/best-practices#write-an-effective-claude-md)
+  > As of this writing, if you are using Claude Code or working in a project that includes a `CLAUDE.md` file, it should not be used for general documentation of your project. Keeping the `CLAUDE.md` file as slim and lean as possible is ideal to prevent token bloat and keep the models running efficiently. More on what you should and should not include can be found in Claude Code's guide to [writing an effective CLAUDE.md](https://code.claude.com/docs/en/best-practices#write-an-effective-claude-md).
 
 - Start a fresh session/chat/worktree per task as necessary and within reason. A long, sprawling chat spanning many prompts with the agent degrades output.
 
@@ -226,7 +239,7 @@ Notable resources:
 
 These general guidelines have helped me tackle project work much more effectively when using AI tools, and hopefully they can help you as well! Instead of just submitting prompt after prompt, getting mediocre results, and not coming up with solutions as fast as you'd like to, try implementing your own set of guidelines or framework for using AI that complements how you best like to tackle your projects. Be intentional with the tools, exercise discretion, apply sound software engineering judgment, and bring the appropriate amount of mental rigor to figure out the best way to successfully build solutions to the problems you're solving for.
 
-At the end of the day, I'm a software engineer, and building projects that make a difference, help users with what they need, and take businesses to the next level of success is what I love to do. With the tools and power of AI at my disposal as a daily part of my work, I've developed my own rather straightforward set of guidelines for how I work with it to build projects.
+At the end of the day, I'm a software engineer, and building projects that make a difference, help users with what they need, and take businesses to the next level of success is what I love to do. With the tools and power of AI at my disposal as a daily part of my work, I've developed my own rather straightforward set of guidelines for how I work with it and you can too!
 
 Though the models and AI tech have been evolving rapidly, especially here in 2026, I've followed the general blueprint above with solid results and with full intention that it will evolve as the landscape shifts once more. The power to make an AI workflow that works for your needs and provides you with productivity and engineering benefits is up to you!
 
