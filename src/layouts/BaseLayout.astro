@@ -2,6 +2,8 @@
 import type { ImageMetadata, TransitionDirectionalAnimations } from 'astro';
 import { Font, getImage } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
+import { PUBLIC_UMAMI_WEBSITE_ID } from 'astro:env/client';
+import Analytics from '../components/Analytics.astro';
 import FallbackImage from '../assets/blog-placeholder-2.jpg';
 import dougFir from '../assets/doug-fir.jpeg';
 import { SITE_TITLE } from '../consts';
@@ -122,6 +124,9 @@ const rssURL = Astro.site ? new URL('rss.xml', Astro.site) : null;
     </style>
 
     <ClientRouter />
+    {Astro.site && (
+      <Analytics websiteId={PUBLIC_UMAMI_WEBSITE_ID} domain={Astro.site.hostname} />
+    )}
 
     {canonicalURL && socialImage && (
       <>

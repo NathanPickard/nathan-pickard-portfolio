@@ -18,7 +18,15 @@ import expressiveCode from 'astro-expressive-code';
 // https://astro.build/config
 export default defineConfig({
   env: {
-    schema: {},
+    schema: {
+      // Public by nature (it ships in every page's HTML). Set in Netlify's
+      // environment variables; left unset, pages render no tracker.
+      PUBLIC_UMAMI_WEBSITE_ID: envField.string({
+        context: 'client',
+        access: 'public',
+        optional: true,
+      }),
+    },
   },
   site: 'https://nathanpickard.com/',
 
