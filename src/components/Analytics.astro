@@ -1,0 +1,25 @@
+---
+// Umami Cloud page-view tracking: cookieless, so no consent banner is needed.
+// ClientRouter keeps this identical <script> across navigations rather than
+// re-running it, and Umami counts each navigation itself by watching
+// history.pushState. data-domains skips localhost and Netlify deploy previews,
+// which serve the same production build.
+
+interface Props {
+  /** Umami Cloud website ID. Without one, nothing is rendered. */
+  websiteId?: string;
+  /** The only hostname whose visits are counted. */
+  domain: string;
+}
+const { websiteId, domain } = Astro.props;
+---
+
+{websiteId && (
+  <script
+    is:inline
+    defer
+    src="https://cloud.umami.is/script.js"
+    data-website-id={websiteId}
+    data-domains={domain}
+  ></script>
+)}
