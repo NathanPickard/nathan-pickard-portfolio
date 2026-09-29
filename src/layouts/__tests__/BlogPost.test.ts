@@ -10,6 +10,7 @@ interface BlogPostProps {
   updatedDate?: Date;
   heroImage?: unknown;
   headings?: { depth: number; slug: string; text: string }[];
+  minutesRead?: number;
 }
 
 async function renderBlogPost(props: BlogPostProps) {
@@ -83,5 +84,19 @@ describe('BlogPost.astro', () => {
     expect(withToc).toContain('aria-label="Table of contents"');
     expect(withToc.indexOf('Table of contents')).toBeLessThan(withToc.indexOf('Post body content'));
     expect(withoutToc).not.toContain('Table of contents');
+  });
+
+  it('shows reading time beside the date only when minutesRead is passed', async () => {
+    const base = {
+      title: 'Timed Post',
+      description: 'Desc',
+      pubDate: new Date('2026-01-01T12:00:00Z'),
+    };
+
+    const withTime = await renderBlogPost({ ...base, minutesRead: 19 });
+    const withoutTime = await renderBlogPost(base);
+
+    expect(withTime).toMatch(/Jan 1, 2026[\s\S]*19 min read/);
+    expect(withoutTime).not.toContain('min read');
   });
 });

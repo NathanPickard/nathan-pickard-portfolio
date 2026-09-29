@@ -10,9 +10,12 @@ import TableOfContents from '../components/TableOfContents.astro';
 type Props = CollectionEntry<'blog'>['data'] & {
   // Passed only for posts that opt in with `toc: true` in their frontmatter.
   headings?: MarkdownHeading[];
+  // Estimated by remarkReadingTime (src/utils/readingTime.ts).
+  minutesRead?: number;
 };
 
-const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, headings, minutesRead } =
+  Astro.props;
 ---
 
 <BaseLayout title={title} description={description} image={heroImage} narrowContent>
@@ -33,14 +36,23 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
               </span>
             )
           }
+          {minutesRead && <span> · {minutesRead} min read</span>}
         </div>
         <div class="post-divider"></div>
       </div>
 
-      {headings && <TableOfContents headings={headings} />}
+      <div class="post-body">
+        {
+          headings && (
+            <div class="toc-rail">
+              <TableOfContents headings={headings} />
+            </div>
+          )
+        }
 
-      <div class="prose">
-        <slot />
+        <div class="prose">
+          <slot />
+        </div>
       </div>
 
       <a href="/blog" class="back-link">← Back to Blog</a>
@@ -83,6 +95,16 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
           primaryTextColor: cssVar('--color-text-bright'),
           textColor: cssVar('--color-text-bright'),
           lineColor: cssVar('--color-green-light'),
+        },
+        // Mermaid's default spacing lays sequence diagrams out far wider than
+        // the post column, so they get scaled down until the labels are too
+        // small to read. Tighter spacing keeps them near 1:1, and the repeated
+        // row of actors along the bottom adds height without information.
+        sequence: {
+          mirrorActors: false,
+          actorMargin: 20,
+          width: 90,
+          diagramMarginX: 8,
         },
       });
       await mermaid.run({ nodes });
@@ -153,6 +175,26 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
     margin-top: 8px;
   }
 
+  /* On wide screens the table of contents leaves the flow and sits in the
+     left gutter, spanning the post body so it can stay pinned while reading.
+     1360px leaves a ~290px gutter beside the 772px text column, enough for the
+     rail plus its gap. Keep in sync with the rail styles in
+     TableOfContents.astro. */
+  .post-body {
+    position: relative;
+  }
+  @media (min-width: 1360px) {
+    .toc-rail {
+      --rail-width: 200px;
+      --rail-gap: 48px;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: calc(100% + var(--rail-gap));
+      width: var(--rail-width);
+    }
+  }
+
   /* Prose styles */
   .prose {
     font-family: var(--font-body);
@@ -195,6 +237,9 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
     color: var(--color-accent);
     text-decoration: underline;
     text-underline-offset: 3px;
+    /* A bare URL is one unbreakable word; let it wrap on narrow screens
+       instead of widening the page. */
+    overflow-wrap: break-word;
   }
   .prose :global(a:hover) {
     color: var(--color-accent-bright);
@@ -203,7 +248,8 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
     color: var(--color-text-bright);
     font-weight: 600;
   }
-  .prose :global(code) {
+  /* Inline code only; code blocks are styled by Expressive Code. */
+  .prose :global(:not(pre) > code) {
     font-family: var(--font-mono);
     font-size: 0.875em;
     background: rgba(137, 174, 151, 0.12);
@@ -212,7 +258,9 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
     padding: 2px 6px;
     color: var(--color-text-bright);
   }
-  .prose :global(pre) {
+  /* Expressive Code frames and pads its own blocks (astro.config.mjs), so this
+     card styling only reaches bare <pre>s such as Mermaid diagrams. */
+  .prose :global(pre:not(.expressive-code pre)) {
     background: var(--color-card);
     border: 1px solid var(--color-border);
     border-radius: 8px;
@@ -227,12 +275,6 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
   }
   .prose :global(pre.mermaid[data-processed]) {
     text-align: center;
-  }
-  .prose :global(pre code) {
-    background: none;
-    border: none;
-    padding: 0;
-    font-size: 14px;
   }
   .prose :global(blockquote) {
     border-left: 3px solid #c87840;
@@ -328,6 +370,9 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
   .prose :global(.post-float-right img),
   .prose :global(.post-float-left img) {
     width: 100%;
+    /* Flex items won't shrink below their natural width without this, so a
+       row of images would widen the page on phones. */
+    min-width: 0;
     height: auto;
     margin: 0;
   }
@@ -377,7 +422,9 @@ const { title, description, pubDate, updatedDate, heroImage, headings } = Astro.
     margin: 0;
     display: block;
   }
-  .prose :global(figcaption) {
+  /* Expressive Code titles are figcaptions too; they take --font-ui from its
+     uiFontFamily setting instead. */
+  .prose :global(figcaption:not(.expressive-code figcaption)) {
     font-family: var(--font-heading);
     font-style: italic;
     font-size: 1em;
