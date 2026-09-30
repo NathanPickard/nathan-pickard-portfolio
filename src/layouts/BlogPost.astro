@@ -198,9 +198,9 @@ const { title, description, pubDate, updatedDate, heroImage, headings, minutesRe
   /* Prose styles */
   .prose {
     font-family: var(--font-body);
-    /* Source Serif 4 has a smaller x-height than most text serifs, so 20px
-       reads at the same size as a typical 19px body. */
-    font-size: 20px;
+    /* Source Serif 4 has a smaller x-height than most text serifs, so 18px
+       reads at the same size as a typical 17px body. */
+    font-size: 18px;
     line-height: 1.65;
     color: var(--color-text-bright);
   }
@@ -210,7 +210,7 @@ const { title, description, pubDate, updatedDate, heroImage, headings, minutesRe
     scroll-margin-top: 32px;
   }
   /* EB Garamond's lowercase is much shorter than Source Serif 4's, so a
-     heading needs far more font-size than the 20px body to look larger. Each
+     heading needs far more font-size than the 18px body to look larger. Each
      level is about 1.2x the one below; the clamps grow with the title
      (--text-h1), so title > h2 > h3 > body holds at every width. */
   .prose :global(h2) {
@@ -448,6 +448,9 @@ const { title, description, pubDate, updatedDate, heroImage, headings, minutesRe
   @media (max-width: 720px) {
     .post-inner {
       padding: 40px 20px 60px;
+    }
+    .prose {
+      font-size: 17px;
     }
   }
 </style>
