@@ -1,0 +1,113 @@
+---
+/**
+ * Row of icon-only social links. Used by the header (desktop and mobile menu)
+ * and the footer; pass `class` to adjust the container's layout from the parent.
+ */
+import { Icon } from 'astro-icon/components';
+import type { Social } from '../data/socials';
+
+interface Props {
+  socials: readonly Social[];
+  size?: number;
+  class?: string;
+}
+
+// `rest` carries the parent's scoped-style attribute so a `class` passed from
+// Nav or Footer can be styled there.
+const { socials, size = 24, class: className, ...rest } = Astro.props;
+
+const isExternal = (href: string): boolean => href.startsWith('http');
+---
+
+<div class:list={['social-links', className]} {...rest}>
+  {
+    socials.map((s) => (
+      <a
+        href={s.href}
+        target={isExternal(s.href) ? '_blank' : undefined}
+        rel={isExternal(s.href) ? 'noopener noreferrer' : undefined}
+        aria-label={s.label}
+        class="social-link"
+        data-invert={s.invert ? 'true' : undefined}
+      >
+        <Icon name={s.icon} size={size} aria-hidden="true" class="icon-default" />
+        {s.hoverIcon && (
+          <Icon name={s.hoverIcon} size={size} aria-hidden="true" class="icon-hover" />
+        )}
+      </a>
+    ))
+  }
+</div>
+
+<style>
+  .social-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px;
+    border-radius: 6px;
+    border-bottom: none !important;
+    transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    color: var(--color-text-heading);
+  }
+  .social-link:hover {
+    background: rgba(212, 175, 55, 0.15);
+  }
+  .social-link :global(svg) {
+    transition:
+      filter 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .social-link:hover :global(svg) {
+    transform: translateY(-1px);
+  }
+  .social-link[data-invert='true'] :global(svg) {
+    filter: brightness(0) invert(1);
+  }
+  /* LinkedIn — white square with transparent "in" default (mdi:linkedin uses evenodd cutouts),
+     full brand icon on hover (devicon:linkedin). Opacity swap avoids layout collapse / flicker. */
+  .social-link[aria-label='LinkedIn'] {
+    position: relative;
+  }
+  .social-link[aria-label='LinkedIn'] :global(.icon-default) {
+    filter: brightness(0) invert(1);
+    transition: opacity 0.2s;
+  }
+  .social-link :global(.icon-hover) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .social-link[aria-label='LinkedIn']:hover :global(.icon-default) {
+    opacity: 0;
+  }
+  .social-link[aria-label='LinkedIn']:hover :global(.icon-hover) {
+    opacity: 1;
+    transform: translate(-50%, calc(-50% - 1px));
+  }
+  .social-link[aria-label='LinkedIn']:hover {
+    background: transparent;
+  }
+  /* Bluesky — white by default, brand color on hover */
+  .social-link[aria-label='Bluesky'] :global(svg) {
+    filter: brightness(0) invert(1);
+  }
+  .social-link[aria-label='Bluesky']:hover :global(svg) {
+    filter: none;
+  }
+  /* Email — force white to match other icons */
+  .social-link[aria-label='Email'] :global(svg) {
+    filter: brightness(0) invert(1);
+  }
+</style>

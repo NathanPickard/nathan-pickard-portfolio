@@ -16,7 +16,7 @@ const REPO_COUNT = 5;
   </h3>
 
   <p class="feed-status" role="status" data-feed-status>Loading repositories…</p>
-  <ul class="repo-grid" hidden></ul>
+  <ul class="repo-grid" data-feed-list hidden></ul>
 
   <a
     class="view-all"
@@ -54,11 +54,16 @@ const REPO_COUNT = 5;
 </section>
 
 <script>
-  import { readFeedCache, writeFeedCache } from '../utils/feedCache';
+  import {
+    formatShortDate,
+    registerFeed,
+    showFeedList,
+  } from '../utils/clientFeed';
 
   // Client-side GitHub feed via the public, unauthenticated REST API (no token in
   // the browser). One request per load; 60/hr per visitor IP — fine for a
-  // portfolio. Cards are cloned from the build-time <template> so scoped styles
+  // portfolio. The shared lifecycle in clientFeed.ts handles caching and status
+  // messages. Cards are cloned from the build-time <template> so scoped styles
   // apply (createElement nodes would miss Astro's data-astro-cid attribute).
 
   // REST's `language` is a name only, so map Linguist colors; gray fallback.
@@ -89,6 +94,8 @@ const REPO_COUNT = 5;
     'Jupyter Notebook': '#DA5B0B',
     Makefile: '#427819',
   };
+  const LANG_COLOR_FALLBACK = '#8b8b8b';
+  const DEFAULT_REPO_COUNT = 5;
 
   type Repo = {
     name: string;
@@ -100,14 +107,6 @@ const REPO_COUNT = 5;
     fork: boolean;
     archived: boolean;
   };
-
-  function formatDate(dateStr: string) {
-    return new Date(dateStr).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    });
-  }
 
   function renderRepo(
     template: HTMLTemplateElement,
@@ -129,7 +128,8 @@ const REPO_COUNT = 5;
 
     if (repo.language) {
       const dot = node.querySelector('.lang-dot') as HTMLElement;
-      dot.style.backgroundColor = LANG_COLORS[repo.language] ?? '#8b8b8b';
+      dot.style.backgroundColor =
+        LANG_COLORS[repo.language] ?? LANG_COLOR_FALLBACK;
       (node.querySelector('.lang-name') as HTMLElement).textContent =
         repo.language;
       (node.querySelector('.repo-lang') as HTMLElement).hidden = false;
@@ -144,100 +144,53 @@ const REPO_COUNT = 5;
 
     const time = node.querySelector('time') as HTMLTimeElement;
     time.dateTime = repo.pushed_at;
-    time.textContent = formatDate(repo.pushed_at);
+    time.textContent = formatShortDate(repo.pushed_at);
 
     return node;
   }
 
-  function showStatus(section: HTMLElement, message: string) {
-    const status = section.querySelector(
-      '[data-feed-status]',
-    ) as HTMLElement | null;
-    const grid = section.querySelector('.repo-grid') as HTMLElement | null;
-    if (grid) grid.hidden = true;
-    if (status) {
-      status.hidden = false;
-      status.textContent = message;
-    }
+  async function fetchRepos(section: HTMLElement): Promise<Repo[]> {
+    const user = section.dataset.githubUser ?? '';
+    const count = parseInt(
+      section.dataset.repoCount ?? String(DEFAULT_REPO_COUNT),
+      10,
+    );
+
+    const res = await fetch(
+      `https://api.github.com/users/${user}/repos?sort=pushed&direction=desc&type=owner&per_page=100`,
+      { headers: { Accept: 'application/vnd.github+json' } },
+    );
+    if (!res.ok) throw new Error(`GitHub API responded ${res.status}`);
+
+    const all = (await res.json()) as Repo[];
+    return all.filter((r) => !r.fork && !r.archived).slice(0, count);
   }
 
-  async function loadFeed(section: HTMLElement) {
-    if (
-      section.dataset.feedState === 'loading' ||
-      section.dataset.feedState === 'loaded'
-    ) {
-      return;
-    }
-    section.dataset.feedState = 'loading';
-
+  function paintRepos(section: HTMLElement, repos: Repo[]) {
     const grid = section.querySelector('.repo-grid') as HTMLUListElement;
-    const status = section.querySelector(
-      '[data-feed-status]',
-    ) as HTMLElement | null;
     const template = section.querySelector(
       '.repo-template',
     ) as HTMLTemplateElement;
-    const user = section.dataset.githubUser ?? '';
-    const count = parseInt(section.dataset.repoCount ?? '5', 10);
-    const cacheKey = `gh-feed:${user}`;
-
-    const paint = (repos: Repo[]) => {
-      grid.replaceChildren();
-      repos.forEach((repo) => grid.appendChild(renderRepo(template, repo)));
-      grid.hidden = false;
-      if (status) status.hidden = true;
-    };
-
-    // Session cache so revisits (incl. View Transition navigations) are instant.
-    const cached = readFeedCache<Repo[]>(cacheKey);
-    if (cached) {
-      paint(cached);
-      section.dataset.feedState = 'loaded';
-      return;
-    }
-
-    try {
-      const res = await fetch(
-        `https://api.github.com/users/${user}/repos?sort=pushed&direction=desc&type=owner&per_page=100`,
-        { headers: { Accept: 'application/vnd.github+json' } },
-      );
-      if (!res.ok) {
-        showStatus(section, 'Could not load repositories right now.');
-        section.dataset.feedState = '';
-        return;
-      }
-      const all = (await res.json()) as Repo[];
-      const repos = all.filter((r) => !r.fork && !r.archived).slice(0, count);
-
-      if (repos.length === 0) {
-        showStatus(section, 'No repositories found.');
-        section.dataset.feedState = 'loaded';
-        return;
-      }
-
-      writeFeedCache(cacheKey, repos);
-      paint(repos);
-      section.dataset.feedState = 'loaded';
-    } catch (err) {
-      console.warn('GitHubFeed: fetch failed', err);
-      showStatus(section, 'Could not load repositories right now.');
-      section.dataset.feedState = '';
-    }
+    grid.replaceChildren(...repos.map((repo) => renderRepo(template, repo)));
+    showFeedList(section);
   }
 
-  function initFeeds() {
-    document
-      .querySelectorAll<HTMLElement>('.github-feed')
-      .forEach((section) => loadFeed(section));
-  }
-
-  // Homepage uses View Transitions — astro:page-load fires on first load and on
-  // every client-side navigation back to this page.
-  document.addEventListener('astro:page-load', initFeeds);
+  registerFeed<Repo[]>({
+    selector: '.github-feed',
+    name: 'GitHubFeed',
+    cacheKey: (section) => `gh-feed:${section.dataset.githubUser}`,
+    fetchFirstPage: fetchRepos,
+    isEmpty: (repos) => repos.length === 0,
+    paint: paintRepos,
+    emptyMessage: 'No repositories found.',
+    errorMessage: 'Could not load repositories right now.',
+  });
 </script>
 
 <style>
   .github-feed {
+    display: flex;
+    flex-direction: column;
     min-width: 0;
     flex: 1;
   }
@@ -252,6 +205,11 @@ const REPO_COUNT = 5;
     font-family: var(--font-heading);
     font-size: 1.5rem;
     font-weight: 600;
+    color: var(--color-text-heading);
+  }
+  /* The devicon GitHub mark is black; flip it to white for the dark theme. */
+  .feed-heading :global(svg) {
+    filter: invert(1);
   }
 
   .feed-status {
@@ -261,24 +219,30 @@ const REPO_COUNT = 5;
 
   .repo-grid {
     list-style: none;
-    padding: 0;
     margin: 0;
     display: grid;
     grid-template-columns: 1fr;
     gap: 0.75rem;
+    height: 640px;
+    overflow-y: auto;
+    padding: 0.25rem 0.75rem 0.25rem 0.25rem;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(137, 174, 151, 0.3) transparent;
   }
 
   .repo-card {
-    border: 1px solid #e8e6e0;
+    border: 1px solid var(--color-border);
     border-radius: 10px;
-    background: #fff;
-    box-shadow: 0 1px 4px rgba(42, 125, 79, 0.06);
+    background: var(--color-card);
     transition:
+      border-color 0.15s ease,
       box-shadow 0.15s ease,
       transform 0.1s ease;
   }
 
   .repo-card:hover {
+    border-color: var(--color-accent);
     box-shadow: 0 4px 20px rgba(212, 175, 55, 0.1);
     transform: translateY(-1px);
   }
@@ -357,5 +321,6 @@ const REPO_COUNT = 5;
     display: inline-block;
     margin-top: 1.25rem;
     font-size: 1rem;
+    color: var(--color-accent);
   }
 </style>
