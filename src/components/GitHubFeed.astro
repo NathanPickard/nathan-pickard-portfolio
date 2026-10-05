@@ -218,6 +218,9 @@ const REPO_COUNT = 5;
   }
 
   .repo-grid {
+    /* Contains the absolutely positioned .visually-hidden star labels, so the
+       scroll box clips them. Without it they escape and stretch the page. */
+    position: relative;
     list-style: none;
     margin: 0;
     display: grid;
